@@ -10,11 +10,30 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 class NativeLoggerFactoryTest {
     @Nested
-    class newLogger {
+    class customizedFactory {
+        @Test
+        void customizedLoggerClass() {
+            Class<?> aCurrentCallStackClass = this.getClass();
+            NativeLoggerFactory nativeLoggerFactory = new NativeLoggerFactory(Level.ERROR, aCurrentCallStackClass);
+
+            assertEquals(aCurrentCallStackClass, nativeLoggerFactory.getLogService().getLoggerClass());
+            assertSame(nativeLoggerFactory.getLogService(), nativeLoggerFactory.logger().getLogService());
+        }
+
+        @Test
+        void customizedLoggerLevel() {
+            NativeLoggerFactory nativeLoggerFactory = new NativeLoggerFactory(Level.ERROR, this.getClass());
+
+            assertEquals(Level.ERROR, nativeLoggerFactory.logger().getLevel());
+        }
+    }
+
+    @Nested
+    class defaultFactory {
         NativeLogger nativeLogger = (NativeLogger) Logger.instance();
 
         @Test
-        void defaultLevel() {
+        void level() {
             assertSame(Level.TRACE, nativeLogger.getLevel());
         }
 
@@ -25,7 +44,7 @@ class NativeLoggerFactoryTest {
 
         @Test
         void service() {
-            assertSame(NativeLoggerFactory.getLogService(), nativeLogger.getLogService());
+            assertSame(Logger.class, nativeLogger.getLogService().getLoggerClass());
         }
     }
 }

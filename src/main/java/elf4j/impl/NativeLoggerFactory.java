@@ -7,9 +7,10 @@ import elf4j.spi.LoggerFactory;
 
 public class NativeLoggerFactory implements LoggerFactory {
     private static final Level DEFAULT_LOGGER_SEVERITY_LEVEL = Level.TRACE;
-    private static final LogService LOG_SERVICE =
-            new LogService(new ConfigurationService(), new WriterThreadProvider());
-    private static final Class<Logger> DEFAULT_LOGGER_CLASS = Logger.class;
+    private static final ConfigurationService CONFIGURATION_SERVICE = new ConfigurationService();
+    private static final WriterThreadProvider WRITER_THREAD_PROVIDER = new WriterThreadProvider();
+    private static final Class<?> DEFAULT_LOGGER_CLASS = Logger.class;
+    private final LogService logService;
     private final Class<?> loggerClass;
     private final Level loggerDefaultLevel;
 
@@ -17,24 +18,25 @@ public class NativeLoggerFactory implements LoggerFactory {
      * Default constructor required for {@link java.util.ServiceLoader}
      */
     public NativeLoggerFactory() {
-        this(DEFAULT_LOGGER_CLASS, DEFAULT_LOGGER_SEVERITY_LEVEL);
+        this(DEFAULT_LOGGER_SEVERITY_LEVEL, DEFAULT_LOGGER_CLASS);
     }
 
-    protected NativeLoggerFactory(Class<?> loggerClass, Level loggerDefaultLevel) {
+    public NativeLoggerFactory(Level loggerDefaultLevel, Class<?> loggerClass) {
         this.loggerClass = loggerClass;
         this.loggerDefaultLevel = loggerDefaultLevel;
-    }
-
-    static LogService getLogService() {
-        return LOG_SERVICE;
+        this.logService = new LogService(loggerClass, CONFIGURATION_SERVICE, WRITER_THREAD_PROVIDER);
     }
 
     @Override
     public NativeLogger logger() {
-        return new NativeLogger(loggerInstanceRequesterClassName(), loggerDefaultLevel, LOG_SERVICE);
+        return new NativeLogger(loggerInstanceRequesterClassName(), loggerDefaultLevel, logService);
+    }
+
+    LogService getLogService() {
+        return this.logService;
     }
 
     private String loggerInstanceRequesterClassName() {
-        return StackTraceUtils.getCaller(this.loggerClass).getClassName();
+        return StackTraceUtils.callerOf(this.loggerClass).getClassName();
     }
 }

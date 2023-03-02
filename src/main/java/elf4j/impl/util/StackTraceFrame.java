@@ -5,7 +5,7 @@ import lombok.Value;
 
 @Value
 @Builder
-public class CallFrame {
+public class StackTraceFrame {
     String className;
 
     String methodName;

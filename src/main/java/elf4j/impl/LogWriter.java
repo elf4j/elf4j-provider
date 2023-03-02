@@ -1,6 +1,6 @@
 package elf4j.impl;
 
-public interface LogWriter {
+public interface LogWriter extends PerformanceSensitive {
 
     void write(LogEntry logEntry);
 }
