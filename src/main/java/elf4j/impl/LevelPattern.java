@@ -1,14 +1,8 @@
 package elf4j.impl;
 
-public class VerbatimPattern implements LogPattern {
-    private final String text;
+public class LevelPattern implements LogPattern {
 
-    public VerbatimPattern(String text) {
-        this.text = text;
-    }
-
-    public static VerbatimPattern from(String pattern) {
-        return new VerbatimPattern(pattern);
+    public LevelPattern() {
     }
 
     @Override
@@ -23,6 +17,7 @@ public class VerbatimPattern implements LogPattern {
 
     @Override
     public void render(LogEntry logEntry, StringBuilder logTextBuilder) {
-        logTextBuilder.append(text);
+        logTextBuilder.append(logEntry.getNativeLogger().getLevel());
     }
+
 }

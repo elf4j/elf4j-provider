@@ -1,6 +1,5 @@
 package elf4j.impl;
 
-import elf4j.impl.util.StackTraceUtils;
 import lombok.NonNull;
 
 class LogService {
@@ -26,18 +25,13 @@ class LogService {
             return;
         }
         LogWriter writer = loggerConfiguration.getWriter();
-        LogEntry logEntry = LogEntry.newBuilder(writer.isCallerThreadInfoRequired())
-                .callerFrame(writer.isCallerFrameRequired() ? StackTraceUtils.callerOf(getLoggerClass()) : null)
+        LogEntry logEntry = LogEntry.newBuilder(writer, getLoggerClass())
                 .nativeLogger(nativeLogger)
                 .exception(exception)
                 .message(message)
                 .arguments(args)
                 .build();
-        if (loggerConfiguration.isAsyncEnabled()) {
-            this.writerThreadProvider.getWriterThread().execute(() -> writer.write(logEntry));
-        } else {
-            writer.write(logEntry);
-        }
+        this.writerThreadProvider.getWriterThread().execute(() -> writer.write(logEntry));
     }
 
     @NonNull Class<?> getLoggerClass() {

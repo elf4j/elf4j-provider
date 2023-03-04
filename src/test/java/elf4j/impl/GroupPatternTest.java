@@ -7,6 +7,8 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Arrays;
+
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.inOrder;
 
@@ -17,15 +19,16 @@ class GroupPatternTest {
         @Mock LogPattern mockPattern;
         @Mock LogPattern mockPattern2;
 
-        GroupPattern groupPattern;
+        LayoutPattern layoutPatternEntry;
 
         @Test
         void dispatchAll() {
-            groupPattern = GroupPattern.builder().pattern(mockPattern2).pattern(mockPattern).build();
+            layoutPatternEntry =
+                    new LayoutPattern(Arrays.asList(new LogPattern[] { mockPattern2, mockPattern }));
             LogEntry logEntry = LogEntry.builder().build();
             StringBuilder stringBuilder = new StringBuilder();
 
-            groupPattern.render(logEntry, stringBuilder);
+            layoutPatternEntry.render(logEntry, stringBuilder);
 
             InOrder inOrder = inOrder(mockPattern, mockPattern2);
             then(mockPattern2).should(inOrder).render(logEntry, stringBuilder);

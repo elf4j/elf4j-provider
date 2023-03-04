@@ -1,9 +1,11 @@
 package elf4j.impl.util;
 
+import elf4j.impl.LogEntry;
+
 import java.util.NoSuchElementException;
 
 public class StackTraceUtils {
-    public static StackTraceFrame callerOf(Class<?> calleeClass) {
+    public static LogEntry.StackTraceFrame callerOf(Class<?> calleeClass) {
         StackTraceElement[] stackTrace = new Throwable().getStackTrace();
         int depth = 0;
         String calleeClassName = calleeClass.getName();
@@ -16,7 +18,7 @@ public class StackTraceUtils {
         for (; depth < stackTrace.length; depth++) {
             if (!stackTrace[depth].getClassName().equals(calleeClassName)) {
                 StackTraceElement stackTraceElement = stackTrace[depth];
-                return StackTraceFrame.builder()
+                return LogEntry.StackTraceFrame.builder()
                         .className(stackTraceElement.getClassName())
                         .methodName(stackTraceElement.getMethodName())
                         .lineNumber(stackTraceElement.getLineNumber())

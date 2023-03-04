@@ -50,15 +50,11 @@ public class ConfigurationService {
     private LoggerConfiguration loadLoggerConfiguration(NativeLogger nativeLogger) {
         boolean asyncEnabled = systemRepository.getAsyncEnabled();
         Level defaultMinimumLevel = systemRepository.getLevel();
-        Level writerMinimumLevel = writerRepository.getMinimumLevelOrDefault(defaultMinimumLevel);
+        Level writerMinimumLevel = writerRepository.getMinimumLevel();
         Level loggerMinimumLevel = loggerRepository.getLoggerMinimumLevelOrDefault(nativeLogger, defaultMinimumLevel);
         int effectiveMinimumLevelOrdinal = Math.max(loggerMinimumLevel.ordinal(), writerMinimumLevel.ordinal());
         boolean loggerEnabled = nativeLogger.getLevel().ordinal() >= effectiveMinimumLevelOrdinal;
-        return LoggerConfiguration.builder()
-                .asyncEnabled(asyncEnabled)
-                .enabled(loggerEnabled)
-                .writer(writerRepository.getGroupWriter())
-                .build();
+        return LoggerConfiguration.builder().enabled(loggerEnabled).writer(writerRepository.getGroupWriter()).build();
     }
 
     void refresh() {

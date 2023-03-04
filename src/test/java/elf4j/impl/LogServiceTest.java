@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.NoSuchElementException;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,6 +38,13 @@ class LogServiceTest {
         given(mockConfigurationService.getLoggerConfiguration(nativeLogger)).willReturn(mockLoggerConfiguration);
     }
 
+    static class StubSyncExecutor implements Executor {
+        @Override
+        public void execute(Runnable command) {
+            command.run();
+        }
+    }
+
     @Nested
     class isEnabled {
         @Test
@@ -56,13 +64,11 @@ class LogServiceTest {
         @Test
         void async() {
             given(mockLoggerConfiguration.isEnabled()).willReturn(true);
-            given(mockLoggerConfiguration.isAsyncEnabled()).willReturn(true);
             given(mockLoggerConfiguration.getWriter()).willReturn(mockLogWriter);
             given(mockWriterThreadProvider.getWriterThread()).willReturn(mockExecutorService);
 
             logService.log(nativeLogger, null, null, null);
 
-            then(mockWriterThreadProvider).should().getWriterThread();
             then(mockExecutorService).should().execute(any(Runnable.class));
         }
 
@@ -71,12 +77,13 @@ class LogServiceTest {
             given(mockLogWriter.isCallerThreadInfoRequired()).willReturn(true);
             given(mockLoggerConfiguration.isEnabled()).willReturn(true);
             given(mockLoggerConfiguration.getWriter()).willReturn(mockLogWriter);
+            given(mockWriterThreadProvider.getWriterThread()).willReturn(new StubSyncExecutor());
 
             logService.log(nativeLogger, null, null, null);
 
             then(mockLogWriter).should().write(captorLogEntry.capture());
-            assertEquals(Thread.currentThread().getName(), captorLogEntry.getValue().getCallerThreadName());
-            assertEquals(Thread.currentThread().getId(), captorLogEntry.getValue().getCallerThreadId());
+            assertEquals(Thread.currentThread().getName(), captorLogEntry.getValue().getCallerThread().getName());
+            assertEquals(Thread.currentThread().getId(), captorLogEntry.getValue().getCallerThread().getId());
         }
 
         @Test
@@ -84,12 +91,12 @@ class LogServiceTest {
             given(mockLogWriter.isCallerThreadInfoRequired()).willReturn(false);
             given(mockLoggerConfiguration.isEnabled()).willReturn(true);
             given(mockLoggerConfiguration.getWriter()).willReturn(mockLogWriter);
+            given(mockWriterThreadProvider.getWriterThread()).willReturn(new StubSyncExecutor());
 
             logService.log(nativeLogger, null, null, null);
 
             then(mockLogWriter).should().write(captorLogEntry.capture());
-            assertNull(captorLogEntry.getValue().getCallerThreadName());
-            assertEquals(0, captorLogEntry.getValue().getCallerThreadId());
+            assertNull(captorLogEntry.getValue().getCallerThread());
         }
 
         @Test
@@ -106,20 +113,19 @@ class LogServiceTest {
             given(mockLoggerConfiguration.isEnabled()).willReturn(true);
             given(mockLogWriter.isCallerFrameRequired()).willReturn(false);
             given(mockLoggerConfiguration.getWriter()).willReturn(mockLogWriter);
+            given(mockWriterThreadProvider.getWriterThread()).willReturn(new StubSyncExecutor());
             Exception exception = new Exception();
             String message = "test message {}";
             Object[] args = { "test arg" };
 
             logService.log(nativeLogger, exception, message, args);
 
-            then(mockLogWriter).should()
-                    .write(LogEntry.builder()
-                            .nativeLogger(nativeLogger)
-                            .message(message)
-                            .arguments(args)
-                            .exception(exception)
-                            .callerFrame(null)
-                            .build());
+            then(mockLogWriter).should().write(captorLogEntry.capture());
+            LogEntry logEntry = captorLogEntry.getValue();
+            assertNull(logEntry.getCallerFrame());
+            assertSame(exception, logEntry.getException());
+            assertSame(message, logEntry.getMessage());
+            assertSame(args, logEntry.getArguments());
         }
 
         @Test
@@ -129,18 +135,6 @@ class LogServiceTest {
             logService.log(nativeLogger, null, null, null);
 
             then(mockLoggerConfiguration).should(never()).getWriter();
-        }
-
-        @Test
-        void sync() {
-            given(mockLoggerConfiguration.isEnabled()).willReturn(true);
-            given(mockLoggerConfiguration.isAsyncEnabled()).willReturn(false);
-            given(mockLoggerConfiguration.getWriter()).willReturn(mockLogWriter);
-
-            logService.log(nativeLogger, null, null, null);
-
-            then(mockLogWriter).should().write(captorLogEntry.capture());
-            assertSame(nativeLogger, captorLogEntry.getValue().getNativeLogger());
         }
     }
 }

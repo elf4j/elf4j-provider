@@ -1,6 +1,6 @@
 package elf4j.impl;
 
-import elf4j.impl.util.StackTraceFrame;
+import elf4j.impl.util.StackTraceUtils;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
@@ -20,15 +20,22 @@ public class LogEntry {
     Object[] arguments;
     Throwable exception;
     StackTraceFrame callerFrame;
-    String callerThreadName;
-    long callerThreadId;
+    ThreadInformation callerThread;
 
-    public static LogEntry.LogEntryBuilder newBuilder(boolean callerThreadRequired) {
-        if (!callerThreadRequired) {
-            return builder();
+    public static LogEntry.LogEntryBuilder newBuilder(PerformanceSensitive performanceSensitive, Class<?> loggerClass) {
+        LogEntryBuilder builder = builder();
+        if (performanceSensitive.isCallerFrameRequired()) {
+            builder.callerFrame(StackTraceUtils.callerOf(loggerClass));
         }
-        Thread callerThread = Thread.currentThread();
-        return builder().callerThreadName(callerThread.getName()).callerThreadId(callerThread.getId());
+        if (performanceSensitive.isCallerThreadInfoRequired()) {
+            Thread callerThread = Thread.currentThread();
+            builder.callerThread(new ThreadInformation(callerThread.getName(), callerThread.getId()));
+        }
+        return builder;
+    }
+
+    public String getCallerClassName() {
+        return callerFrame == null ? nativeLogger.getName() : callerFrame.getClassName();
     }
 
     public String getResolvedMessage() {
@@ -55,6 +62,15 @@ public class LogEntry {
 
     private static Object supply(Object o) {
         return o instanceof Supplier<?> ? ((Supplier<?>) o).get() : o;
+    }
+
+    @Value
+    @Builder
+    public static class StackTraceFrame {
+        String className;
+        String methodName;
+        int lineNumber;
+        String fileName;
     }
 
     @Value
