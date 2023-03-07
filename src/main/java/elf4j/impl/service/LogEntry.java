@@ -40,17 +40,18 @@ public class LogEntry {
 
     public static String resolve(Object msg, Object[] arguments) {
         String message = Objects.toString(supply(msg));
-        int length = message.length();
-        StringBuilder builder = new StringBuilder(length + ADDITIONAL_STRING_BUILDER_CAPACITY);
-        int argumentIndex = 0;
-        for (int index = 0; index < length; ++index) {
-            char character = message.charAt(index);
-            if (character == '{' && index + 1 < length && message.charAt(index + 1) == '}'
-                    && argumentIndex < arguments.length) {
-                builder.append(supply(arguments[argumentIndex++]));
-                index += 1;
+        int messageLength = message.length();
+        StringBuilder builder = new StringBuilder(messageLength + ADDITIONAL_STRING_BUILDER_CAPACITY);
+        int i = 0;
+        int j = 0;
+        while (i < messageLength) {
+            char character = message.charAt(i);
+            if (character == '{' && ((i + 1) < messageLength && message.charAt(i + 1) == '}') && j < arguments.length) {
+                builder.append(supply(arguments[j++]));
+                i += 2;
             } else {
                 builder.append(character);
+                i += 1;
             }
         }
         return builder.toString();

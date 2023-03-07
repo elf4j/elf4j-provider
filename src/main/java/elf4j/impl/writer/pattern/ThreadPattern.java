@@ -10,7 +10,7 @@ import java.util.Objects;
 public class ThreadPattern implements LogPattern {
     @NonNull ThreadPattern.DisplayOption threadDisplayOption;
 
-    public static ThreadPattern from(String pattern) {
+    public static ThreadPattern from(@NonNull String pattern) {
         if (!pattern.startsWith("thread")) {
             throw new IllegalArgumentException("pattern: " + pattern);
         }

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import elf4j.impl.service.LogEntry;
 import elf4j.impl.util.StackTraceUtils;
 import lombok.Builder;
+import lombok.NonNull;
 import lombok.Value;
 
 import java.time.ZoneId;
@@ -20,7 +21,7 @@ public class JsonPattern implements LogPattern {
     Boolean includeCallerDetail;
     Gson gson = new Gson();
 
-    public static JsonPattern from(String pattern) {
+    public static JsonPattern from(@NonNull String pattern) {
         if (!pattern.startsWith("json")) {
             throw new IllegalArgumentException("pattern: " + pattern);
         }

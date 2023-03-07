@@ -9,7 +9,7 @@ public class ClassPattern implements LogPattern {
     private static final DisplayOption DEFAULT_DISPLAY_OPTION = DisplayOption.FULL;
     @NonNull DisplayOption classDisplayOption;
 
-    public static ClassPattern from(String pattern) {
+    public static ClassPattern from(@NonNull String pattern) {
         if (!pattern.startsWith("class")) {
             throw new IllegalArgumentException("pattern: " + pattern);
         }

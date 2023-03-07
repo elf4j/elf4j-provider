@@ -1,6 +1,7 @@
 package elf4j.impl.writer.pattern;
 
 import elf4j.impl.service.LogEntry;
+import lombok.NonNull;
 import lombok.Value;
 
 @Value
@@ -12,7 +13,7 @@ public class LevelPattern implements LogPattern {
         this.displayLength = displayLength;
     }
 
-    public static LevelPattern from(String pattern) {
+    public static LevelPattern from(@NonNull String pattern) {
         if (!pattern.startsWith("level")) {
             throw new IllegalArgumentException("pattern: " + pattern);
         }
