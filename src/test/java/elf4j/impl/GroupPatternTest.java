@@ -18,21 +18,20 @@ class GroupPatternTest {
     class render {
         @Mock LogPattern mockPattern;
         @Mock LogPattern mockPattern2;
+        @Mock LogEntry stubLogEntry;
 
-        LayoutPattern layoutPatternEntry;
+        GroupLogPattern groupLogPatternEntry;
 
         @Test
         void dispatchAll() {
-            layoutPatternEntry =
-                    new LayoutPattern(Arrays.asList(new LogPattern[] { mockPattern2, mockPattern }));
-            LogEntry logEntry = LogEntry.builder().build();
+            groupLogPatternEntry = new GroupLogPattern(Arrays.asList(mockPattern2, mockPattern));
             StringBuilder stringBuilder = new StringBuilder();
 
-            layoutPatternEntry.render(logEntry, stringBuilder);
+            groupLogPatternEntry.render(stubLogEntry, stringBuilder);
 
             InOrder inOrder = inOrder(mockPattern, mockPattern2);
-            then(mockPattern2).should(inOrder).render(logEntry, stringBuilder);
-            then(mockPattern).should(inOrder).render(logEntry, stringBuilder);
+            then(mockPattern2).should(inOrder).render(stubLogEntry, stringBuilder);
+            then(mockPattern).should(inOrder).render(stubLogEntry, stringBuilder);
         }
     }
 }

@@ -1,7 +1,7 @@
 package elf4j.impl;
 
 public interface PerformanceSensitive {
-    boolean isCallerFrameRequired();
+    boolean includeCallerDetail();
 
-    boolean isCallerThreadInfoRequired();
+    boolean includeCallerThread();
 }

@@ -3,8 +3,10 @@ package elf4j.impl.util;
 import java.util.*;
 
 public class PropertiesUtils {
+    public static final char DOT = '.';
 
-    private static final char DOT = '.';
+    private PropertiesUtils() {
+    }
 
     public static List<Map<String, String>> getPropertiesGroupOfType(String type, Properties properties) {
         List<String> typeKeys = new ArrayList<>();

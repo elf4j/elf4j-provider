@@ -82,19 +82,19 @@ public class NativeLogger implements Logger {
         this.service(t, message, args);
     }
 
-    public @NonNull String getName() {
-        return this.name;
-    }
-
-    @NonNull LogService getLogService() {
-        return logService;
+    private void service(Throwable exception, Object message, Object[] args) {
+        this.logService.log(this, exception, message, args);
     }
 
     private NativeLogger atLevel(Level level) {
         return this.level == level ? this : new NativeLogger(this.name, level, logService);
     }
 
-    private void service(Throwable exception, Object message, Object[] args) {
-        this.logService.log(this, exception, message, args);
+    public @NonNull String getName() {
+        return this.name;
+    }
+
+    @NonNull LogService getLogService() {
+        return logService;
     }
 }

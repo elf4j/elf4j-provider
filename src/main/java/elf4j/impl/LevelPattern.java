@@ -1,23 +1,42 @@
 package elf4j.impl;
 
+import lombok.Value;
+
+@Value
 public class LevelPattern implements LogPattern {
+    private static final int DISPLAY_LENGTH_UNSET = -1;
+    int displayLength;
 
-    public LevelPattern() {
+    private LevelPattern(int displayLength) {
+        this.displayLength = displayLength;
+    }
+
+    public static LevelPattern from(String pattern) {
+        return new LevelPattern(LogPattern.getPatternOption(pattern)
+                .map(Integer::parseInt)
+                .orElse(DISPLAY_LENGTH_UNSET));
     }
 
     @Override
-    public boolean isCallerFrameRequired() {
+    public boolean includeCallerDetail() {
         return false;
     }
 
     @Override
-    public boolean isCallerThreadInfoRequired() {
+    public boolean includeCallerThread() {
         return false;
     }
 
     @Override
-    public void render(LogEntry logEntry, StringBuilder logTextBuilder) {
-        logTextBuilder.append(logEntry.getNativeLogger().getLevel());
+    public void render(LogEntry logEntry, StringBuilder logText) {
+        String level = logEntry.getNativeLogger().getLevel().name();
+        if (displayLength == DISPLAY_LENGTH_UNSET) {
+            logText.append(level);
+            return;
+        }
+        char[] levelChars = level.toCharArray();
+        for (int i = 0; i < displayLength; i++) {
+            logText.append(i < levelChars.length ? levelChars[i] : ' ');
+        }
     }
-
 }

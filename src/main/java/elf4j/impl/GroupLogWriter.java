@@ -2,22 +2,34 @@ package elf4j.impl;
 
 import elf4j.Level;
 
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class GroupLogWriter implements LogWriter {
-    private final List<LogWriter> writers;
+    private final Set<LogWriter> writers;
+    private Level minimumLevel;
+    private Boolean includeCallerDetail;
+    private Boolean includeCallerThread;
 
-    public GroupLogWriter(List<LogWriter> writers) {
+    private GroupLogWriter(Set<LogWriter> writers) {
         this.writers = writers;
+    }
+
+    public static GroupLogWriter from(Properties properties) {
+        Set<LogWriter> logWriters = new HashSet<>();
+        EnumSet.allOf(LogWriterType.class)
+                .forEach(writerType -> logWriters.addAll(writerType.parseLogWriters(properties)));
+        return new GroupLogWriter(logWriters);
     }
 
     @Override
     public Level getMinimumLevel() {
-        return Level.values()[writers.stream()
-                .mapToInt(w -> w.getMinimumLevel().ordinal())
-                .min()
-                .orElseThrow(NoSuchElementException::new)];
+        if (minimumLevel == null) {
+            minimumLevel = Level.values()[writers.stream()
+                    .mapToInt(w -> w.getMinimumLevel().ordinal())
+                    .min()
+                    .orElseThrow(NoSuchElementException::new)];
+        }
+        return minimumLevel;
     }
 
     @Override
@@ -26,12 +38,18 @@ public class GroupLogWriter implements LogWriter {
     }
 
     @Override
-    public boolean isCallerFrameRequired() {
-        return writers.stream().anyMatch(PerformanceSensitive::isCallerFrameRequired);
+    public boolean includeCallerDetail() {
+        if (includeCallerDetail == null) {
+            includeCallerDetail = writers.stream().anyMatch(LogWriter::includeCallerDetail);
+        }
+        return includeCallerDetail;
     }
 
     @Override
-    public boolean isCallerThreadInfoRequired() {
-        return writers.stream().anyMatch(PerformanceSensitive::isCallerThreadInfoRequired);
+    public boolean includeCallerThread() {
+        if (includeCallerThread == null) {
+            includeCallerThread = writers.stream().anyMatch(LogWriter::includeCallerThread);
+        }
+        return includeCallerThread;
     }
 }

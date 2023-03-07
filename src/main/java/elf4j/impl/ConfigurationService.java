@@ -3,74 +3,53 @@ package elf4j.impl;
 import elf4j.Level;
 import lombok.NonNull;
 
-import java.util.List;
+import javax.annotation.Nullable;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ConfigurationService {
     private final Map<NativeLogger, LoggerConfiguration> loggerConfigurationCache = new ConcurrentHashMap<>();
-    private SystemRepository systemRepository;
-
-    private LoggerRepository loggerRepository;
-
+    private final PropertiesLoader propertiesLoader;
+    private LevelRepository levelRepository;
     private WriterRepository writerRepository;
 
     public ConfigurationService() {
-        loadRepositories();
+        this(new PropertiesLoader());
     }
 
-    private void loadRepositories() {
-        Properties properties = loadProperties();
-        buildSystemRepository(properties);
-        buildWriterRepository(properties);
-        buildLoggerRepository(properties);
+    public ConfigurationService(PropertiesLoader propertiesLoader) {
+        this.propertiesLoader = propertiesLoader;
+        setRepositories(propertiesLoader.load());
     }
 
-    private Properties loadProperties() {
-        return null;
+    private void setRepositories(@NonNull Properties properties) {
+        this.levelRepository = new LevelRepository(properties);
+        this.writerRepository = new WriterRepository(properties);
     }
 
-    private void buildSystemRepository(Properties properties) {
+    public LoggerConfiguration getLoggerConfiguration(NativeLogger nativeLogger) {
+        return this.loggerConfigurationCache.computeIfAbsent(nativeLogger, this::loadLoggerConfigurationCache);
     }
 
-    private void buildWriterRepository(Properties properties) {
-
-    }
-
-    private void buildLoggerRepository(Properties properties) {
-
-    }
-
-    LoggerConfiguration getLoggerConfiguration(NativeLogger nativeLogger) {
-        return this.loggerConfigurationCache.computeIfAbsent(nativeLogger, this::loadLoggerConfiguration);
-    }
-
-    private LoggerConfiguration loadLoggerConfiguration(NativeLogger nativeLogger) {
-        boolean asyncEnabled = systemRepository.getAsyncEnabled();
-        Level defaultMinimumLevel = systemRepository.getLevel();
+    private LoggerConfiguration loadLoggerConfigurationCache(NativeLogger nativeLogger) {
+        Level loggerMinimumLevel = levelRepository.getLoggerMinimumLevel(nativeLogger);
         Level writerMinimumLevel = writerRepository.getMinimumLevel();
-        Level loggerMinimumLevel = loggerRepository.getLoggerMinimumLevelOrDefault(nativeLogger, defaultMinimumLevel);
         int effectiveMinimumLevelOrdinal = Math.max(loggerMinimumLevel.ordinal(), writerMinimumLevel.ordinal());
         boolean loggerEnabled = nativeLogger.getLevel().ordinal() >= effectiveMinimumLevelOrdinal;
-        return LoggerConfiguration.builder().enabled(loggerEnabled).writer(writerRepository.getGroupWriter()).build();
+        return new LoggerConfiguration(loggerEnabled);
     }
 
-    void refresh() {
-        loadRepositories();
-        this.loggerConfigurationCache.clear();
+    public LogWriter getWriter() {
+        return writerRepository.getGroupWriter();
     }
 
-    private Level getLoggerMinimumLevel(Map<String, Level> loggerConfigurationLevels,
-            List<LogWriter> writers,
-            @NonNull NativeLogger nativeLogger) {
-        String loggerName = nativeLogger.getName();
-        for (String name = loggerName; name.length() > 0; name = name.substring(0, name.lastIndexOf('.'))) {
-            if (loggerConfigurationLevels.containsKey(name)) {
-                return loggerConfigurationLevels.get(name);
-            }
+    public void refresh(@Nullable Properties properties) {
+        Properties refreshed = this.propertiesLoader.load();
+        if (properties != null) {
+            refreshed.putAll(properties);
         }
-        return Objects.requireNonNull(loggerConfigurationLevels.get(""));
+        setRepositories(refreshed);
+        this.loggerConfigurationCache.clear();
     }
 }

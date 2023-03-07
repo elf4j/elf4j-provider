@@ -2,9 +2,16 @@ package elf4j.impl.util;
 
 import elf4j.impl.LogEntry;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.UncheckedIOException;
 import java.util.NoSuchElementException;
 
 public class StackTraceUtils {
+    private StackTraceUtils() {
+    }
+
     public static LogEntry.StackTraceFrame callerOf(Class<?> calleeClass) {
         StackTraceElement[] stackTrace = new Throwable().getStackTrace();
         int depth = 0;
@@ -27,5 +34,15 @@ public class StackTraceUtils {
             }
         }
         throw new NoSuchElementException("Caller of class '" + calleeClass + "' not found in call stack");
+    }
+
+    public static String stackTraceTextOf(Throwable throwable) {
+        try (StringWriter stringWriter = new StringWriter();
+                PrintWriter printWriter = new PrintWriter(stringWriter, true)) {
+            throwable.printStackTrace(printWriter);
+            return stringWriter.toString();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 }

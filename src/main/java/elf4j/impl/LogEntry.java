@@ -3,8 +3,10 @@ package elf4j.impl;
 import elf4j.impl.util.StackTraceUtils;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.NonNull;
 import lombok.Value;
 
+import javax.annotation.Nullable;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -14,20 +16,20 @@ import java.util.function.Supplier;
 @EqualsAndHashCode
 public class LogEntry {
     private static final int ADDITIONAL_STRING_BUILDER_CAPACITY = 32;
-    NativeLogger nativeLogger;
+    @NonNull NativeLogger nativeLogger;
     @EqualsAndHashCode.Exclude Instant timestamp = Instant.now();
-    Object message;
-    Object[] arguments;
-    Throwable exception;
-    StackTraceFrame callerFrame;
-    ThreadInformation callerThread;
+    @Nullable Object message;
+    @Nullable Object[] arguments;
+    @Nullable Throwable exception;
+    @Nullable StackTraceFrame callerFrame;
+    @Nullable ThreadInformation callerThread;
 
     public static LogEntry.LogEntryBuilder newBuilder(PerformanceSensitive performanceSensitive, Class<?> loggerClass) {
         LogEntryBuilder builder = builder();
-        if (performanceSensitive.isCallerFrameRequired()) {
+        if (performanceSensitive.includeCallerDetail()) {
             builder.callerFrame(StackTraceUtils.callerOf(loggerClass));
         }
-        if (performanceSensitive.isCallerThreadInfoRequired()) {
+        if (performanceSensitive.includeCallerThread()) {
             Thread callerThread = Thread.currentThread();
             builder.callerThread(new ThreadInformation(callerThread.getName(), callerThread.getId()));
         }

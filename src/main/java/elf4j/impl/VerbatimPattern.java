@@ -1,28 +1,28 @@
 package elf4j.impl;
 
-public class VerbatimPattern implements LogPattern {
-    private final String text;
+import lombok.NonNull;
+import lombok.Value;
 
-    public VerbatimPattern(String text) {
-        this.text = text;
-    }
+@Value
+public class VerbatimPattern implements LogPattern {
+    @NonNull String text;
 
     public static VerbatimPattern from(String pattern) {
         return new VerbatimPattern(pattern);
     }
 
     @Override
-    public boolean isCallerFrameRequired() {
+    public boolean includeCallerDetail() {
         return false;
     }
 
     @Override
-    public boolean isCallerThreadInfoRequired() {
+    public boolean includeCallerThread() {
         return false;
     }
 
     @Override
-    public void render(LogEntry logEntry, StringBuilder logTextBuilder) {
-        logTextBuilder.append(text);
+    public void render(LogEntry logEntry, StringBuilder logText) {
+        logText.append(text);
     }
 }

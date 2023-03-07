@@ -18,7 +18,7 @@ import static org.mockito.BDDMockito.then;
 
 @ExtendWith(MockitoExtension.class)
 class NativeLoggerTest {
-    @Mock LogService mockLogService;
+    @Mock LogServiceDefault mockLogService;
 
     NativeLogger nativeLogger;
 
