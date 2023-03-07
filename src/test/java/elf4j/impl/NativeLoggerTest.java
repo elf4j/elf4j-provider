@@ -1,5 +1,6 @@
 package elf4j.impl;
 
+import elf4j.impl.service.LogService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,7 @@ import static org.mockito.BDDMockito.then;
 
 @ExtendWith(MockitoExtension.class)
 class NativeLoggerTest {
-    @Mock LogServiceDefault mockLogService;
+    @Mock LogService mockLogService;
 
     NativeLogger nativeLogger;
 

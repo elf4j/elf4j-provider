@@ -2,6 +2,11 @@ package elf4j.impl;
 
 import elf4j.Level;
 import elf4j.Logger;
+import elf4j.impl.configuration.DefaultLoggingConfiguration;
+import elf4j.impl.configuration.LoggingConfiguration;
+import elf4j.impl.service.DefaultLogService;
+import elf4j.impl.service.LogService;
+import elf4j.impl.service.WriterThreadProvider;
 import elf4j.impl.util.StackTraceUtils;
 import elf4j.spi.LoggerFactory;
 import lombok.NonNull;
@@ -23,18 +28,18 @@ public class NativeLoggerFactory implements LoggerFactory {
         this(DEFAULT_LOGGER_INTERFACE,
                 DEFAULT_LOGGER_CLASS,
                 DEFAULT_LOGGER_SEVERITY_LEVEL,
-                ConfigurationServiceInstanceHolder.INSTANCE,
+                ConfigurationInstanceHolder.INSTANCE,
                 new WriterThreadProvider());
     }
 
     NativeLoggerFactory(@NonNull Class<?> loggerInterface,
             @NonNull Class<?> loggerClass,
             @NonNull Level loggerDefaultLevel,
-            @NonNull ConfigurationService configurationService,
+            @NonNull LoggingConfiguration loggingConfiguration,
             @NonNull WriterThreadProvider writerThreadProvider) {
         this.loggerDefaultLevel = loggerDefaultLevel;
         this.loggerInterface = loggerInterface;
-        this.logService = new LogServiceDefault(loggerClass, configurationService, writerThreadProvider);
+        this.logService = new DefaultLogService(loggerClass, loggingConfiguration, writerThreadProvider);
     }
 
     public static void refreshConfiguration() {
@@ -42,7 +47,7 @@ public class NativeLoggerFactory implements LoggerFactory {
     }
 
     public static void refreshConfiguration(Properties properties) {
-        ConfigurationServiceInstanceHolder.INSTANCE.refresh(properties);
+        ConfigurationInstanceHolder.INSTANCE.refresh(properties);
     }
 
     @Override
@@ -52,7 +57,7 @@ public class NativeLoggerFactory implements LoggerFactory {
                 logService);
     }
 
-    private static class ConfigurationServiceInstanceHolder {
-        private static final ConfigurationService INSTANCE = new ConfigurationService();
+    private static class ConfigurationInstanceHolder {
+        private static final LoggingConfiguration INSTANCE = new DefaultLoggingConfiguration();
     }
 }

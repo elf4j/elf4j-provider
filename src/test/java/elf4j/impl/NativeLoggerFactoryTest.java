@@ -1,6 +1,9 @@
 package elf4j.impl;
 
 import elf4j.Level;
+import elf4j.impl.configuration.LoggingConfiguration;
+import elf4j.impl.service.DefaultLogService;
+import elf4j.impl.service.WriterThreadProvider;
 import elf4j.impl.util.StackTraceUtils;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -13,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 @ExtendWith(MockitoExtension.class)
 class NativeLoggerFactoryTest {
-    @Mock ConfigurationService mockConfigurationService;
+    @Mock LoggingConfiguration mockLoggingConfiguration;
     @Mock WriterThreadProvider mockWriterThreadProvider;
 
     @Nested
@@ -25,7 +28,7 @@ class NativeLoggerFactoryTest {
             NativeLoggerFactory nativeLoggerFactory = new NativeLoggerFactory(stubLoggerInterface,
                     stubLoggerClass,
                     Level.ERROR,
-                    mockConfigurationService,
+                    mockLoggingConfiguration,
                     mockWriterThreadProvider);
 
             assertEquals(Level.ERROR, nativeLoggerFactory.logger().getLevel());
@@ -38,10 +41,10 @@ class NativeLoggerFactoryTest {
             NativeLoggerFactory nativeLoggerFactory = new NativeLoggerFactory(stubLoggerInterface,
                     mockLoggerClass,
                     Level.ERROR,
-                    mockConfigurationService,
+                    mockLoggingConfiguration,
                     mockWriterThreadProvider);
 
-            assertEquals(new LogServiceDefault(mockLoggerClass, mockConfigurationService, mockWriterThreadProvider),
+            assertEquals(new DefaultLogService(mockLoggerClass, mockLoggingConfiguration, mockWriterThreadProvider),
                     nativeLoggerFactory.logger().getLogService());
         }
 
@@ -52,7 +55,7 @@ class NativeLoggerFactoryTest {
             NativeLoggerFactory nativeLoggerFactory = new NativeLoggerFactory(mockLoggerInterface,
                     stubLoggerClass,
                     Level.ERROR,
-                    mockConfigurationService,
+                    mockLoggingConfiguration,
                     mockWriterThreadProvider);
 
             NativeLogger logger = nativeLoggerFactory.logger();
@@ -67,10 +70,10 @@ class NativeLoggerFactoryTest {
             NativeLoggerFactory nativeLoggerFactory = new NativeLoggerFactory(stubLoggerInterface,
                     stubLoggerClass,
                     Level.ERROR,
-                    mockConfigurationService,
+                    mockLoggingConfiguration,
                     mockWriterThreadProvider);
 
-            assertEquals(new LogServiceDefault(stubLoggerClass, mockConfigurationService, mockWriterThreadProvider),
+            assertEquals(new DefaultLogService(stubLoggerClass, mockLoggingConfiguration, mockWriterThreadProvider),
                     nativeLoggerFactory.logger().getLogService());
         }
     }

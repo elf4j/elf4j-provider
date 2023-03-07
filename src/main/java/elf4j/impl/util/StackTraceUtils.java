@@ -1,6 +1,6 @@
 package elf4j.impl.util;
 
-import elf4j.impl.LogEntry;
+import elf4j.impl.service.LogEntry;
 
 import java.io.IOException;
 import java.io.PrintWriter;

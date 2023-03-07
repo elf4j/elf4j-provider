@@ -2,6 +2,7 @@ package elf4j.impl;
 
 import elf4j.Level;
 import elf4j.Logger;
+import elf4j.impl.service.LogService;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.ToString;
@@ -16,7 +17,7 @@ public class NativeLogger implements Logger {
     @EqualsAndHashCode.Include @NonNull private final String name;
     @EqualsAndHashCode.Include @NonNull private final Level level;
 
-    NativeLogger(@NonNull String name, @NonNull Level level, @NonNull LogService logService) {
+    public NativeLogger(@NonNull String name, @NonNull Level level, @NonNull LogService logService) {
         this.name = name;
         this.level = level;
         this.logService = logService;
@@ -82,19 +83,19 @@ public class NativeLogger implements Logger {
         this.service(t, message, args);
     }
 
-    private void service(Throwable exception, Object message, Object[] args) {
-        this.logService.log(this, exception, message, args);
-    }
-
-    private NativeLogger atLevel(Level level) {
-        return this.level == level ? this : new NativeLogger(this.name, level, logService);
-    }
-
     public @NonNull String getName() {
         return this.name;
     }
 
     @NonNull LogService getLogService() {
         return logService;
+    }
+
+    private NativeLogger atLevel(Level level) {
+        return this.level == level ? this : new NativeLogger(this.name, level, logService);
+    }
+
+    private void service(Throwable exception, Object message, Object[] args) {
+        this.logService.log(this, exception, message, args);
     }
 }
