@@ -7,50 +7,50 @@ public enum LogPatternType {
     TIMESTAMP {
         @Override
         public void extractLeadingPattern(StringBuilder pattern, List<LogPattern> loggerPatterns) {
-            extractNamedLeadingPattern("timestamp", pattern).ifPresent(leadingPattern -> loggerPatterns.add(
-                    TimestampPattern.from(leadingPattern)));
+            extractNamedPatternIfLeading(pattern, "timestamp").ifPresent(extractedPattern -> loggerPatterns.add(
+                    TimestampPattern.from(extractedPattern)));
         }
     },
     LEVEL {
         @Override
         public void extractLeadingPattern(StringBuilder pattern, List<LogPattern> loggerPatterns) {
-            extractNamedLeadingPattern("level",
-                    pattern).ifPresent(leadingPattern -> loggerPatterns.add(LevelPattern.from(leadingPattern)));
+            extractNamedPatternIfLeading(pattern,
+                    "level").ifPresent(extractedPattern -> loggerPatterns.add(LevelPattern.from(extractedPattern)));
         }
     },
     THREAD {
         @Override
         public void extractLeadingPattern(StringBuilder pattern, List<LogPattern> loggerPatterns) {
-            extractNamedLeadingPattern("thread",
-                    pattern).ifPresent(leadingPattern -> loggerPatterns.add(ThreadPattern.from(leadingPattern)));
+            extractNamedPatternIfLeading(pattern, "thread").ifPresent(extractedPattern -> loggerPatterns.add(
+                    ThreadPattern.from(extractedPattern)));
         }
     },
     CLASS {
         @Override
         public void extractLeadingPattern(StringBuilder pattern, List<LogPattern> loggerPatterns) {
-            extractNamedLeadingPattern("class",
-                    pattern).ifPresent(leadingPattern -> loggerPatterns.add(ClassPattern.from(leadingPattern)));
+            extractNamedPatternIfLeading(pattern,
+                    "class").ifPresent(extractedPattern -> loggerPatterns.add(ClassPattern.from(extractedPattern)));
         }
     },
     METHOD {
         @Override
         public void extractLeadingPattern(StringBuilder pattern, List<LogPattern> loggerPatterns) {
-            extractNamedLeadingPattern("method",
-                    pattern).ifPresent(leadingPattern -> loggerPatterns.add(MethodPattern.from(leadingPattern)));
+            extractNamedPatternIfLeading(pattern, "method").ifPresent(extractedPattern -> loggerPatterns.add(
+                    MethodPattern.from(extractedPattern)));
         }
     },
     MESSAGE {
         @Override
         public void extractLeadingPattern(StringBuilder pattern, List<LogPattern> loggerPatterns) {
-            extractNamedLeadingPattern("message", pattern).ifPresent(leadingPattern -> loggerPatterns.add(
-                    MessageAndExceptionPattern.from(leadingPattern)));
+            extractNamedPatternIfLeading(pattern, "message").ifPresent(extractedPattern -> loggerPatterns.add(
+                    MessageAndExceptionPattern.from(extractedPattern)));
         }
     },
     JSON {
         @Override
         public void extractLeadingPattern(StringBuilder pattern, List<LogPattern> loggerPatterns) {
-            extractNamedLeadingPattern("json", pattern).ifPresent(leadingPattern -> loggerPatterns.add(JsonPattern.from(
-                    leadingPattern)));
+            extractNamedPatternIfLeading(pattern,
+                    "json").ifPresent(extractedPattern -> loggerPatterns.add(JsonPattern.from(extractedPattern)));
         }
     },
     VERBATIM {
@@ -59,31 +59,28 @@ public enum LogPatternType {
             if (pattern.length() == 0) {
                 return;
             }
-            int end = pattern.indexOf(CURLY_BRACE_OPEN);
+            int end = pattern.indexOf("{");
             end = (end < 1) ? pattern.length() : end;
             loggerPatterns.add(VerbatimPattern.from(pattern.substring(0, end)));
             pattern.delete(0, end);
         }
     };
 
-    private static final String CURLY_BRACE_CLOSE = "}";
-    private static final String CURLY_BRACE_OPEN = "{";
-
-    private static Optional<String> extractNamedLeadingPattern(String leadingPatternName, StringBuilder pattern) {
-        int start = pattern.indexOf(CURLY_BRACE_OPEN);
+    private static Optional<String> extractNamedPatternIfLeading(StringBuilder pattern, String testPatternName) {
+        int start = pattern.indexOf("{");
         if (start != 0) {
             return Optional.empty();
         }
-        int end = pattern.indexOf(CURLY_BRACE_CLOSE);
+        int end = pattern.indexOf("}");
         if (end < 0) {
             return Optional.empty();
         }
-        String content = pattern.substring(start + 1, end).trim();
-        if (!content.startsWith(leadingPatternName)) {
+        String leadingPatternContent = pattern.substring(start + 1, end).trim();
+        if (!leadingPatternContent.startsWith(testPatternName)) {
             return Optional.empty();
         }
         pattern.delete(start, end + 1);
-        return Optional.of(content);
+        return Optional.of(leadingPatternContent);
     }
 
     public abstract void extractLeadingPattern(StringBuilder pattern, List<LogPattern> loggerPatterns);
