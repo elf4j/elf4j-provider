@@ -53,6 +53,14 @@ See the ELF4J [usage sample](https://github.com/elf4j/elf4j#for-logging-service-
 
 - Properties file configuration only
 
+  The default configuration file location is `elf4j-test.properties`; if missing, the `elf4j.properties`. The file has
+  to be placed at the root of the class path. Alternatively, the configuration file location can be specified via Java
+  system property as an absolute path:
+
+  ```
+  java -Delf4j.properties.location=/absoloute/path/to/myConfigurationFile -jar MyApplicaiton.jar
+  ``` 
+
 - Level
 
   Default global minimum output level is TRACE if not configured. Supports global and package level overrides.
@@ -77,28 +85,28 @@ See the ELF4J [usage sample](https://github.com/elf4j/elf4j#for-logging-service-
 - Sample Configuration File
     - use lower-case when in doubt
 
-```properties
-## Any level is optional, default to TRACE if omitted
-## This override the default global level
-level=info
-## These override level of all caller classes included the specified package 
-level@elf4j.impl=error
-level@org.springframework=warn
-## Any writer is optional, default to a single console writer if no writer configured
-writer1=console
-## This is the default output pattern
-writer1.pattern={timestamp} {level} [{thread}] {class} - {message}
-## This would customize the format patterns of the specified writer
-#writer1.pattern={timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ} {level:5} [{thread:name|id}] {class:simple|full|compressed}: {message}
-## Multiple writers are supported, each with its own configurations
-writer2=console
-writer2.level=trace
-## Default json pattern does not include thread and caller details, and uses pretty print format for the JSON string
-writer2.pattern={json}
-## This would force the JSON to include the thread/caller details
-#writer2.pattern={json:thread-detail,caller-detail}
-## This would minify the JSON string from the pretty print format
-#writer2.pattern={json:thread-detail,caller-detail,minify}
-## This would force the writer to use stderr instead of stdout
-#writer2.stream=stderr
-```
+  ```properties
+  ## Any level is optional, default to TRACE if omitted
+  ## This override the default global level
+  level=info
+  ## These override level of all caller classes included the specified package 
+  level@elf4j.impl=error
+  level@org.springframework=warn
+  ## Any writer is optional, default to a single console writer if no writer configured
+  writer1=console
+  ## This is the default output pattern
+  writer1.pattern={timestamp} {level} [{thread}] {class} - {message}
+  ## This would customize the format patterns of the specified writer
+  #writer1.pattern={timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ} {level:5} [{thread:name|id}] {class:simple|full|compressed}: {message}
+  ## Multiple writers are supported, each with its own configurations
+  writer2=console
+  writer2.level=trace
+  ## Default json pattern does not include thread and caller details, and uses pretty print format for the JSON string
+  writer2.pattern={json}
+  ## This would force the JSON to include the thread/caller details
+  #writer2.pattern={json:thread-detail,caller-detail}
+  ## This would minify the JSON string from the pretty print format
+  #writer2.pattern={json:thread-detail,caller-detail,minify}
+  ## This would force the writer to use stderr instead of stdout
+  #writer2.stream=stderr
+  ```

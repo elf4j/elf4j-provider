@@ -14,24 +14,26 @@ public class PropertiesLoader {
 
     public Properties load() {
         Properties properties = new Properties();
-        String propertiesLocation = System.getProperty(ELF4J_PROPERTIES_LOCATION);
         InputStream propertiesInputStream;
-        if (propertiesLocation == null) {
+        final String customPropertiesLocation = System.getProperty(ELF4J_PROPERTIES_LOCATION);
+        if (customPropertiesLocation == null) {
             propertiesInputStream = fromDefaultPropertiesLocation();
             if (propertiesInputStream == null) {
                 return properties;
             }
         } else {
-            propertiesInputStream = getClass().getResourceAsStream(propertiesLocation);
+            propertiesInputStream = getClass().getResourceAsStream(customPropertiesLocation);
             if (propertiesInputStream == null) {
                 throw new IllegalArgumentException(
-                        "Null resource stream from properties location: " + propertiesLocation);
+                        "Null resource stream from specified properties location: " + customPropertiesLocation);
             }
         }
         try {
             properties.load(propertiesInputStream);
         } catch (IOException e) {
-            throw new UncheckedIOException("Error loading properties stream from location: " + propertiesLocation, e);
+            throw new UncheckedIOException(
+                    "Error loading properties stream from location: " + (customPropertiesLocation == null ?
+                            "default location" : customPropertiesLocation), e);
         }
         return properties;
     }
