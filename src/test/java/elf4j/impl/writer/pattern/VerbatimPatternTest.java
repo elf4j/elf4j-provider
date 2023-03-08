@@ -4,21 +4,27 @@ import elf4j.impl.service.LogEntry;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyNoInteractions;
 
 class VerbatimPatternTest {
 
     @Test
-    void appendTextAsIs() {
+    void appendPatternTextAsIs() {
         LogEntry mockEntry = mock(LogEntry.class);
-        String originalEntry = "originalEntry";
         String verbatimTextToAppend = "text";
-        StringBuilder stringBuilder = new StringBuilder(originalEntry);
+        String inputLogText = "inputLogText";
+        StringBuilder logTextBuilder = new StringBuilder(inputLogText);
 
-        new VerbatimPattern(verbatimTextToAppend).render(mockEntry, stringBuilder);
+        new VerbatimPattern(verbatimTextToAppend).render(mockEntry, logTextBuilder);
 
         verifyNoInteractions(mockEntry);
-        assertEquals(originalEntry + verbatimTextToAppend, stringBuilder.toString());
+        assertEquals(inputLogText + verbatimTextToAppend, logTextBuilder.toString());
+    }
+
+    @Test
+    void errorOnPatternIntendedForAnotherLogPatternType() {
+        assertThrows(IllegalArgumentException.class, () -> VerbatimPattern.from("thread:name"));
     }
 }

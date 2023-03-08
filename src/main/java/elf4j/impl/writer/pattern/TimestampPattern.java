@@ -14,8 +14,8 @@ public class TimestampPattern implements LogPattern {
     private static final ZoneId DEFAULT_TIMESTAMP_ZONE = ZoneId.systemDefault();
     DateTimeFormatter dateTimeFormatter;
 
-    public static LogPattern from(@NonNull String pattern) {
-        if (!pattern.startsWith("timestamp")) {
+    public static TimestampPattern from(@NonNull String pattern) {
+        if (!LogPatternType.TIMESTAMP.isTargetOf(pattern)) {
             throw new IllegalArgumentException("pattern: " + pattern);
         }
         DateTimeFormatter dateTimeFormatter = LogPattern.getPatternOption(pattern)

@@ -3,19 +3,18 @@ package elf4j.impl.util;
 import java.util.*;
 
 public class PropertiesUtils {
-    public static final char DOT = '.';
 
     private PropertiesUtils() {
     }
 
     public static Map<String, String> getChildProperties(String prefix, Properties properties) {
         Map<String, String> childProperties = new HashMap<>();
-        String parentPrefix = prefix + DOT;
+        String parentPrefix = prefix + '.';
         properties.stringPropertyNames()
                 .stream()
-                .filter(name -> name.startsWith(parentPrefix))
-                .forEach(name -> childProperties.put(name.substring(name.indexOf(DOT) + 1),
-                        properties.getProperty(name)));
+                .filter(name -> name.trim().startsWith(parentPrefix))
+                .forEach(name -> childProperties.put(name.substring(name.indexOf('.') + 1).trim(),
+                        properties.getProperty(name).trim()));
         return childProperties;
     }
 
@@ -23,7 +22,7 @@ public class PropertiesUtils {
         List<String> typeKeys = new ArrayList<>();
         properties.stringPropertyNames()
                 .stream()
-                .filter(name -> properties.getProperty(name).equals(type))
+                .filter(name -> properties.getProperty(name).trim().equals(type))
                 .forEach(typeKeys::add);
         List<Map<String, String>> propertiesGroup = new ArrayList<>();
         typeKeys.forEach(k -> propertiesGroup.add(getChildProperties(k, properties)));

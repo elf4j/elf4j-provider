@@ -7,7 +7,7 @@ import lombok.Value;
 @Value
 public class MessageAndExceptionPattern implements LogPattern {
     public static MessageAndExceptionPattern from(String pattern) {
-        if (!"message".equals(pattern)) {
+        if (!LogPatternType.MESSAGE.isTargetOf(pattern)) {
             throw new IllegalArgumentException("pattern text: " + pattern);
         }
         return new MessageAndExceptionPattern();
@@ -29,6 +29,6 @@ public class MessageAndExceptionPattern implements LogPattern {
         if (logEntry.getException() == null) {
             return;
         }
-        logText.append(": ").append(StackTraceUtils.stackTraceTextOf(logEntry.getException()));
+        logText.append(System.lineSeparator()).append(StackTraceUtils.stackTraceTextOf(logEntry.getException()));
     }
 }

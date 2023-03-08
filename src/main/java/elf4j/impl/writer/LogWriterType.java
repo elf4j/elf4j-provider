@@ -2,22 +2,25 @@ package elf4j.impl.writer;
 
 import elf4j.impl.util.PropertiesUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 public enum LogWriterType {
     CONSOLE {
         @Override
-        public List<LogWriter> parseLogWriters(Properties properties) {
+        Set<LogWriter> parseLogWriters(Properties properties) {
             List<Map<String, String>> configurationGroup =
                     PropertiesUtils.getPropertiesGroupOfType("console", properties);
-            List<LogWriter> consoleWriters = new ArrayList<>();
+            Set<LogWriter> consoleWriters = new HashSet<>();
             configurationGroup.forEach(configuration -> consoleWriters.add(ConsoleWriter.from(configuration)));
             return consoleWriters;
         }
     };
 
-    public abstract List<LogWriter> parseLogWriters(Properties properties);
+    public static Set<LogWriter> parseAllLogWriters(Properties properties) {
+        Set<LogWriter> logWriters = new HashSet<>();
+        EnumSet.allOf(LogWriterType.class).forEach(type -> logWriters.addAll(type.parseLogWriters(properties)));
+        return logWriters;
+    }
+
+    abstract Set<LogWriter> parseLogWriters(Properties properties);
 }

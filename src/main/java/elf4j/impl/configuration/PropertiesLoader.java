@@ -9,34 +9,31 @@ import java.util.Properties;
 
 public class PropertiesLoader {
     public static final String ELF4J_PROPERTIES_LOCATION = "elf4j.properties.location";
-    private static final Properties DEFAULT_PROPERTIES = new Properties();
     private static final String[] DEFAULT_PROPERTIES_LOCATIONS =
             new String[] { "/elf4j-test.properties", "/elf4j.properties" };
 
-    static {
-        DEFAULT_PROPERTIES.setProperty("writer.default", "console");
-    }
-
     public Properties load() {
-        Properties properties = new Properties(DEFAULT_PROPERTIES);
-        String propertiesLocation = System.getProperty(ELF4J_PROPERTIES_LOCATION);
+        Properties properties = new Properties();
         InputStream propertiesInputStream;
-        if (propertiesLocation == null) {
+        final String customPropertiesLocation = System.getProperty(ELF4J_PROPERTIES_LOCATION);
+        if (customPropertiesLocation == null) {
             propertiesInputStream = fromDefaultPropertiesLocation();
             if (propertiesInputStream == null) {
                 return properties;
             }
         } else {
-            propertiesInputStream = getClass().getResourceAsStream(propertiesLocation);
+            propertiesInputStream = getClass().getResourceAsStream(customPropertiesLocation);
             if (propertiesInputStream == null) {
                 throw new IllegalArgumentException(
-                        "Null resource stream from properties location: " + propertiesLocation);
+                        "Null resource stream from specified properties location: " + customPropertiesLocation);
             }
         }
         try {
             properties.load(propertiesInputStream);
         } catch (IOException e) {
-            throw new UncheckedIOException("Error loading properties stream from location: " + propertiesLocation, e);
+            throw new UncheckedIOException(
+                    "Error loading properties stream from location: " + (customPropertiesLocation == null ?
+                            "default location" : customPropertiesLocation), e);
         }
         return properties;
     }

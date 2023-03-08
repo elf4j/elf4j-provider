@@ -5,17 +5,19 @@ import elf4j.Logger;
 import elf4j.impl.service.LogService;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
-import lombok.ToString;
+import lombok.Value;
 
-import javax.annotation.concurrent.Immutable;
-
-@Immutable
-@ToString
-@EqualsAndHashCode
+@Value
 public class NativeLogger implements Logger {
-    @NonNull private final LogService logService;
-    @EqualsAndHashCode.Include @NonNull private final String name;
-    @EqualsAndHashCode.Include @NonNull private final Level level;
+    /**
+     * Taken from the name of the "owner class" - the class that created this logger instance. The owner class is
+     * usually the same as the "caller class" - the class that calls the logging methods of this instance; they can be
+     * different classes in strange scenarios where this logger instance is passed out from the owner class to another
+     * caller class.
+     */
+    @NonNull String name;
+    @NonNull Level level;
+    @EqualsAndHashCode.Exclude @NonNull LogService logService;
 
     public NativeLogger(@NonNull String name, @NonNull Level level, @NonNull LogService logService) {
         this.name = name;
@@ -81,14 +83,6 @@ public class NativeLogger implements Logger {
     @Override
     public void log(Throwable t, String message, Object... args) {
         this.service(t, message, args);
-    }
-
-    public @NonNull String getName() {
-        return this.name;
-    }
-
-    @NonNull LogService getLogService() {
-        return logService;
     }
 
     private NativeLogger atLevel(Level level) {

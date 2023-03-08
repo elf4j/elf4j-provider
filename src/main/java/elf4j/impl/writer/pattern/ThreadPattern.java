@@ -11,7 +11,7 @@ public class ThreadPattern implements LogPattern {
     @NonNull ThreadPattern.DisplayOption threadDisplayOption;
 
     public static ThreadPattern from(@NonNull String pattern) {
-        if (!pattern.startsWith("thread")) {
+        if (!LogPatternType.THREAD.isTargetOf(pattern)) {
             throw new IllegalArgumentException("pattern: " + pattern);
         }
         return new ThreadPattern(LogPattern.getPatternOption(pattern)

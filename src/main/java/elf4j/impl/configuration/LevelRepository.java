@@ -8,19 +8,20 @@ import java.util.Map;
 import java.util.Properties;
 
 public class LevelRepository {
-    Map<String, Level> loggerNameValueMap = new HashMap<>();
+    private static final Level DEFAULT_LOGGER_MINIMUM_LEVEL = Level.TRACE;
+    final Map<String, Level> loggerNameValueMap = new HashMap<>();
 
     public LevelRepository(Properties properties) {
         properties.stringPropertyNames().forEach(name -> {
-            if (name.startsWith("level")) {
-                String[] nameElements = name.split("@");
-                switch (nameElements.length) {
+            if (name.trim().startsWith("level")) {
+                String[] nameSegments = name.split("@");
+                switch (nameSegments.length) {
                     case 1:
-                        loggerNameValueMap.put("", Level.valueOf(properties.getProperty("level").toUpperCase()));
+                        loggerNameValueMap.put("", Level.valueOf(properties.getProperty("level").trim().toUpperCase()));
                         break;
                     case 2:
-                        loggerNameValueMap.put(nameElements[1].trim(),
-                                Level.valueOf(properties.getProperty(name).toUpperCase()));
+                        loggerNameValueMap.put(nameSegments[1].trim(),
+                                Level.valueOf(properties.getProperty(name).trim().toUpperCase()));
                         break;
                     default:
                         throw new IllegalArgumentException("level key: " + name);
@@ -30,13 +31,22 @@ public class LevelRepository {
     }
 
     public Level getLoggerMinimumLevel(NativeLogger nativeLogger) {
-        for (String loggerName = nativeLogger.getName();
-             loggerName.length() > 0; loggerName = loggerName.substring(0, (loggerName.lastIndexOf("."))))
-            if (loggerNameValueMap.containsKey(loggerName)) {
-                return loggerNameValueMap.get(loggerName);
+        String callerClassName = nativeLogger.getName();
+        int rootPackageLength = callerClassName.indexOf('.');
+        while (callerClassName.length() >= rootPackageLength) {
+            if (loggerNameValueMap.containsKey(callerClassName)) {
+                return loggerNameValueMap.get(callerClassName);
             }
-        throw new IllegalArgumentException(String.format("no min level found for key: %s in level map: %s",
-                nativeLogger.getName(),
-                loggerNameValueMap));
+            if (callerClassName.length() == rootPackageLength) {
+                break;
+            }
+            int end = callerClassName.lastIndexOf('.');
+            if (end == -1) {
+                end = callerClassName.length();
+            }
+            callerClassName = callerClassName.substring(0, end);
+        }
+        Level configuredRootLevel = loggerNameValueMap.get("");
+        return configuredRootLevel == null ? DEFAULT_LOGGER_MINIMUM_LEVEL : configuredRootLevel;
     }
 }
