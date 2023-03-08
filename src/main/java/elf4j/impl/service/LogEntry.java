@@ -38,7 +38,7 @@ public class LogEntry {
         return builder;
     }
 
-    public static String resolve(Object msg, Object[] arguments) {
+    private static String resolve(Object msg, Object[] arguments) {
         String message = Objects.toString(supply(msg));
         int messageLength = message.length();
         StringBuilder builder = new StringBuilder(messageLength + ADDITIONAL_STRING_BUILDER_CAPACITY);
