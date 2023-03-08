@@ -14,7 +14,7 @@ public class LevelPattern implements LogPattern {
     }
 
     public static LevelPattern from(@NonNull String pattern) {
-        if (!LogPatternType.isPatternOfType(pattern, LogPatternType.LEVEL)) {
+        if (!LogPatternType.LEVEL.isTargetOf(pattern)) {
             throw new IllegalArgumentException("pattern: " + pattern);
         }
         return new LevelPattern(LogPattern.getPatternOption(pattern)

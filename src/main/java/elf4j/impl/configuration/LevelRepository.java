@@ -9,19 +9,19 @@ import java.util.Properties;
 
 public class LevelRepository {
     private static final Level DEFAULT_LOGGER_MINIMUM_LEVEL = Level.TRACE;
-    Map<String, Level> loggerNameValueMap = new HashMap<>();
+    final Map<String, Level> loggerNameValueMap = new HashMap<>();
 
     public LevelRepository(Properties properties) {
         properties.stringPropertyNames().forEach(name -> {
-            if (name.startsWith("level")) {
-                String[] nameElements = name.split("@");
-                switch (nameElements.length) {
+            if (name.trim().startsWith("level")) {
+                String[] nameSegments = name.split("@");
+                switch (nameSegments.length) {
                     case 1:
-                        loggerNameValueMap.put("", Level.valueOf(properties.getProperty("level").toUpperCase()));
+                        loggerNameValueMap.put("", Level.valueOf(properties.getProperty("level").trim().toUpperCase()));
                         break;
                     case 2:
-                        loggerNameValueMap.put(nameElements[1].trim(),
-                                Level.valueOf(properties.getProperty(name).toUpperCase()));
+                        loggerNameValueMap.put(nameSegments[1].trim(),
+                                Level.valueOf(properties.getProperty(name).trim().toUpperCase()));
                         break;
                     default:
                         throw new IllegalArgumentException("level key: " + name);

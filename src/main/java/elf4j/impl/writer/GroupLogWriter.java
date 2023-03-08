@@ -18,7 +18,7 @@ public class GroupLogWriter implements LogWriter {
     }
 
     public static GroupLogWriter from(Properties properties) {
-        return new GroupLogWriter(LogWriterType.getLogWriters(properties));
+        return new GroupLogWriter(LogWriterType.parseAllLogWriters(properties));
     }
 
     @Override

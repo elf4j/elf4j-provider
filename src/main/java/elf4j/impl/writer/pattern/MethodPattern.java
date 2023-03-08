@@ -8,7 +8,7 @@ import java.util.Objects;
 @Value
 public class MethodPattern implements LogPattern {
     public static MethodPattern from(String pattern) {
-        if (!LogPatternType.isPatternOfType(pattern, LogPatternType.METHOD)) {
+        if (!LogPatternType.METHOD.isTargetOf(pattern)) {
             throw new IllegalArgumentException("pattern: " + pattern);
         }
         return new MethodPattern();

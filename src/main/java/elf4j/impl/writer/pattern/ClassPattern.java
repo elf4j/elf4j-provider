@@ -10,7 +10,7 @@ public class ClassPattern implements LogPattern {
     @NonNull DisplayOption classDisplayOption;
 
     public static ClassPattern from(@NonNull String pattern) {
-        if (!LogPatternType.isPatternOfType(pattern, LogPatternType.CLASS)) {
+        if (!LogPatternType.CLASS.isTargetOf(pattern)) {
             throw new IllegalArgumentException("pattern: " + pattern);
         }
         return new ClassPattern(LogPattern.getPatternOption(pattern)

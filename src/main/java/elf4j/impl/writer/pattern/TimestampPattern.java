@@ -15,7 +15,7 @@ public class TimestampPattern implements LogPattern {
     DateTimeFormatter dateTimeFormatter;
 
     public static TimestampPattern from(@NonNull String pattern) {
-        if (!LogPatternType.isPatternOfType(pattern, LogPatternType.TIMESTAMP)) {
+        if (!LogPatternType.TIMESTAMP.isTargetOf(pattern)) {
             throw new IllegalArgumentException("pattern: " + pattern);
         }
         DateTimeFormatter dateTimeFormatter = LogPattern.getPatternOption(pattern)

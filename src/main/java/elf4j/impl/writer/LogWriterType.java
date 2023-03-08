@@ -7,7 +7,7 @@ import java.util.*;
 public enum LogWriterType {
     CONSOLE {
         @Override
-        public Set<LogWriter> parseLogWriters(Properties properties) {
+        Set<LogWriter> parseLogWriters(Properties properties) {
             List<Map<String, String>> configurationGroup =
                     PropertiesUtils.getPropertiesGroupOfType("console", properties);
             Set<LogWriter> consoleWriters = new HashSet<>();
@@ -16,11 +16,11 @@ public enum LogWriterType {
         }
     };
 
-    public static Set<LogWriter> getLogWriters(Properties properties) {
+    public static Set<LogWriter> parseAllLogWriters(Properties properties) {
         Set<LogWriter> logWriters = new HashSet<>();
         EnumSet.allOf(LogWriterType.class).forEach(type -> logWriters.addAll(type.parseLogWriters(properties)));
         return logWriters;
     }
 
-    public abstract Set<LogWriter> parseLogWriters(Properties properties);
+    abstract Set<LogWriter> parseLogWriters(Properties properties);
 }

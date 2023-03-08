@@ -17,9 +17,9 @@ public class NativeLoggerFactory implements LoggerFactory {
     private static final Class<?> DEFAULT_LOGGER_CLASS = NativeLogger.class;
     private static final Class<Logger> DEFAULT_LOGGER_INTERFACE = Logger.class;
     private static final Level DEFAULT_LOGGER_SEVERITY_LEVEL = Level.TRACE;
-    @NonNull private final LogService logService;
     @NonNull private final Level loggerDefaultLevel;
     @NonNull private final Class<?> loggerInterface;
+    @NonNull private final LogService logService;
 
     /**
      * Default constructor required by {@link java.util.ServiceLoader}
@@ -52,9 +52,11 @@ public class NativeLoggerFactory implements LoggerFactory {
 
     @Override
     public NativeLogger logger() {
-        return new NativeLogger(StackTraceUtils.callerOf(this.loggerInterface).getClassName(),
-                loggerDefaultLevel,
-                logService);
+        return new NativeLogger(getLoggerOwnerClassName(), loggerDefaultLevel, logService);
+    }
+
+    private String getLoggerOwnerClassName() {
+        return StackTraceUtils.callerOf(this.loggerInterface).getClassName();
     }
 
     private static class ConfigurationInstanceHolder {

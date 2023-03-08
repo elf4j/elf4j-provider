@@ -23,7 +23,7 @@ public class JsonPattern implements LogPattern {
     Gson gson;
 
     public static JsonPattern from(@NonNull String pattern) {
-        if (!LogPatternType.isPatternOfType(pattern, LogPatternType.JSON)) {
+        if (!LogPatternType.JSON.isTargetOf(pattern)) {
             throw new IllegalArgumentException("pattern: " + pattern);
         }
         Optional<String> patternOption = LogPattern.getPatternOption(pattern);

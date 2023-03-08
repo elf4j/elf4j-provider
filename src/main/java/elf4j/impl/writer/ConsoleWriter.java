@@ -8,6 +8,7 @@ import elf4j.impl.writer.pattern.LogPattern;
 import java.util.Map;
 
 public class ConsoleWriter implements LogWriter {
+    public static final OutStreamType DEFAULT_OUT_STREAM = OutStreamType.STDOUT;
     private static final Level DEFAULT_MINIMUM_LEVEL = Level.TRACE;
     private static final String DEFAULT_PATTERN =
             "{timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ} {level} {class} - {message}";
@@ -15,20 +16,25 @@ public class ConsoleWriter implements LogWriter {
 
     private final Level minimumLevel;
 
-    private ConsoleWriter(Level minimumLevel, GroupLogPattern logPattern) {
+    private final OutStreamType outStreamType;
+
+    private ConsoleWriter(Level minimumLevel, GroupLogPattern logPattern, OutStreamType outStreamType) {
         this.logPattern = logPattern;
         this.minimumLevel = minimumLevel;
+        this.outStreamType = outStreamType;
     }
 
     public static ConsoleWriter defaultWriter() {
-        return new ConsoleWriter(DEFAULT_MINIMUM_LEVEL, GroupLogPattern.from(DEFAULT_PATTERN));
+        return new ConsoleWriter(DEFAULT_MINIMUM_LEVEL, GroupLogPattern.from(DEFAULT_PATTERN), DEFAULT_OUT_STREAM);
     }
 
     public static ConsoleWriter from(Map<String, String> configuration) {
         String level = configuration.get("level");
         String pattern = configuration.get("pattern");
+        String stream = configuration.get("stream");
         return new ConsoleWriter(level == null ? DEFAULT_MINIMUM_LEVEL : Level.valueOf(level.toUpperCase()),
-                GroupLogPattern.from(pattern == null ? DEFAULT_PATTERN : pattern));
+                GroupLogPattern.from(pattern == null ? DEFAULT_PATTERN : pattern),
+                stream == null ? DEFAULT_OUT_STREAM : OutStreamType.valueOf(stream.toUpperCase()));
     }
 
     @Override
@@ -43,7 +49,16 @@ public class ConsoleWriter implements LogWriter {
         }
         StringBuilder stringBuilder = new StringBuilder();
         logPattern.render(logEntry, stringBuilder);
-        System.out.println(stringBuilder);
+        switch (this.outStreamType) {
+            case STDOUT:
+                System.out.println(stringBuilder);
+                return;
+            case STDERR:
+                System.err.println(stringBuilder);
+                return;
+            default:
+                throw new IllegalStateException("Unknown out stream type: " + this.outStreamType);
+        }
     }
 
     @Override
@@ -54,5 +69,10 @@ public class ConsoleWriter implements LogWriter {
     @Override
     public boolean includeCallerThread() {
         return logPattern.includeCallerThread();
+    }
+
+    enum OutStreamType {
+        STDOUT,
+        STDERR
     }
 }
