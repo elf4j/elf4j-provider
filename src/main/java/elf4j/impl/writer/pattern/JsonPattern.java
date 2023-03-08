@@ -18,12 +18,12 @@ import java.util.stream.Collectors;
 @Value
 @Builder
 public class JsonPattern implements LogPattern {
-    Boolean includeCallerThread;
-    Boolean includeCallerDetail;
+    boolean includeCallerThread;
+    boolean includeCallerDetail;
     Gson gson;
 
     public static JsonPattern from(@NonNull String pattern) {
-        if (!pattern.startsWith("json")) {
+        if (!LogPatternType.isPatternOfType(pattern, LogPatternType.JSON)) {
             throw new IllegalArgumentException("pattern: " + pattern);
         }
         Optional<String> patternOption = LogPattern.getPatternOption(pattern);
@@ -55,7 +55,7 @@ public class JsonPattern implements LogPattern {
 
     @Override
     public void render(LogEntry logEntry, StringBuilder logText) {
-        gson.toJson(JsonLogEntry.from(logEntry), logText);
+        gson.toJson(JsonLogEntry.from(logEntry, this), logText);
     }
 
     @Value
@@ -71,13 +71,13 @@ public class JsonPattern implements LogPattern {
         String message;
         String exception;
 
-        static JsonLogEntry from(LogEntry logEntry) {
+        static JsonLogEntry from(LogEntry logEntry, JsonPattern jsonPattern) {
             return JsonLogEntry.builder()
                     .timestamp(DATE_TIME_FORMATTER.format(logEntry.getTimestamp()))
                     .callerClass(logEntry.getCallerClassName())
                     .level(logEntry.getNativeLogger().getLevel().name())
-                    .callerThread(logEntry.getCallerThread())
-                    .callerDetail(logEntry.getCallerFrame())
+                    .callerThread(jsonPattern.includeCallerThread ? logEntry.getCallerThread() : null)
+                    .callerDetail(jsonPattern.includeCallerDetail ? logEntry.getCallerFrame() : null)
                     .message(logEntry.getResolvedMessage())
                     .exception(logEntry.getException() == null ? null :
                             StackTraceUtils.stackTraceTextOf(logEntry.getException()))

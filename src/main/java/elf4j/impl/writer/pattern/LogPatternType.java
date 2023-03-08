@@ -8,43 +8,43 @@ public enum LogPatternType {
     TIMESTAMP {
         @Override
         public LogPattern parsePattern(String pattern) {
-            return isParsable(pattern, this) ? TimestampPattern.from(pattern) : null;
+            return isPatternOfType(pattern, this) ? TimestampPattern.from(pattern) : null;
         }
     },
     LEVEL {
         @Override
         public LogPattern parsePattern(String pattern) {
-            return isParsable(pattern, this) ? LevelPattern.from(pattern) : null;
+            return isPatternOfType(pattern, this) ? LevelPattern.from(pattern) : null;
         }
     },
     THREAD {
         @Override
         public LogPattern parsePattern(String pattern) {
-            return isParsable(pattern, this) ? ThreadPattern.from(pattern) : null;
+            return isPatternOfType(pattern, this) ? ThreadPattern.from(pattern) : null;
         }
     },
     CLASS {
         @Override
         public LogPattern parsePattern(String pattern) {
-            return isParsable(pattern, this) ? ClassPattern.from(pattern) : null;
+            return isPatternOfType(pattern, this) ? ClassPattern.from(pattern) : null;
         }
     },
     METHOD {
         @Override
         public LogPattern parsePattern(String pattern) {
-            return isParsable(pattern, this) ? MethodPattern.from(pattern) : null;
+            return isPatternOfType(pattern, this) ? MethodPattern.from(pattern) : null;
         }
     },
     MESSAGE {
         @Override
         public LogPattern parsePattern(String pattern) {
-            return isParsable(pattern, this) ? MessageAndExceptionPattern.from(pattern) : null;
+            return isPatternOfType(pattern, this) ? MessageAndExceptionPattern.from(pattern) : null;
         }
     },
     JSON {
         @Override
         public LogPattern parsePattern(String pattern) {
-            return isParsable(pattern, this) ? JsonPattern.from(pattern) : null;
+            return isPatternOfType(pattern, this) ? JsonPattern.from(pattern) : null;
         }
     },
     VERBATIM {
@@ -63,7 +63,7 @@ public enum LogPatternType {
                 .orElseThrow(NoSuchElementException::new);
     }
 
-    private static boolean isParsable(String pattern, LogPatternType targetPatternType) {
+    public static boolean isPatternOfType(String pattern, LogPatternType targetPatternType) {
         return targetPatternType.name().equalsIgnoreCase(pattern.split(":", 2)[0].trim());
     }
 

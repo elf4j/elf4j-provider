@@ -32,19 +32,21 @@ public class LevelRepository {
 
     public Level getLoggerMinimumLevel(NativeLogger nativeLogger) {
         String callerClassName = nativeLogger.getName();
-        while (callerClassName.length() > 0) {
+        int rootPackageLength = callerClassName.indexOf('.');
+        while (callerClassName.length() >= rootPackageLength) {
             if (loggerNameValueMap.containsKey(callerClassName)) {
                 return loggerNameValueMap.get(callerClassName);
             }
+            if (callerClassName.length() == rootPackageLength) {
+                break;
+            }
             int end = callerClassName.lastIndexOf('.');
             if (end == -1) {
-                if (loggerNameValueMap.containsKey(callerClassName)) {
-                    return loggerNameValueMap.get(callerClassName);
-                }
-                return DEFAULT_LOGGER_MINIMUM_LEVEL;
+                end = callerClassName.length();
             }
             callerClassName = callerClassName.substring(0, end);
         }
-        return loggerNameValueMap.get("");
+        Level configuredRootLevel = loggerNameValueMap.get("");
+        return configuredRootLevel == null ? DEFAULT_LOGGER_MINIMUM_LEVEL : configuredRootLevel;
     }
 }

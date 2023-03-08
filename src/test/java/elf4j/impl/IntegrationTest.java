@@ -13,7 +13,7 @@ class IntegrationTest {
             logger.atInfo().log("Hello, world!");
 
             Exception issue = new Exception("Test ex message");
-            logger.atWarn().log(issue, "We may have an issue {}, in class {}", issue, this.getClass());
+            logger.atWarn().log(issue, "Testing issue '{}' in {}", issue, this.getClass());
         }
     }
 }

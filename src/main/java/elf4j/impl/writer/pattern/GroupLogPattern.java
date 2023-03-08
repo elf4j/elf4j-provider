@@ -39,11 +39,6 @@ public class GroupLogPattern implements LogPattern {
         return new GroupLogPattern(logPatterns);
     }
 
-    public static void main(String[] args) {
-        System.out.println("22222222222222222222222222222222222222222 " + from(
-                "{timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ} {level:5} [{thread:name}] {class:simple}#{method}: {message}"));
-    }
-
     @Override
     public boolean includeCallerDetail() {
         return logPatternEntries.stream().anyMatch(LogPattern::includeCallerDetail);
