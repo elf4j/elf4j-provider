@@ -15,9 +15,13 @@ public class ConsoleWriter implements LogWriter {
 
     private final Level minimumLevel;
 
-    ConsoleWriter(Level minimumLevel, GroupLogPattern logPattern) {
+    private ConsoleWriter(Level minimumLevel, GroupLogPattern logPattern) {
         this.logPattern = logPattern;
         this.minimumLevel = minimumLevel;
+    }
+
+    public static ConsoleWriter defaultWriter() {
+        return new ConsoleWriter(DEFAULT_MINIMUM_LEVEL, GroupLogPattern.from(DEFAULT_PATTERN));
     }
 
     public static ConsoleWriter from(Map<String, String> configuration) {

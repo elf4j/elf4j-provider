@@ -1,87 +1,71 @@
 package elf4j.impl.writer.pattern;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.EnumSet;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public enum LogPatternType {
     TIMESTAMP {
         @Override
-        public void extractLeadingPattern(StringBuilder pattern, List<LogPattern> loggerPatterns) {
-            extractNamedPatternIfLeading(pattern, "timestamp").ifPresent(extractedPattern -> loggerPatterns.add(
-                    TimestampPattern.from(extractedPattern)));
+        public LogPattern parsePattern(String pattern) {
+            return isParsable(pattern, this) ? TimestampPattern.from(pattern) : null;
         }
     },
     LEVEL {
         @Override
-        public void extractLeadingPattern(StringBuilder pattern, List<LogPattern> loggerPatterns) {
-            extractNamedPatternIfLeading(pattern,
-                    "level").ifPresent(extractedPattern -> loggerPatterns.add(LevelPattern.from(extractedPattern)));
+        public LogPattern parsePattern(String pattern) {
+            return isParsable(pattern, this) ? LevelPattern.from(pattern) : null;
         }
     },
     THREAD {
         @Override
-        public void extractLeadingPattern(StringBuilder pattern, List<LogPattern> loggerPatterns) {
-            extractNamedPatternIfLeading(pattern, "thread").ifPresent(extractedPattern -> loggerPatterns.add(
-                    ThreadPattern.from(extractedPattern)));
+        public LogPattern parsePattern(String pattern) {
+            return isParsable(pattern, this) ? ThreadPattern.from(pattern) : null;
         }
     },
     CLASS {
         @Override
-        public void extractLeadingPattern(StringBuilder pattern, List<LogPattern> loggerPatterns) {
-            extractNamedPatternIfLeading(pattern,
-                    "class").ifPresent(extractedPattern -> loggerPatterns.add(ClassPattern.from(extractedPattern)));
+        public LogPattern parsePattern(String pattern) {
+            return isParsable(pattern, this) ? ClassPattern.from(pattern) : null;
         }
     },
     METHOD {
         @Override
-        public void extractLeadingPattern(StringBuilder pattern, List<LogPattern> loggerPatterns) {
-            extractNamedPatternIfLeading(pattern, "method").ifPresent(extractedPattern -> loggerPatterns.add(
-                    MethodPattern.from(extractedPattern)));
+        public LogPattern parsePattern(String pattern) {
+            return isParsable(pattern, this) ? MethodPattern.from(pattern) : null;
         }
     },
     MESSAGE {
         @Override
-        public void extractLeadingPattern(StringBuilder pattern, List<LogPattern> loggerPatterns) {
-            extractNamedPatternIfLeading(pattern, "message").ifPresent(extractedPattern -> loggerPatterns.add(
-                    MessageAndExceptionPattern.from(extractedPattern)));
+        public LogPattern parsePattern(String pattern) {
+            return isParsable(pattern, this) ? MessageAndExceptionPattern.from(pattern) : null;
         }
     },
     JSON {
         @Override
-        public void extractLeadingPattern(StringBuilder pattern, List<LogPattern> loggerPatterns) {
-            extractNamedPatternIfLeading(pattern,
-                    "json").ifPresent(extractedPattern -> loggerPatterns.add(JsonPattern.from(extractedPattern)));
+        public LogPattern parsePattern(String pattern) {
+            return isParsable(pattern, this) ? JsonPattern.from(pattern) : null;
         }
     },
     VERBATIM {
         @Override
-        public void extractLeadingPattern(StringBuilder pattern, List<LogPattern> loggerPatterns) {
-            if (pattern.length() == 0) {
-                return;
-            }
-            int end = pattern.indexOf("{");
-            end = (end < 1) ? pattern.length() : end;
-            loggerPatterns.add(VerbatimPattern.from(pattern.substring(0, end)));
-            pattern.delete(0, end);
+        public LogPattern parsePattern(String pattern) {
+            return VerbatimPattern.from(pattern);
         }
     };
 
-    private static Optional<String> extractNamedPatternIfLeading(StringBuilder pattern, String testPatternName) {
-        int start = pattern.indexOf("{");
-        if (start != 0) {
-            return Optional.empty();
-        }
-        int end = pattern.indexOf("}");
-        if (end < 0) {
-            return Optional.empty();
-        }
-        String leadingPatternContent = pattern.substring(start + 1, end).trim();
-        if (!leadingPatternContent.startsWith(testPatternName)) {
-            return Optional.empty();
-        }
-        pattern.delete(start, end + 1);
-        return Optional.of(leadingPatternContent);
+    public static LogPattern getLogPattern(String pattern) {
+        return EnumSet.allOf(LogPatternType.class)
+                .stream()
+                .map(type -> type.parsePattern(pattern))
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElseThrow(NoSuchElementException::new);
     }
 
-    public abstract void extractLeadingPattern(StringBuilder pattern, List<LogPattern> loggerPatterns);
+    private static boolean isParsable(String pattern, LogPatternType targetPatternType) {
+        return targetPatternType.name().equalsIgnoreCase(pattern.split(":", 2)[0].trim());
+    }
+
+    abstract LogPattern parsePattern(String pattern);
 }

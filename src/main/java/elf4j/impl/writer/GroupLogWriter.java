@@ -3,7 +3,9 @@ package elf4j.impl.writer;
 import elf4j.Level;
 import elf4j.impl.service.LogEntry;
 
-import java.util.*;
+import java.util.NoSuchElementException;
+import java.util.Properties;
+import java.util.Set;
 
 public class GroupLogWriter implements LogWriter {
     private final Set<LogWriter> writers;
@@ -16,17 +18,14 @@ public class GroupLogWriter implements LogWriter {
     }
 
     public static GroupLogWriter from(Properties properties) {
-        Set<LogWriter> logWriters = new HashSet<>();
-        EnumSet.allOf(LogWriterType.class)
-                .forEach(writerType -> logWriters.addAll(writerType.parseLogWriters(properties)));
-        return new GroupLogWriter(logWriters);
+        return new GroupLogWriter(LogWriterType.getLogWriters(properties));
     }
 
     @Override
     public Level getMinimumLevel() {
         if (minimumLevel == null) {
             minimumLevel = Level.values()[writers.stream()
-                    .mapToInt(w -> w.getMinimumLevel().ordinal())
+                    .mapToInt(writer -> writer.getMinimumLevel().ordinal())
                     .min()
                     .orElseThrow(NoSuchElementException::new)];
         }
@@ -52,5 +51,9 @@ public class GroupLogWriter implements LogWriter {
             includeCallerThread = writers.stream().anyMatch(LogWriter::includeCallerThread);
         }
         return includeCallerThread;
+    }
+
+    public boolean isEmpty() {
+        return writers.isEmpty();
     }
 }

@@ -1,6 +1,7 @@
 package elf4j.impl.writer.pattern;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import elf4j.impl.service.LogEntry;
 import elf4j.impl.util.StackTraceUtils;
 import lombok.Builder;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 public class JsonPattern implements LogPattern {
     Boolean includeCallerThread;
     Boolean includeCallerDetail;
-    Gson gson = new Gson();
+    Gson gson;
 
     public static JsonPattern from(@NonNull String pattern) {
         if (!pattern.startsWith("json")) {
@@ -27,13 +28,18 @@ public class JsonPattern implements LogPattern {
         }
         Optional<String> patternOption = LogPattern.getPatternOption(pattern);
         if (!patternOption.isPresent()) {
-            return new JsonPattern(false, false);
+            return JsonPattern.builder()
+                    .includeCallerThread(false)
+                    .includeCallerDetail(false)
+                    .gson(new GsonBuilder().setPrettyPrinting().create())
+                    .build();
         }
         Set<String> options =
                 Arrays.stream(patternOption.get().split(",")).map(String::trim).collect(Collectors.toSet());
         return JsonPattern.builder()
                 .includeCallerThread(options.contains("caller-thread"))
                 .includeCallerDetail(options.contains("caller-detail"))
+                .gson(options.contains("minify") ? new Gson() : new GsonBuilder().setPrettyPrinting().create())
                 .build();
     }
 

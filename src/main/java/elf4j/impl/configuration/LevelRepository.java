@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Properties;
 
 public class LevelRepository {
+    private static final Level DEFAULT_LOGGER_MINIMUM_LEVEL = Level.TRACE;
     Map<String, Level> loggerNameValueMap = new HashMap<>();
 
     public LevelRepository(Properties properties) {
@@ -30,13 +31,20 @@ public class LevelRepository {
     }
 
     public Level getLoggerMinimumLevel(NativeLogger nativeLogger) {
-        for (String loggerName = nativeLogger.getName();
-             loggerName.length() > 0; loggerName = loggerName.substring(0, (loggerName.lastIndexOf("."))))
-            if (loggerNameValueMap.containsKey(loggerName)) {
-                return loggerNameValueMap.get(loggerName);
+        String callerClassName = nativeLogger.getName();
+        while (callerClassName.length() > 0) {
+            if (loggerNameValueMap.containsKey(callerClassName)) {
+                return loggerNameValueMap.get(callerClassName);
             }
-        throw new IllegalArgumentException(String.format("no min level found for key: %s in level map: %s",
-                nativeLogger.getName(),
-                loggerNameValueMap));
+            int end = callerClassName.lastIndexOf('.');
+            if (end == -1) {
+                if (loggerNameValueMap.containsKey(callerClassName)) {
+                    return loggerNameValueMap.get(callerClassName);
+                }
+                return DEFAULT_LOGGER_MINIMUM_LEVEL;
+            }
+            callerClassName = callerClassName.substring(0, end);
+        }
+        return loggerNameValueMap.get("");
     }
 }

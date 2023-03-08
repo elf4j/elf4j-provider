@@ -29,6 +29,6 @@ public class MessageAndExceptionPattern implements LogPattern {
         if (logEntry.getException() == null) {
             return;
         }
-        logText.append(": ").append(StackTraceUtils.stackTraceTextOf(logEntry.getException()));
+        logText.append(System.lineSeparator()).append(StackTraceUtils.stackTraceTextOf(logEntry.getException()));
     }
 }

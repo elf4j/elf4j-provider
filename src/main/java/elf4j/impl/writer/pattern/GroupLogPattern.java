@@ -5,7 +5,6 @@ import lombok.NonNull;
 import lombok.Value;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 
 @Value
@@ -13,19 +12,36 @@ public class GroupLogPattern implements LogPattern {
     List<LogPattern> logPatternEntries;
 
     public static GroupLogPattern from(@NonNull String pattern) {
-        StringBuilder extractablePattern = new StringBuilder(pattern);
-        List<LogPattern> logPatternEntries = new ArrayList<>();
-        while (extractablePattern.length() > 0) {
-            int before = extractablePattern.length();
-            EnumSet.allOf(LogPatternType.class)
-                    .forEach(patternType -> patternType.extractLeadingPattern(extractablePattern, logPatternEntries));
-            if (extractablePattern.length() == before) {
-                throw new IllegalArgumentException(String.format("Leading pattern text of '%s' from pattern text '%s'",
-                        extractablePattern,
-                        pattern));
+        List<LogPattern> logPatterns = new ArrayList<>();
+        int length = pattern.length();
+        int i = 0;
+        while (i < length) {
+            String iPattern;
+            char character = pattern.charAt(i);
+            int iEnd = pattern.indexOf('}', i);
+            if (character == '{' && iEnd != -1) {
+                iPattern = pattern.substring(i + 1, iEnd);
+                i = iEnd + 1;
+            } else {
+                if (iEnd == -1) {
+                    iEnd = length;
+                } else {
+                    iEnd = pattern.indexOf('{', i);
+                    if (iEnd == -1) {
+                        iEnd = length;
+                    }
+                }
+                iPattern = pattern.substring(i, iEnd);
+                i = iEnd;
             }
+            logPatterns.add(LogPatternType.getLogPattern(iPattern));
         }
-        return new GroupLogPattern(logPatternEntries);
+        return new GroupLogPattern(logPatterns);
+    }
+
+    public static void main(String[] args) {
+        System.out.println("22222222222222222222222222222222222222222 " + from(
+                "{timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ} {level:5} [{thread:name}] {class:simple}#{method}: {message}"));
     }
 
     @Override
