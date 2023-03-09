@@ -1,3 +1,5 @@
+[![](https://img.shields.io/static/v1?label=github&message=repo&color=blue)](https://github.com/elf4j/elf4j-impl)
+
 # elf4j-impl
 
 A native implementation of [ELF4J](https://github.com/elf4j/elf4j) (Easy Logging Facade for Java)
@@ -42,6 +44,8 @@ Java 8 or better
   the application.
 
 ## Get It...
+
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.elf4j/elf4j-impl.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.elf4j%22%20AND%20a:%22elf4j-impl%22)
 
 ## Use It...
 
