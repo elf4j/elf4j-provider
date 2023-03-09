@@ -8,7 +8,7 @@ import elf4j.impl.writer.pattern.LogPattern;
 import java.util.Map;
 
 public class ConsoleWriter implements LogWriter {
-    public static final OutStreamType DEFAULT_OUT_STREAM = OutStreamType.STDOUT;
+    public static final OutStreamType DEFAULT_OUT_STREAM = OutStreamType.AUTO;
     private static final Level DEFAULT_MINIMUM_LEVEL = Level.TRACE;
     private static final String DEFAULT_PATTERN =
             "{timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ} {level} {class} - {message}";
@@ -56,6 +56,13 @@ public class ConsoleWriter implements LogWriter {
             case STDERR:
                 System.err.println(stringBuilder);
                 return;
+            case AUTO:
+                if (logEntry.getNativeLogger().getLevel().ordinal() < Level.WARN.ordinal()) {
+                    System.out.println(stringBuilder);
+                } else {
+                    System.err.println(stringBuilder);
+                }
+                return;
             default:
                 throw new IllegalStateException("Unknown out stream type: " + this.outStreamType);
         }
@@ -73,6 +80,7 @@ public class ConsoleWriter implements LogWriter {
 
     enum OutStreamType {
         STDOUT,
+        AUTO,
         STDERR
     }
 }
