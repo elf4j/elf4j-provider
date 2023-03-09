@@ -54,8 +54,8 @@ public class JsonPattern implements LogPattern {
     }
 
     @Override
-    public void render(LogEntry logEntry, StringBuilder logText) {
-        gson.toJson(JsonLogEntry.from(logEntry, this), logText);
+    public void render(LogEntry logEntry, StringBuilder logTextBuilder) {
+        gson.toJson(JsonLogEntry.from(logEntry, this), logTextBuilder);
     }
 
     @Value

@@ -25,9 +25,9 @@ public class GroupLogPattern implements LogPattern {
     }
 
     @Override
-    public void render(LogEntry logEntry, StringBuilder logText) {
+    public void render(LogEntry logEntry, StringBuilder logTextBuilder) {
         for (LogPattern pattern : logPatternEntries) {
-            pattern.render(logEntry, logText);
+            pattern.render(logEntry, logTextBuilder);
         }
     }
 }

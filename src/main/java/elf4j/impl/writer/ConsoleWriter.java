@@ -47,20 +47,20 @@ public class ConsoleWriter implements LogWriter {
         if (this.minimumLevel.ordinal() > logEntry.getNativeLogger().getLevel().ordinal()) {
             return;
         }
-        StringBuilder stringBuilder = new StringBuilder();
-        logPattern.render(logEntry, stringBuilder);
+        StringBuilder logTextBuilder = new StringBuilder();
+        logPattern.render(logEntry, logTextBuilder);
         switch (this.outStreamType) {
             case STDOUT:
-                System.out.println(stringBuilder);
+                System.out.println(logTextBuilder);
                 return;
             case STDERR:
-                System.err.println(stringBuilder);
+                System.err.println(logTextBuilder);
                 return;
             case AUTO:
                 if (logEntry.getNativeLogger().getLevel().ordinal() < Level.WARN.ordinal()) {
-                    System.out.println(stringBuilder);
+                    System.out.println(logTextBuilder);
                 } else {
-                    System.err.println(stringBuilder);
+                    System.err.println(logTextBuilder);
                 }
                 return;
             default:

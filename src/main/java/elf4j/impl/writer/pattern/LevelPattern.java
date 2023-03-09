@@ -33,15 +33,15 @@ public class LevelPattern implements LogPattern {
     }
 
     @Override
-    public void render(LogEntry logEntry, StringBuilder logText) {
+    public void render(LogEntry logEntry, StringBuilder logTextBuilder) {
         String level = logEntry.getNativeLogger().getLevel().name();
         if (displayLength == DISPLAY_LENGTH_UNSET) {
-            logText.append(level);
+            logTextBuilder.append(level);
             return;
         }
         char[] levelChars = level.toCharArray();
         for (int i = 0; i < displayLength; i++) {
-            logText.append(i < levelChars.length ? levelChars[i] : ' ');
+            logTextBuilder.append(i < levelChars.length ? levelChars[i] : ' ');
         }
     }
 }

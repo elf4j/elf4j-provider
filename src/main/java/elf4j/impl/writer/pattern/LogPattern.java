@@ -11,5 +11,5 @@ public interface LogPattern extends PerformanceSensitive {
         return elements.length == 1 ? Optional.empty() : Optional.of(elements[1].trim());
     }
 
-    void render(LogEntry logEntry, StringBuilder logText);
+    void render(LogEntry logEntry, StringBuilder logTextBuilder);
 }

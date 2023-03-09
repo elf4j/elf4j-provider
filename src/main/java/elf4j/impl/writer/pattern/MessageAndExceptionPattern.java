@@ -24,11 +24,11 @@ public class MessageAndExceptionPattern implements LogPattern {
     }
 
     @Override
-    public void render(LogEntry logEntry, StringBuilder logText) {
-        logText.append(logEntry.getResolvedMessage());
+    public void render(LogEntry logEntry, StringBuilder logTextBuilder) {
+        logTextBuilder.append(logEntry.getResolvedMessage());
         if (logEntry.getException() == null) {
             return;
         }
-        logText.append(System.lineSeparator()).append(StackTraceUtils.stackTraceTextOf(logEntry.getException()));
+        logTextBuilder.append(System.lineSeparator()).append(StackTraceUtils.stackTraceTextOf(logEntry.getException()));
     }
 }

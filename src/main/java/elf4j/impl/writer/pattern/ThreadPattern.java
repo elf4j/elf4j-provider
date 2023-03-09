@@ -30,9 +30,9 @@ public class ThreadPattern implements LogPattern {
     }
 
     @Override
-    public void render(LogEntry logEntry, StringBuilder logText) {
+    public void render(LogEntry logEntry, StringBuilder logTextBuilder) {
         LogEntry.ThreadInformation callerThread = Objects.requireNonNull(logEntry.getCallerThread());
-        logText.append(threadDisplayOption == DisplayOption.ID ? callerThread.getId() : callerThread.getName());
+        logTextBuilder.append(threadDisplayOption == DisplayOption.ID ? callerThread.getId() : callerThread.getName());
     }
 
     enum DisplayOption {

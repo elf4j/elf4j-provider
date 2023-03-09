@@ -29,7 +29,7 @@ public class VerbatimPattern implements LogPattern {
     }
 
     @Override
-    public void render(LogEntry logEntry, StringBuilder logText) {
-        logText.append(text);
+    public void render(LogEntry logEntry, StringBuilder logTextBuilder) {
+        logTextBuilder.append(text);
     }
 }

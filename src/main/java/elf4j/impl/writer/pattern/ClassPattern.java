@@ -29,22 +29,22 @@ public class ClassPattern implements LogPattern {
     }
 
     @Override
-    public void render(LogEntry logEntry, StringBuilder logText) {
+    public void render(LogEntry logEntry, StringBuilder logTextBuilder) {
         String fullName = logEntry.getCallerClassName();
         switch (classDisplayOption) {
             case FULL:
-                logText.append(fullName);
+                logTextBuilder.append(fullName);
                 return;
             case SIMPLE:
-                logText.append(fullName.substring(fullName.lastIndexOf('.') + 1));
+                logTextBuilder.append(fullName.substring(fullName.lastIndexOf('.') + 1));
                 return;
             case COMPRESSED: {
                 String[] tokens = fullName.split("\\.");
                 String simpleName = tokens[tokens.length - 1];
                 for (int i = 0; i < tokens.length - 1; i++) {
-                    logText.append(tokens[i].charAt(0)).append('.');
+                    logTextBuilder.append(tokens[i].charAt(0)).append('.');
                 }
-                logText.append(simpleName);
+                logTextBuilder.append(simpleName);
                 return;
             }
             default:

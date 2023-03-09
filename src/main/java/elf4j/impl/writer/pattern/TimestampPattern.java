@@ -38,7 +38,7 @@ public class TimestampPattern implements LogPattern {
     }
 
     @Override
-    public void render(LogEntry logEntry, StringBuilder logText) {
-        logText.append(dateTimeFormatter.format(logEntry.getTimestamp()));
+    public void render(LogEntry logEntry, StringBuilder logTextBuilder) {
+        logTextBuilder.append(dateTimeFormatter.format(logEntry.getTimestamp()));
     }
 }

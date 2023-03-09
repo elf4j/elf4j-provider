@@ -25,7 +25,7 @@ public class MethodPattern implements LogPattern {
     }
 
     @Override
-    public void render(LogEntry logEntry, StringBuilder logText) {
-        logText.append(Objects.requireNonNull(logEntry.getCallerFrame()).getMethodName());
+    public void render(LogEntry logEntry, StringBuilder logTextBuilder) {
+        logTextBuilder.append(Objects.requireNonNull(logEntry.getCallerFrame()).getMethodName());
     }
 }
