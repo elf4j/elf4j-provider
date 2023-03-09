@@ -11,9 +11,9 @@ import lombok.Value;
 public class NativeLogger implements Logger {
     /**
      * Taken from the name of the "owner class" - the class that created this logger instance. The owner class is
-     * usually the same as the "caller class" - the class that calls the logging methods of this instance; they can be
-     * different classes in strange scenarios where this logger instance is passed out from the owner class to another
-     * caller class.
+     * usually the same as the "caller class" - the class that calls the logging methods of this instance. In strange
+     * scenarios, the caller class can be different from the owner class i.e. when the owner class passed this logger
+     * instance out to another (caller) class.
      */
     @NonNull String name;
     @NonNull Level level;
