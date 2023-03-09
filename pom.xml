@@ -30,13 +30,13 @@
 
     <groupId>io.github.elf4j</groupId>
     <artifactId>elf4j-impl</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <packaging>jar</packaging>
     <name>elf4j-impl</name>
     <description>Native implementation of Easy Logging Facade For Java (ELF4J)
     </description>
 
-    <url>https://github.com/elf4j/elf4j</url>
+    <url>https://github.com/elf4j/elf4j-impl</url>
     <licenses>
         <license>
             <name>MIT License</name>
@@ -44,12 +44,12 @@
         </license>
     </licenses>
     <scm>
-        <url>https://github.com/elf4j/elf4j/tree/main</url>
+        <url>https://github.com/elf4j/elf4j-impl/tree/main</url>
         <connection>
-            scm:git:git://github.com:elf4j/elf4j.git
+            scm:git:git://github.com:elf4j/elf4j-impl.git
         </connection>
         <developerConnection>
-            scm:git:ssh://github.com:elf4j/elf4j.git
+            scm:git:ssh://github.com:elf4j/elf4j-impl.git
         </developerConnection>
     </scm>
     <developers>
