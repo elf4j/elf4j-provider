@@ -69,6 +69,10 @@ public class LogEntry {
         return resolve(this.message, this.arguments);
     }
 
+    public static class LogEntryBuilder {
+        // class declaration for make javadoc plugin happy, will be filled by lombok
+    }
+
     @Value
     @Builder
     public static class StackTraceFrame {
