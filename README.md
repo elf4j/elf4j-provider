@@ -6,8 +6,8 @@ A native implementation of [ELF4J](https://github.com/elf4j/elf4j) (Easy Logging
 
 ## User Story
 
-As a logging service provider of the ELF4J facade, I want to provide my service by directly implementing the ELF4J
-service interface, so that the ELF4J API user can opt to use my service as with any other logging service provider.
+As ELF4J logging service API user, I want to be able to select a logging service provider that natively implements the
+ELF4J API, so that I can opt to use it as with any other logging service providers.
 
 ## Prerequisite
 
