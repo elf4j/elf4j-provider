@@ -21,9 +21,8 @@ Java 8 or better
 
 - Async Logging Only
 
-  Output is always asynchronous with a single writer thread. The async only considerations include performance and the
-  project's guiding principle. Mainly, though, when was the last time one can recall that logging had to be synchronous,
-  and blocking the application's normal work flow?
+  Logging output is always asynchronous, considering performance and moreover the 80/20 rule - When was the last time a
+  use case truly required logging had to be synchronous, and always blocking the application's normal work flow?
 
 - Console Output Only
 
