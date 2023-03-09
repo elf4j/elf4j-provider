@@ -55,7 +55,7 @@ See the ELF4J [usage sample](https://github.com/elf4j/elf4j#for-logging-service-
 
 ### Configuration
 
-- Properties file configuration only
+- Properties File Configuration Only
 
   The default configuration file location is at the root of the application class path, with file
   name `elf4j-test.properties`; or if that is missing, then the `elf4j.properties`. Alternatively, to override the
@@ -87,7 +87,7 @@ See the ELF4J [usage sample](https://github.com/elf4j/elf4j#for-logging-service-
       default to no thread/caller detail and pretty print format
 
 - Sample Configuration File
-    - use lower-case when in doubt
+    - When in doubt, use lower-case
 
   ```properties
   ## Any level is optional, default to TRACE if omitted
