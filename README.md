@@ -7,9 +7,9 @@ Java)
 
 ## User Story
 
-As ELF4J logging service API user, I want to be able to select a logging service provider that natively implements the
-ELF4J API, so that I can opt to use it at application deploy time, without code change, as with any other ELF4J logging
-service providers.
+As an application developer using the ELF4J logging service API, I want to be able to select a logging service provider
+that natively implements the ELF4J API, so that I can opt to use it at application deploy time, without code change, as
+with any other ELF4J logging service providers.
 
 ## Prerequisite
 
