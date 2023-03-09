@@ -33,7 +33,7 @@
     <version>0.1.1</version>
     <packaging>jar</packaging>
     <name>elf4j-impl</name>
-    <description>Native logging service provider implementation of ELF4J (Easy Logging Facade For Java) logging facade
+    <description>Native logging service provider implementation of ELF4J (Easy Logging Facade For Java)
     </description>
 
     <url>https://github.com/elf4j/elf4j-impl</url>
