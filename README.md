@@ -2,7 +2,8 @@
 
 # elf4j-impl
 
-A native implementation of [ELF4J](https://github.com/elf4j/elf4j) (Easy Logging Facade for Java)
+A native logging service provider implementation of [ELF4J](https://github.com/elf4j/elf4j) (Easy Logging Facade for
+Java)
 
 ## User Story
 
