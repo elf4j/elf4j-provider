@@ -70,7 +70,7 @@ public class LogEntry {
     }
 
     public static class LogEntryBuilder {
-        // class declaration for make javadoc plugin happy, will be filled by lombok
+        // class declaration to make javadoc plugin happy, will be filled by lombok
     }
 
     @Value
