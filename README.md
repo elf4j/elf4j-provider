@@ -6,8 +6,8 @@ A native implementation of [ELF4J](https://github.com/elf4j/elf4j) (Easy Logging
 
 ## User Story
 
-As an ELF4J facade API user, I want to use an independent logging provider that natively implements the ELF4J service
-API.
+As logging service provider, I want to provide my service by directly implementing the ELF4J service interface, so that
+the ELF4J API user can opt to use my service as with any other logging service provider.
 
 ## Prerequisite
 
@@ -44,7 +44,7 @@ Java 8 or better
 
 ## Get It...
 
-[![Maven Central](https://img.shields.io/maven-central/v/io.github.elf4j/elf4j-impl.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.elf4j%22%20AND%20a:%22elf4j-impl%22)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.elf4j/elf4j-impl.svg?label=Maven%20Central)](https://central.sonatype.com/search?smo=true&q=pkg%253Amaven%252Fio.github.elf4j%252Felf4j-impl)
 
 ## Use It...
 
