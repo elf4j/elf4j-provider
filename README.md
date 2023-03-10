@@ -31,8 +31,8 @@ Java 8 or better
   Supports multiple console writers, each with different configurations. A thought of console only is the 80/20
   principle. Plus, no matter the application is hosted on-prem or in Cloud, it's trivial nowadays to forward
   stdout/stderr streams as a data source to file or other types of central repositories. This is usually via system
-  level data collector agents - Fluentd/Fluent Bit, ELK, DataDog, New Relic - to name a few; anything beyond stdout/err
-  appears to be outside the concerns of logging.
+  level data collector agents - Fluentd/Fluent Bit, ELK, DataDog, New Relic - to name a few; output channels other than
+  stdout/err appear to be outside the concerns of application level logging.
 
 - Logging Format Patterns Including JSON
 
