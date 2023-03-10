@@ -34,7 +34,7 @@ Java 8 or better
   level data collector agents - Fluentd/Fluent Bit, ELK, DataDog, New Relic - to name a few; anything beyond stdout/err
   appears to be outside the concerns of logging.
 
-- Logging Format Patterns
+- Logging Format Patterns Including JSON
 
   JSON is a supported output pattern, in hopes of helping external log analysis tools. This is in addition to the usual
   line-based patterns - timestamp, level, thread, class, method, file name, line number, and log message. The JSON
