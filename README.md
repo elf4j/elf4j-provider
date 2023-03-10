@@ -37,8 +37,8 @@ Java 8 or better
 - Logging Format Patterns
 
   JSON is a supported output pattern, in hopes of helping external log analysis tools. This is in addition to the usual
-  line-based patterns - timestamp, level, thread, class, method, file name, line number, log message. The JSON pattern
-  can either be the sole output of the log entry, or mixed together with any other patterns.
+  line-based patterns - timestamp, level, thread, class, method, file name, line number, and log message. The JSON
+  pattern can either be the only output of the log entry, or mixed together with other patterns.
 
 - Configuration Refresh at Runtime
 
