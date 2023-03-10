@@ -7,9 +7,9 @@ Java)
 
 ## User Story
 
-As an application developer using the ELF4J logging service API, I want to be able to select a logging service provider
-that natively implements the ELF4J API, so that I can opt to use it at application deploy time, without code change, as
-with any other ELF4J logging service providers.
+As an application developer using the ELF4J logging service API, I want to select a logging service provider that
+natively implements the ELF4J API, so that I can opt to use it at application deploy time, without code change, as with
+any other ELF4J logging service providers.
 
 ## Prerequisite
 
@@ -24,25 +24,27 @@ Java 8 or better
 - Async Logging Only
 
   Logging output is always asynchronous, considering performance and moreover the 80/20 rule - When was the last time a
-  use case truly required logging had to be synchronous, and always blocking the application's normal work flow?
+  use case truly required that logging had to be synchronous, and always blocking the application's normal work flow?
 
 - Console Output Only
 
-  Supports multiple console writers with different configurations. A thought of console only is the 80/20 principle.
-  Plus, it's trivial nowadays to forward stdout/stderr streams as a data source to various other types of central
-  repositories. This is usually via system level data collector agents - Fluentd/Fluent Bit, ELK, DataDog, Newrelic...
-  to name a few.
+  Supports multiple console writers, each with different configurations. A thought of console only is the 80/20
+  principle. Plus, no matter the application is hosted on-prem or in Cloud, it's trivial nowadays to forward
+  stdout/stderr streams as a data source to file or other types of central repositories. This is usually via system
+  level data collector agents - Fluentd/Fluent Bit, ELK, DataDog, New Relic - to name a few; anything beyond stdout/err
+  appears to be outside the concerns of logging.
 
 - Logging Format Patterns
 
-  The usually expected logging format patterns (timestamp, level, thread, class, method, file name, line number, log
-  message) and JSON
+  Other than the usual line-based patterns (timestamp, level, thread, class, method, file name, line number, log
+  message), JSON is supported in hopes of helping external analysis tools. The JSON pattern can either be the sole
+  output of the log entry, or mixed with any other patterns.
 
 - Configuration Refresh at Runtime
 
-  API to support refresh configuration at runtime, with option of passing in overriding properties in addition to reload
-  of the configuration file. Most frequent use case would be to change the minimum log output level, without restart of
-  the application.
+  Provides API to support configuration refresh during runtime, with option of passing in overriding properties in
+  addition to reloading the configuration file. The most frequent use case would be to change the minimum log output
+  level, without restart of the application.
 
 ## Get It...
 
@@ -88,7 +90,7 @@ See the ELF4J [usage sample](https://github.com/elf4j/elf4j#for-logging-service-
       default to no thread/caller detail and pretty print format
 
 - Sample Configuration File
-    - When in doubt, use lower-case
+    - When in doubt, use lower-case.
 
   ```properties
   ## Any level is optional, default to TRACE if omitted

@@ -74,7 +74,7 @@ public class JsonPattern implements LogPattern {
         static JsonLogEntry from(LogEntry logEntry, JsonPattern jsonPattern) {
             return JsonLogEntry.builder()
                     .timestamp(DATE_TIME_FORMATTER.format(logEntry.getTimestamp()))
-                    .callerClass(logEntry.getCallerClassName())
+                    .callerClass(jsonPattern.includeCallerDetail ? null : logEntry.getCallerClassName())
                     .level(logEntry.getNativeLogger().getLevel().name())
                     .callerThread(jsonPattern.includeCallerThread ? logEntry.getCallerThread() : null)
                     .callerDetail(jsonPattern.includeCallerDetail ? logEntry.getCallerFrame() : null)
