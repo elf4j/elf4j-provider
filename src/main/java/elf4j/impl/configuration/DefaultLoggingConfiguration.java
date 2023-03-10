@@ -20,9 +20,15 @@ public class DefaultLoggingConfiguration implements LoggingConfiguration {
         this(new PropertiesLoader());
     }
 
-    public DefaultLoggingConfiguration(PropertiesLoader propertiesLoader) {
+    DefaultLoggingConfiguration(PropertiesLoader propertiesLoader) {
         this.propertiesLoader = propertiesLoader;
         setRepositories(propertiesLoader.load());
+    }
+
+    DefaultLoggingConfiguration(LevelRepository levelRepository, WriterRepository writerRepository) {
+        this(new PropertiesLoader());
+        this.levelRepository = levelRepository;
+        this.writerRepository = writerRepository;
     }
 
     @Override
