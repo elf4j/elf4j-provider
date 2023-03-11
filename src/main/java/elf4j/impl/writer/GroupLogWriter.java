@@ -34,7 +34,7 @@ public class GroupLogWriter implements LogWriter {
 
     @Override
     public void write(LogEntry logEntry) {
-        writers.parallelStream().forEach(writer -> writer.write(logEntry));
+        writers.forEach(writer -> writer.write(logEntry));
     }
 
     @Override
