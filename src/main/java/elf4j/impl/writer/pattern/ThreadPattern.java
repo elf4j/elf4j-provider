@@ -4,12 +4,14 @@ import elf4j.impl.service.LogEntry;
 import lombok.NonNull;
 import lombok.Value;
 
+import javax.annotation.Nonnull;
 import java.util.Objects;
 
 @Value
 public class ThreadPattern implements LogPattern {
     @NonNull ThreadPattern.DisplayOption threadDisplayOption;
 
+    @Nonnull
     public static ThreadPattern from(@NonNull String pattern) {
         if (!LogPatternType.THREAD.isTargetOf(pattern)) {
             throw new IllegalArgumentException("pattern: " + pattern);

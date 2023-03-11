@@ -4,10 +4,13 @@ import elf4j.impl.service.LogEntry;
 import lombok.NonNull;
 import lombok.Value;
 
+import javax.annotation.Nonnull;
+
 @Value
 public class VerbatimPattern implements LogPattern {
     @NonNull String text;
 
+    @Nonnull
     public static VerbatimPattern from(String pattern) {
         if (!LogPatternType.VERBATIM.isTargetOf(pattern)) {
             throw new IllegalArgumentException(String.format(

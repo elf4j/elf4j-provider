@@ -111,9 +111,9 @@ See the ELF4J [usage sample](https://github.com/elf4j/elf4j#for-logging-service-
   ## Default json pattern does not include thread and caller details, and uses pretty print format for the JSON string
   writer2.pattern={json}
   ## This would force the JSON to include the thread/caller details
-  #writer2.pattern={json:thread-detail,caller-detail}
+  #writer2.pattern={json:caller-thread,caller-detail}
   ## This would minify the JSON string from the pretty print format
-  #writer2.pattern={json:thread-detail,caller-detail,minify}
+  #writer2.pattern={json:caller-thread,caller-detail,minify}
   ## This would force the writer to use stderr instead of stdout
   #writer2.stream=stderr
   ```

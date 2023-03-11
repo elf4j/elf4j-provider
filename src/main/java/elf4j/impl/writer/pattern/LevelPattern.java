@@ -4,6 +4,8 @@ import elf4j.impl.service.LogEntry;
 import lombok.NonNull;
 import lombok.Value;
 
+import javax.annotation.Nonnull;
+
 @Value
 public class LevelPattern implements LogPattern {
     private static final int DISPLAY_LENGTH_UNSET = -1;
@@ -13,6 +15,7 @@ public class LevelPattern implements LogPattern {
         this.displayLength = displayLength;
     }
 
+    @Nonnull
     public static LevelPattern from(@NonNull String pattern) {
         if (!LogPatternType.LEVEL.isTargetOf(pattern)) {
             throw new IllegalArgumentException("pattern: " + pattern);

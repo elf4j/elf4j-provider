@@ -4,12 +4,14 @@ import elf4j.impl.service.LogEntry;
 import lombok.NonNull;
 import lombok.Value;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 @Value
 public class GroupLogPattern implements LogPattern {
     List<LogPattern> logPatternEntries;
 
+    @Nonnull
     public static GroupLogPattern from(@NonNull String pattern) {
         return new GroupLogPattern(LogPatternType.parseAllPatternsOrThrow(pattern));
     }

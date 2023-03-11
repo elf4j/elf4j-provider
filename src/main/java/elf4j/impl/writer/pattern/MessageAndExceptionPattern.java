@@ -4,8 +4,11 @@ import elf4j.impl.service.LogEntry;
 import elf4j.impl.util.StackTraceUtils;
 import lombok.Value;
 
+import javax.annotation.Nonnull;
+
 @Value
 public class MessageAndExceptionPattern implements LogPattern {
+    @Nonnull
     public static MessageAndExceptionPattern from(String pattern) {
         if (!LogPatternType.MESSAGE.isTargetOf(pattern)) {
             throw new IllegalArgumentException("pattern text: " + pattern);

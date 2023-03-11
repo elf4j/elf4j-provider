@@ -4,11 +4,14 @@ import elf4j.impl.service.LogEntry;
 import lombok.NonNull;
 import lombok.Value;
 
+import javax.annotation.Nonnull;
+
 @Value
 public class ClassPattern implements LogPattern {
     private static final DisplayOption DEFAULT_DISPLAY_OPTION = DisplayOption.FULL;
     @NonNull DisplayOption classDisplayOption;
 
+    @Nonnull
     public static ClassPattern from(@NonNull String pattern) {
         if (!LogPatternType.CLASS.isTargetOf(pattern)) {
             throw new IllegalArgumentException("pattern: " + pattern);

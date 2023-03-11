@@ -25,8 +25,12 @@ public class NativeLoggerFactory implements LoggerFactory {
      * Default constructor required by {@link java.util.ServiceLoader}
      */
     public NativeLoggerFactory() {
-        this(DEFAULT_LOGGER_INTERFACE,
-                DEFAULT_LOGGER_CLASS,
+        this(DEFAULT_LOGGER_INTERFACE, DEFAULT_LOGGER_CLASS);
+    }
+
+    public NativeLoggerFactory(@NonNull Class<?> loggerInterface, @NonNull Class<?> loggerClass) {
+        this(loggerInterface,
+                loggerClass,
                 DEFAULT_LOGGER_SEVERITY_LEVEL,
                 ConfigurationInstanceHolder.INSTANCE,
                 new WriterThreadProvider());

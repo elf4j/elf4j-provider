@@ -18,6 +18,11 @@ import java.util.stream.Collectors;
 @Value
 @Builder
 public class JsonPattern implements LogPattern {
+    private static final String CALLER_DETAIL = "caller-detail";
+    private static final String CALLER_THREAD = "caller-thread";
+    private static final String MINIFY = "minify";
+    private static final Set<String> DISPLAY_OPTIONS =
+            Arrays.stream(new String[] { CALLER_THREAD, CALLER_DETAIL, MINIFY }).collect(Collectors.toSet());
     boolean includeCallerThread;
     boolean includeCallerDetail;
     Gson gson;
@@ -36,10 +41,13 @@ public class JsonPattern implements LogPattern {
         }
         Set<String> options =
                 Arrays.stream(patternOption.get().split(",")).map(String::trim).collect(Collectors.toSet());
+        if (!DISPLAY_OPTIONS.containsAll(options)) {
+            throw new IllegalArgumentException("Invalid JSON display option inside: " + options);
+        }
         return JsonPattern.builder()
-                .includeCallerThread(options.contains("caller-thread"))
-                .includeCallerDetail(options.contains("caller-detail"))
-                .gson(options.contains("minify") ? new Gson() : new GsonBuilder().setPrettyPrinting().create())
+                .includeCallerThread(options.contains(CALLER_THREAD))
+                .includeCallerDetail(options.contains(CALLER_DETAIL))
+                .gson(options.contains(MINIFY) ? new Gson() : new GsonBuilder().setPrettyPrinting().create())
                 .build();
     }
 

@@ -1,6 +1,7 @@
 package elf4j.impl.util;
 
 import elf4j.impl.service.LogEntry;
+import lombok.NonNull;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,7 +13,7 @@ public class StackTraceUtils {
     private StackTraceUtils() {
     }
 
-    public static LogEntry.StackTraceFrame callerOf(Class<?> calleeClass) {
+    public static LogEntry.StackTraceFrame callerOf(@NonNull Class<?> calleeClass) {
         StackTraceElement[] stackTrace = new Throwable().getStackTrace();
         int depth = 0;
         String calleeClassName = calleeClass.getName();

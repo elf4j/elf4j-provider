@@ -4,6 +4,7 @@ import elf4j.impl.service.LogEntry;
 import lombok.NonNull;
 import lombok.Value;
 
+import javax.annotation.Nonnull;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
@@ -14,6 +15,7 @@ public class TimestampPattern implements LogPattern {
     private static final ZoneId DEFAULT_TIMESTAMP_ZONE = ZoneId.systemDefault();
     DateTimeFormatter dateTimeFormatter;
 
+    @Nonnull
     public static TimestampPattern from(@NonNull String pattern) {
         if (!LogPatternType.TIMESTAMP.isTargetOf(pattern)) {
             throw new IllegalArgumentException("pattern: " + pattern);

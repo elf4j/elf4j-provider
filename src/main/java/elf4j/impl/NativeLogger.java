@@ -2,13 +2,17 @@ package elf4j.impl;
 
 import elf4j.Level;
 import elf4j.Logger;
+import elf4j.impl.service.LogEntry;
 import elf4j.impl.service.LogService;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.Value;
 
+import javax.annotation.Nullable;
+
 @Value
 public class NativeLogger implements Logger {
+    private static final ThreadLocal<LogEntry.StackTraceFrame> CALLER_FRAME_THREAD_LOCAL = new ThreadLocal<>();
     /**
      * Taken from the name of the "owner class" - the class that created this logger instance. The owner class is
      * usually the same as the "caller class" - the class that calls the logging methods of this instance. In strange
@@ -85,8 +89,19 @@ public class NativeLogger implements Logger {
         this.service(t, message, args);
     }
 
-    private NativeLogger atLevel(Level level) {
+    public NativeLogger atLevel(Level level) {
         return this.level == level ? this : new NativeLogger(this.name, level, logService);
+    }
+
+    @Nullable
+    public LogEntry.StackTraceFrame getAndRemoveThreadLocalCallerFrame() {
+        LogEntry.StackTraceFrame stackTraceFrame = CALLER_FRAME_THREAD_LOCAL.get();
+        CALLER_FRAME_THREAD_LOCAL.remove();
+        return stackTraceFrame;
+    }
+
+    public void setStackTraceFrameThreadLocal(LogEntry.StackTraceFrame stackTraceFrame) {
+        CALLER_FRAME_THREAD_LOCAL.set(stackTraceFrame);
     }
 
     private void service(Throwable exception, Object message, Object[] args) {

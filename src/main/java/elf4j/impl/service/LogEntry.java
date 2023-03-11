@@ -1,8 +1,6 @@
 package elf4j.impl.service;
 
 import elf4j.impl.NativeLogger;
-import elf4j.impl.util.StackTraceUtils;
-import elf4j.impl.writer.PerformanceSensitive;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
@@ -25,18 +23,6 @@ public class LogEntry {
     @Nullable Throwable exception;
     @Nullable StackTraceFrame callerFrame;
     @Nullable ThreadInformation callerThread;
-
-    public static LogEntry.LogEntryBuilder newBuilder(PerformanceSensitive performanceSensitive, Class<?> loggerClass) {
-        LogEntryBuilder builder = builder();
-        if (performanceSensitive.includeCallerDetail()) {
-            builder.callerFrame(StackTraceUtils.callerOf(loggerClass));
-        }
-        if (performanceSensitive.includeCallerThread()) {
-            Thread callerThread = Thread.currentThread();
-            builder.callerThread(new ThreadInformation(callerThread.getName(), callerThread.getId()));
-        }
-        return builder;
-    }
 
     private static String resolve(Object msg, Object[] arguments) {
         String message = Objects.toString(supply(msg));
@@ -67,10 +53,6 @@ public class LogEntry {
 
     public String getResolvedMessage() {
         return resolve(this.message, this.arguments);
-    }
-
-    public static class LogEntryBuilder {
-        // class declaration to make javadoc plugin happy, will be filled by lombok
     }
 
     @Value

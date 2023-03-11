@@ -2,6 +2,7 @@ package elf4j.impl.service;
 
 import elf4j.impl.NativeLogger;
 import elf4j.impl.configuration.LoggingConfiguration;
+import elf4j.impl.util.StackTraceUtils;
 import elf4j.impl.writer.LogWriter;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
@@ -21,6 +22,16 @@ public class DefaultLogService implements LogService {
     }
 
     @Override
+    public boolean includeCallerDetail() {
+        return this.loggingConfiguration.getLogServiceWriter().includeCallerThread();
+    }
+
+    @Override
+    public boolean includeCallerThread() {
+        return this.loggingConfiguration.getLogServiceWriter().includeCallerThread();
+    }
+
+    @Override
     public boolean isEnabled(NativeLogger nativeLogger) {
         return loggingConfiguration.isEnabled(nativeLogger);
     }
@@ -30,13 +41,19 @@ public class DefaultLogService implements LogService {
         if (!loggingConfiguration.isEnabled(nativeLogger)) {
             return;
         }
+        LogEntry.LogEntryBuilder logEntryBuilder =
+                LogEntry.builder().nativeLogger(nativeLogger).exception(exception).message(message).arguments(args);
         LogWriter writer = loggingConfiguration.getLogServiceWriter();
-        LogEntry logEntry = LogEntry.newBuilder(writer, getLoggerClass())
-                .nativeLogger(nativeLogger)
-                .exception(exception)
-                .message(message)
-                .arguments(args)
-                .build();
+        if (writer.includeCallerDetail()) {
+            LogEntry.StackTraceFrame overrideCallerFrame = nativeLogger.getAndRemoveThreadLocalCallerFrame();
+            logEntryBuilder.callerFrame(overrideCallerFrame != null ? overrideCallerFrame :
+                    StackTraceUtils.callerOf(this.getLoggerClass()));
+        }
+        if (writer.includeCallerThread()) {
+            Thread callerThread = Thread.currentThread();
+            logEntryBuilder.callerThread(new LogEntry.ThreadInformation(callerThread.getName(), callerThread.getId()));
+        }
+        LogEntry logEntry = logEntryBuilder.build();
         writerThreadProvider.getWriterThread().execute(() -> writer.write(logEntry));
     }
 
