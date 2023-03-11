@@ -7,13 +7,17 @@ import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.Value;
 
+import javax.annotation.concurrent.ThreadSafe;
+
+@ThreadSafe
 @Value
 public class NativeLogger implements Logger {
     /**
-     * Taken from the name of the "owner class" - the class that created this logger instance. The owner class is
-     * usually the same as the "caller class" - the class that calls the logging methods of this instance. In strange
-     * scenarios, the caller class can be different from the owner class i.e. when the owner class passed this logger
-     * instance out to another (caller) class.
+     * Taken from the same name of this logger's "owner class" - the class that created this logger instance. The owner
+     * class is usually also the same as the "caller class" - the class that calls the logging methods of this instance.
+     * In rare and unrecommended scenarios, the owner class can be different from the caller class i.e. the owner class
+     * could pass a reference of this logger instance out to a different/caller class. Once set, though, the name of the
+     * logger will not change even when the owner class is different from the caller class.
      */
     @NonNull String name;
     @NonNull Level level;
