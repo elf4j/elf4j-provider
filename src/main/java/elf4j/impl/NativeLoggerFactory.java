@@ -14,36 +14,36 @@ import lombok.NonNull;
 import java.util.Properties;
 
 public class NativeLoggerFactory implements LoggerFactory {
-    private static final Class<?> DEFAULT_LOGGER_CLASS = NativeLogger.class;
-    private static final Class<Logger> DEFAULT_LOGGER_INTERFACE = Logger.class;
+    private static final Class<Logger> DEFAULT_ACCESS_INTERFACE = Logger.class;
     private static final Level DEFAULT_LOGGER_SEVERITY_LEVEL = Level.TRACE;
-    @NonNull private final Level loggerDefaultLevel;
-    @NonNull private final Class<?> loggerInterface;
+    private static final Class<?> DEFAULT_SERVICE_INTERFACE = NativeLogger.class;
+    @NonNull private final Level defaultLoggerLevel;
+    @NonNull private final Class<?> accessInterface;
     @NonNull private final LogService logService;
 
     /**
      * Default constructor required by {@link java.util.ServiceLoader}
      */
     public NativeLoggerFactory() {
-        this(DEFAULT_LOGGER_INTERFACE, DEFAULT_LOGGER_CLASS);
+        this(DEFAULT_ACCESS_INTERFACE, DEFAULT_SERVICE_INTERFACE);
     }
 
-    public NativeLoggerFactory(@NonNull Class<?> loggerInterface, @NonNull Class<?> loggerClass) {
-        this(loggerInterface,
-                loggerClass,
-                DEFAULT_LOGGER_SEVERITY_LEVEL,
+    public NativeLoggerFactory(@NonNull Class<?> accessInterface, @NonNull Class<?> serviceInterface) {
+        this(DEFAULT_LOGGER_SEVERITY_LEVEL,
+                accessInterface,
+                serviceInterface,
                 ConfigurationInstanceHolder.INSTANCE,
                 new WriterThreadProvider());
     }
 
-    NativeLoggerFactory(@NonNull Class<?> loggerInterface,
-            @NonNull Class<?> loggerClass,
-            @NonNull Level loggerDefaultLevel,
+    NativeLoggerFactory(@NonNull Level defaultLoggerLevel,
+            @NonNull Class<?> accessInterface,
+            @NonNull Class<?> serviceInterface,
             @NonNull LoggingConfiguration loggingConfiguration,
             @NonNull WriterThreadProvider writerThreadProvider) {
-        this.loggerDefaultLevel = loggerDefaultLevel;
-        this.loggerInterface = loggerInterface;
-        this.logService = new DefaultLogService(loggerClass, loggingConfiguration, writerThreadProvider);
+        this.defaultLoggerLevel = defaultLoggerLevel;
+        this.accessInterface = accessInterface;
+        this.logService = new DefaultLogService(serviceInterface, loggingConfiguration, writerThreadProvider);
     }
 
     public static void refreshConfiguration() {
@@ -56,11 +56,9 @@ public class NativeLoggerFactory implements LoggerFactory {
 
     @Override
     public NativeLogger logger() {
-        return new NativeLogger(getLoggerOwnerClassName(), loggerDefaultLevel, logService);
-    }
-
-    private String getLoggerOwnerClassName() {
-        return StackTraceUtils.callerOf(this.loggerInterface).getClassName();
+        return new NativeLogger(StackTraceUtils.callerOf(this.accessInterface).getClassName(),
+                defaultLoggerLevel,
+                logService);
     }
 
     private static class ConfigurationInstanceHolder {

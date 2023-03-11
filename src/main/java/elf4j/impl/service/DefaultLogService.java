@@ -3,6 +3,7 @@ package elf4j.impl.service;
 import elf4j.impl.NativeLogger;
 import elf4j.impl.configuration.LoggingConfiguration;
 import elf4j.impl.util.StackTraceUtils;
+import elf4j.impl.util.ThreadLocalContext;
 import elf4j.impl.writer.LogWriter;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
@@ -45,9 +46,10 @@ public class DefaultLogService implements LogService {
                 LogEntry.builder().nativeLogger(nativeLogger).exception(exception).message(message).arguments(args);
         LogWriter writer = loggingConfiguration.getLogServiceWriter();
         if (writer.includeCallerDetail()) {
-            LogEntry.StackTraceFrame overrideCallerFrame = nativeLogger.getAndRemoveThreadLocalCallerFrame();
+            LogEntry.StackTraceFrame overrideCallerFrame = ThreadLocalContext.data().getCallerFrame();
             logEntryBuilder.callerFrame(overrideCallerFrame != null ? overrideCallerFrame :
                     StackTraceUtils.callerOf(this.getLoggerClass()));
+            ThreadLocalContext.clear();
         }
         if (writer.includeCallerThread()) {
             Thread callerThread = Thread.currentThread();
