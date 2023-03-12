@@ -17,30 +17,27 @@ Java 8 or better
 
 ## Implementation Notes
 
-- Guiding principle: Reasonable default and Pareto's 80/20 rule
+* Guiding principle: Reasonable default and Pareto's 80/20 rule
 
 ## Features
 
-- Async Logging Only
+* Async Logging Only
 
   Logging output is always asynchronous, considering performance and moreover the 80/20 rule: When was the last time a
   use case truly required that logging had to be synchronous, and always blocking the application's normal work flow?
+* Console Output Only
 
-- Console Output Only
-
-  Supports multiple console writers, each with different configurations. A thought of console only is the 80/20
-  principle. Plus, no matter the application is hosted on-prem or in Cloud, it's trivial nowadays to forward
-  stdout/stderr streams as a data source to file or other types of central repositories. This is usually via system
-  level data collector agents - Fluentd/Fluent Bit, ELK, DataDog, New Relic - to name a few; output channels other than
-  stdout/err appear to be outside the concerns of application level logging.
-
-- Logging Format Patterns Including JSON
+  The thought of console output only is the 80/20 principle, for one. Secondly, no matter the application is hosted
+  on-prem or in Cloud, it's nowadays trivial to forward standard streams (stdout/stderr) as a data source to files or
+  other types of central repositories. This is usually via system level data collector agents - Fluentd/Fluent Bit, ELK,
+  DataDog, New Relic - to name a few. Setting up output channels other than the standard streams appears more suited
+  outside the concerns of application level logging.
+* Logging Format Patterns Including JSON
 
   JSON is a supported output pattern, in hopes of helping external log analysis tools. This is in addition to the usual
   line-based patterns - timestamp, level, thread, class, method, file name, line number, and log message. The JSON
   pattern can either be the only output of the log entry, or mixed together with other patterns.
-
-- Configuration Refresh at Runtime
+* Configuration Refresh at Runtime
 
   Provides API to support configuration refresh during runtime, with option of passing in overriding properties in
   addition to reloading the configuration file. The most frequent use case would be to change the minimum log output
@@ -58,7 +55,7 @@ See the ELF4J [usage sample](https://github.com/elf4j/elf4j#for-logging-service-
 
 ### Configuration
 
-- Properties File Configuration Only
+* Properties File Configuration Only
 
   The default configuration file location is at the root of the application class path, with file
   name `elf4j-test.properties`; or if that is missing, then the `elf4j.properties`. Alternatively, to override the
@@ -68,30 +65,30 @@ See the ELF4J [usage sample](https://github.com/elf4j/elf4j#for-logging-service-
   java -Delf4j.properties.location=/absoloute/path/to/myConfigurationFile -jar MyApplicaiton.jar
   ``` 
 
-- Level
+* Level
 
   Default global minimum output level is TRACE if not configured. Supports global and package level overrides.
 
-- Writer
+* Writer
 
-  Supports multiple console writers. Each writer can have individual configurations on output level and format pattern,
-  although, with the comprehensive configuration support on a single writer's pattern and various loggers' levels, more
+  Supports multiple console writers. Each writer can have individual configurations on output level and format pattern.
+  However, with the comprehensive configuration support on a single writer's pattern and various loggers' levels, more
   than one console writer is rarely necessary.
 
-- Output Format Pattern
-    - timestamp: Format configurable per Java DateTimeFormatter syntax, default to ISO local datetime
-    - level: Length configurable, default to full length
-    - thread: Option of thread name or id, default to name
-    - class: Option of simple, full, or compressed (only the first letter for a package segment), default to full
-    - method: Not configurable
-    - file name: Not configurable
-    - line number: Not configurable
-    - log message: Not configurable, always prints user message, and exception stack trace if any
-    - json: Options to include thread and caller (method, line number, file name) details and minify the JSON string,
+* Output Format Pattern
+    * timestamp: Format configurable per Java DateTimeFormatter syntax, default to ISO local datetime
+    * level: Length configurable, default to full length
+    * thread: Option of thread name or id, default to name
+    * class: Option of simple, full, or compressed (only the first letter for a package segment), default to full
+    * method: Not configurable
+    * file name: Not configurable
+    * line number: Not configurable
+    * log message: Not configurable, always prints user message, and exception stack trace if any
+    * json: Options to include thread and caller (method, line number, file name) details and minify the JSON string,
       default to no thread/caller detail and pretty print format
 
-- Sample Configuration File
-    - When in doubt, use lower-case.
+* Sample Configuration File
+    * When in doubt, use lower-case.
 
   ```properties
   ### Any level is optional, default to TRACE if omitted
