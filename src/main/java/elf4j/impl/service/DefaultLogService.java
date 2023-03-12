@@ -58,13 +58,13 @@ public class DefaultLogService implements LogService {
             LogEntry.StackTraceFrame overrideCallerFrame = ThreadLocalContext.data().getCallerFrame();
             logEntryBuilder.callerFrame(overrideCallerFrame != null ? overrideCallerFrame :
                     StackTraceUtils.callerOf(this.getServiceInterface()));
-            ThreadLocalContext.clear();
         }
         if (writer.includeCallerThread()) {
             Thread callerThread = Thread.currentThread();
             logEntryBuilder.callerThread(new LogEntry.ThreadInformation(callerThread.getName(), callerThread.getId()));
         }
         LogEntry logEntry = logEntryBuilder.build();
+        ThreadLocalContext.clear();
         writerThreadProvider.getWriterThread().execute(() -> writer.write(logEntry));
     }
 

@@ -5,6 +5,7 @@ import elf4j.impl.service.LogEntry;
 import elf4j.impl.writer.pattern.GroupLogPattern;
 import elf4j.impl.writer.pattern.LogPattern;
 
+import javax.annotation.Nullable;
 import java.io.PrintStream;
 import java.util.Map;
 
@@ -12,7 +13,6 @@ import java.util.Map;
  *
  */
 public class ConsoleWriter implements LogWriter {
-
     private static final Level DEFAULT_MINIMUM_LEVEL = Level.TRACE;
     private static final OutStreamType DEFAULT_OUT_STREAM = OutStreamType.STDOUT;
     private static final String DEFAULT_PATTERN =
@@ -20,9 +20,7 @@ public class ConsoleWriter implements LogWriter {
     private static final PrintStream STREAM_ERR = new PrintStream(System.err, false);
     private static final PrintStream STREAM_OUT = new PrintStream(System.out, false);
     private final LogPattern logPattern;
-
     private final Level minimumLevel;
-
     private final OutStreamType outStreamType;
 
     private ConsoleWriter(Level minimumLevel, GroupLogPattern logPattern, OutStreamType outStreamType) {
@@ -43,7 +41,7 @@ public class ConsoleWriter implements LogWriter {
      * @param outStream     out stream type, either stdout or stderr
      * @return console writer per the specified configuration
      */
-    public static ConsoleWriter from(Map<String, String> configuration, String outStream) {
+    public static ConsoleWriter from(Map<String, String> configuration, @Nullable String outStream) {
         String level = configuration.get("level");
         String pattern = configuration.get("pattern");
         return new ConsoleWriter(level == null ? DEFAULT_MINIMUM_LEVEL : Level.valueOf(level.toUpperCase()),
@@ -81,7 +79,7 @@ public class ConsoleWriter implements LogWriter {
                 flushErr(logTextBuilder);
                 return;
             default:
-                throw new IllegalStateException("Unknown out stream type: " + this.outStreamType);
+                throw new IllegalArgumentException("Unsupported out stream type: " + this.outStreamType);
         }
     }
 
