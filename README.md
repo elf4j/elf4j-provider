@@ -23,7 +23,7 @@ Java 8 or better
 
 - Async Logging Only
 
-  Logging output is always asynchronous, considering performance and moreover the 80/20 rule - When was the last time a
+  Logging output is always asynchronous, considering performance and moreover the 80/20 rule: When was the last time a
   use case truly required that logging had to be synchronous, and always blocking the application's normal work flow?
 
 - Console Output Only
