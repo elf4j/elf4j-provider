@@ -7,10 +7,17 @@ import lombok.Value;
 import javax.annotation.Nonnull;
 import java.util.List;
 
+/**
+ * Composite of individual patterns to form the entire layout pattern
+ */
 @Value
 public class GroupLogPattern implements LogPattern {
     List<LogPattern> logPatternEntries;
 
+    /**
+     * @param pattern entire layout pattern text from configuration
+     * @return composite pattern object for the entire log entry's output layout
+     */
     @Nonnull
     public static GroupLogPattern from(@NonNull String pattern) {
         return new GroupLogPattern(LogPatternType.parseAllPatternsOrThrow(pattern));

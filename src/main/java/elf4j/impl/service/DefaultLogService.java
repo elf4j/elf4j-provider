@@ -8,16 +8,25 @@ import elf4j.impl.writer.LogWriter;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 
+/**
+ *
+ */
 @EqualsAndHashCode
 public class DefaultLogService implements LogService {
-    @NonNull private final Class<?> loggerClass;
+    @NonNull private final Class<?> serviceInterface;
     private final LoggingConfiguration loggingConfiguration;
     private final WriterThreadProvider writerThreadProvider;
 
-    public DefaultLogService(@NonNull Class<?> loggerClass,
+    /**
+     * @param serviceInterface     the direct client facing class being called for logging service, usually the concrete
+     *                             logger class
+     * @param loggingConfiguration configuration for min logging output level and log writers
+     * @param writerThreadProvider provides the async writer thread
+     */
+    public DefaultLogService(@NonNull Class<?> serviceInterface,
             LoggingConfiguration loggingConfiguration,
             WriterThreadProvider writerThreadProvider) {
-        this.loggerClass = loggerClass;
+        this.serviceInterface = serviceInterface;
         this.loggingConfiguration = loggingConfiguration;
         this.writerThreadProvider = writerThreadProvider;
     }
@@ -48,7 +57,7 @@ public class DefaultLogService implements LogService {
         if (writer.includeCallerDetail()) {
             LogEntry.StackTraceFrame overrideCallerFrame = ThreadLocalContext.data().getCallerFrame();
             logEntryBuilder.callerFrame(overrideCallerFrame != null ? overrideCallerFrame :
-                    StackTraceUtils.callerOf(this.getLoggerClass()));
+                    StackTraceUtils.callerOf(this.getServiceInterface()));
             ThreadLocalContext.clear();
         }
         if (writer.includeCallerThread()) {
@@ -59,7 +68,7 @@ public class DefaultLogService implements LogService {
         writerThreadProvider.getWriterThread().execute(() -> writer.write(logEntry));
     }
 
-    @NonNull Class<?> getLoggerClass() {
-        return loggerClass;
+    @NonNull Class<?> getServiceInterface() {
+        return serviceInterface;
     }
 }

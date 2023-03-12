@@ -8,6 +8,9 @@ import javax.annotation.Nonnull;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
+/**
+ *
+ */
 @Value
 public class TimestampPattern implements LogPattern {
     private static final DateTimeFormatter DEFAULT_TIMESTAMP_FORMATTER =
@@ -15,9 +18,13 @@ public class TimestampPattern implements LogPattern {
     private static final ZoneId DEFAULT_TIMESTAMP_ZONE = ZoneId.systemDefault();
     DateTimeFormatter dateTimeFormatter;
 
+    /**
+     * @param pattern text pattern to convert
+     * @return converted pattern object
+     */
     @Nonnull
     public static TimestampPattern from(@NonNull String pattern) {
-        if (!LogPatternType.TIMESTAMP.isTargetOf(pattern)) {
+        if (!LogPatternType.TIMESTAMP.isTargetTypeOf(pattern)) {
             throw new IllegalArgumentException("pattern: " + pattern);
         }
         DateTimeFormatter dateTimeFormatter = LogPattern.getPatternOption(pattern)

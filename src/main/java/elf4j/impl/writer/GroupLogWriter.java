@@ -7,6 +7,9 @@ import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.Set;
 
+/**
+ *
+ */
 public class GroupLogWriter implements LogWriter {
     private final Set<LogWriter> writers;
     private Level minimumLevel;
@@ -17,6 +20,10 @@ public class GroupLogWriter implements LogWriter {
         this.writers = writers;
     }
 
+    /**
+     * @param properties configuration of all the writers
+     * @return the composite writer containing all writers configured in the specified properties
+     */
     public static GroupLogWriter from(Properties properties) {
         return new GroupLogWriter(LogWriterType.parseAllLogWriters(properties));
     }
@@ -53,6 +60,9 @@ public class GroupLogWriter implements LogWriter {
         return includeCallerThread;
     }
 
+    /**
+     * @return true if no writer is configured
+     */
     public boolean isEmpty() {
         return writers.isEmpty();
     }

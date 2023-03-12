@@ -10,12 +10,18 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ *
+ */
 public class DefaultLoggingConfiguration implements LoggingConfiguration {
     private final Map<NativeLogger, Boolean> loggerConfigurationCache = new ConcurrentHashMap<>();
     private final PropertiesLoader propertiesLoader;
     private LevelRepository levelRepository;
     private WriterRepository writerRepository;
 
+    /**
+     *
+     */
     public DefaultLoggingConfiguration() {
         this(new PropertiesLoader());
     }

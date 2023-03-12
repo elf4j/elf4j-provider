@@ -15,6 +15,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ *
+ */
 @Value
 @Builder
 public class JsonPattern implements LogPattern {
@@ -27,8 +30,12 @@ public class JsonPattern implements LogPattern {
     boolean includeCallerDetail;
     Gson gson;
 
+    /**
+     * @param pattern to convert
+     * @return converted pattern object
+     */
     public static JsonPattern from(@NonNull String pattern) {
-        if (!LogPatternType.JSON.isTargetOf(pattern)) {
+        if (!LogPatternType.JSON.isTargetTypeOf(pattern)) {
             throw new IllegalArgumentException("pattern: " + pattern);
         }
         Optional<String> patternOption = LogPattern.getPatternOption(pattern);

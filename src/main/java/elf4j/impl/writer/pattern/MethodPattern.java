@@ -6,11 +6,18 @@ import lombok.Value;
 import javax.annotation.Nonnull;
 import java.util.Objects;
 
+/**
+ *
+ */
 @Value
 public class MethodPattern implements LogPattern {
+    /**
+     * @param pattern text segment to convert
+     * @return converted pattern object
+     */
     @Nonnull
     public static MethodPattern from(String pattern) {
-        if (!LogPatternType.METHOD.isTargetOf(pattern)) {
+        if (!LogPatternType.METHOD.isTargetTypeOf(pattern)) {
             throw new IllegalArgumentException("pattern: " + pattern);
         }
         return new MethodPattern();

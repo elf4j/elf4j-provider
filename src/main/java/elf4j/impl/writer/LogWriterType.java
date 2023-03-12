@@ -4,7 +4,13 @@ import elf4j.impl.util.PropertiesUtils;
 
 import java.util.*;
 
+/**
+ *
+ */
 public enum LogWriterType {
+    /**
+     *
+     */
     CONSOLE {
         @Override
         Set<LogWriter> parseLogWriters(Properties properties) {
@@ -16,6 +22,10 @@ public enum LogWriterType {
         }
     };
 
+    /**
+     * @param properties configuration source
+     * @return all writers parsed from the specified properties
+     */
     public static Set<LogWriter> parseAllLogWriters(Properties properties) {
         Set<LogWriter> logWriters = new HashSet<>();
         EnumSet.allOf(LogWriterType.class).forEach(type -> logWriters.addAll(type.parseLogWriters(properties)));

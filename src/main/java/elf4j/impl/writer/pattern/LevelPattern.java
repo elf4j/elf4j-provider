@@ -6,6 +6,9 @@ import lombok.Value;
 
 import javax.annotation.Nonnull;
 
+/**
+ *
+ */
 @Value
 public class LevelPattern implements LogPattern {
     private static final int DISPLAY_LENGTH_UNSET = -1;
@@ -15,9 +18,13 @@ public class LevelPattern implements LogPattern {
         this.displayLength = displayLength;
     }
 
+    /**
+     * @param pattern to convert
+     * @return converted pattern object
+     */
     @Nonnull
     public static LevelPattern from(@NonNull String pattern) {
-        if (!LogPatternType.LEVEL.isTargetOf(pattern)) {
+        if (!LogPatternType.LEVEL.isTargetTypeOf(pattern)) {
             throw new IllegalArgumentException("pattern: " + pattern);
         }
         return new LevelPattern(LogPattern.getPatternOption(pattern)

@@ -11,6 +11,9 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+/**
+ *
+ */
 @Value
 @Builder
 @EqualsAndHashCode
@@ -47,14 +50,23 @@ public class LogEntry {
         return o instanceof Supplier<?> ? ((Supplier<?>) o).get() : o;
     }
 
+    /**
+     * @return the name of the application client class calling the logging method of this logger instance
+     */
     public String getCallerClassName() {
         return callerFrame == null ? nativeLogger.getName() : callerFrame.getClassName();
     }
 
+    /**
+     * @return log message text with all placeholder arguments resolved and replaced by final values
+     */
     public String getResolvedMessage() {
         return resolve(this.message, this.arguments);
     }
 
+    /**
+     *
+     */
     @Value
     @Builder
     public static class StackTraceFrame {
@@ -64,6 +76,9 @@ public class LogEntry {
         String fileName;
     }
 
+    /**
+     *
+     */
     @Value
     @Builder
     public static class ThreadInformation {

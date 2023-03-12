@@ -9,20 +9,29 @@ import lombok.Value;
 
 import javax.annotation.concurrent.ThreadSafe;
 
+/**
+ *
+ */
 @ThreadSafe
 @Value
 public class NativeLogger implements Logger {
     /**
-     * Taken from the same name of this logger's "owner class" - the class that created this logger instance. The owner
-     * class is usually also the same as the "caller class" - the class that calls the logging methods of this instance.
-     * In rare and unrecommended scenarios, the owner class can be different from the caller class i.e. the owner class
-     * could pass a reference of this logger instance out to a different/caller class. Once set, though, the name of the
-     * logger will not change even when the owner class is different from the caller class.
+     * Taken from the same name of this logger's "owner class" - the logging service client class that created this
+     * logger instance via the service access API. The owner class is usually also the same as the "caller class" - the
+     * logging service client class that calls the logging service API methods of this instance. In rare and
+     * unrecommended scenarios, the owner class can be different from the caller class i.e. the owner class could pass a
+     * reference of this logger instance out to a different/caller class. Once set, though, the name of the logger will
+     * not change even when the owner class is different from the caller class.
      */
     @NonNull String name;
     @NonNull Level level;
     @EqualsAndHashCode.Exclude @NonNull LogService logService;
 
+    /**
+     * @param name       logger name, same as that of the owner class that created this logger instance
+     * @param level      severity level of this logger instance
+     * @param logService service delegate to do the logging
+     */
     public NativeLogger(@NonNull String name, @NonNull Level level, @NonNull LogService logService) {
         this.name = name;
         this.level = level;
@@ -89,6 +98,10 @@ public class NativeLogger implements Logger {
         this.service(t, message, args);
     }
 
+    /**
+     * @param level of the returned logger instance
+     * @return logger instance of the same name, with the specified level
+     */
     public NativeLogger atLevel(Level level) {
         return this.level == level ? this : new NativeLogger(this.name, level, logService);
     }

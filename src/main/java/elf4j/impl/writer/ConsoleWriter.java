@@ -7,8 +7,11 @@ import elf4j.impl.writer.pattern.LogPattern;
 
 import java.util.Map;
 
+/**
+ *
+ */
 public class ConsoleWriter implements LogWriter {
-    public static final OutStreamType DEFAULT_OUT_STREAM = OutStreamType.AUTO;
+    private static final OutStreamType DEFAULT_OUT_STREAM = OutStreamType.AUTO;
     private static final Level DEFAULT_MINIMUM_LEVEL = Level.TRACE;
     private static final String DEFAULT_PATTERN =
             "{timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ} {level} {class} - {message}";
@@ -24,10 +27,17 @@ public class ConsoleWriter implements LogWriter {
         this.outStreamType = outStreamType;
     }
 
+    /**
+     * @return default writer
+     */
     public static ConsoleWriter defaultWriter() {
         return new ConsoleWriter(DEFAULT_MINIMUM_LEVEL, GroupLogPattern.from(DEFAULT_PATTERN), DEFAULT_OUT_STREAM);
     }
 
+    /**
+     * @param configuration properties map to make a console writer
+     * @return console writer per the specified configuration
+     */
     public static ConsoleWriter from(Map<String, String> configuration) {
         String level = configuration.get("level");
         String pattern = configuration.get("pattern");

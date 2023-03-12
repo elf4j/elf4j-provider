@@ -7,13 +7,20 @@ import lombok.Value;
 import javax.annotation.Nonnull;
 import java.util.Objects;
 
+/**
+ *
+ */
 @Value
 public class ThreadPattern implements LogPattern {
     @NonNull ThreadPattern.DisplayOption threadDisplayOption;
 
+    /**
+     * @param pattern text pattern to convert
+     * @return the thread pattern converted from the specified text
+     */
     @Nonnull
     public static ThreadPattern from(@NonNull String pattern) {
-        if (!LogPatternType.THREAD.isTargetOf(pattern)) {
+        if (!LogPatternType.THREAD.isTargetTypeOf(pattern)) {
             throw new IllegalArgumentException("pattern: " + pattern);
         }
         return new ThreadPattern(LogPattern.getPatternOption(pattern)

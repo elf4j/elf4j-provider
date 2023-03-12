@@ -6,14 +6,21 @@ import lombok.Value;
 
 import javax.annotation.Nonnull;
 
+/**
+ *
+ */
 @Value
 public class ClassPattern implements LogPattern {
     private static final DisplayOption DEFAULT_DISPLAY_OPTION = DisplayOption.FULL;
     @NonNull DisplayOption classDisplayOption;
 
+    /**
+     * @param pattern text pattern to convert
+     * @return converted pattern object
+     */
     @Nonnull
     public static ClassPattern from(@NonNull String pattern) {
-        if (!LogPatternType.CLASS.isTargetOf(pattern)) {
+        if (!LogPatternType.CLASS.isTargetTypeOf(pattern)) {
             throw new IllegalArgumentException("pattern: " + pattern);
         }
         return new ClassPattern(LogPattern.getPatternOption(pattern)
@@ -55,7 +62,7 @@ public class ClassPattern implements LogPattern {
         }
     }
 
-    public enum DisplayOption {
+    enum DisplayOption {
         FULL,
         SIMPLE,
         COMPRESSED

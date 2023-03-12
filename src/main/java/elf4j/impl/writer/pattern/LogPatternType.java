@@ -5,96 +5,127 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ *
+ */
 public enum LogPatternType {
+    /**
+     *
+     */
     TIMESTAMP {
         @Override
         LogPattern parsePattern(String pattern) {
-            return this.isTargetOf(pattern) ? TimestampPattern.from(pattern) : null;
+            return this.isTargetTypeOf(pattern) ? TimestampPattern.from(pattern) : null;
         }
 
         @Override
-        public boolean isTargetOf(String pattern) {
+        public boolean isTargetTypeOf(String pattern) {
             return isPatternOfType(this, pattern);
         }
     },
+    /**
+     *
+     */
     LEVEL {
         @Override
-        public boolean isTargetOf(String pattern) {
+        public boolean isTargetTypeOf(String pattern) {
             return isPatternOfType(this, pattern);
         }
 
         @Override
         LogPattern parsePattern(String pattern) {
-            return this.isTargetOf(pattern) ? LevelPattern.from(pattern) : null;
+            return this.isTargetTypeOf(pattern) ? LevelPattern.from(pattern) : null;
         }
     },
+    /**
+     *
+     */
     THREAD {
         @Override
-        public boolean isTargetOf(String pattern) {
+        public boolean isTargetTypeOf(String pattern) {
             return isPatternOfType(this, pattern);
         }
 
         @Override
         LogPattern parsePattern(String pattern) {
-            return this.isTargetOf(pattern) ? ThreadPattern.from(pattern) : null;
+            return this.isTargetTypeOf(pattern) ? ThreadPattern.from(pattern) : null;
         }
     },
+    /**
+     *
+     */
     CLASS {
         @Override
-        public boolean isTargetOf(String pattern) {
+        public boolean isTargetTypeOf(String pattern) {
             return isPatternOfType(this, pattern);
         }
 
         @Override
         LogPattern parsePattern(String pattern) {
-            return this.isTargetOf(pattern) ? ClassPattern.from(pattern) : null;
+            return this.isTargetTypeOf(pattern) ? ClassPattern.from(pattern) : null;
         }
     },
+    /**
+     *
+     */
     METHOD {
         @Override
-        public boolean isTargetOf(String pattern) {
+        public boolean isTargetTypeOf(String pattern) {
             return isPatternOfType(this, pattern);
         }
 
         @Override
         LogPattern parsePattern(String pattern) {
-            return this.isTargetOf(pattern) ? MethodPattern.from(pattern) : null;
+            return this.isTargetTypeOf(pattern) ? MethodPattern.from(pattern) : null;
         }
     },
+    /**
+     *
+     */
     MESSAGE {
         @Override
-        public boolean isTargetOf(String pattern) {
+        public boolean isTargetTypeOf(String pattern) {
             return isPatternOfType(this, pattern);
         }
 
         @Override
         LogPattern parsePattern(String pattern) {
-            return this.isTargetOf(pattern) ? MessageAndExceptionPattern.from(pattern) : null;
+            return this.isTargetTypeOf(pattern) ? MessageAndExceptionPattern.from(pattern) : null;
         }
     },
+    /**
+     *
+     */
     JSON {
         @Override
-        public boolean isTargetOf(String pattern) {
+        public boolean isTargetTypeOf(String pattern) {
             return isPatternOfType(this, pattern);
         }
 
         @Override
         LogPattern parsePattern(String pattern) {
-            return this.isTargetOf(pattern) ? JsonPattern.from(pattern) : null;
+            return this.isTargetTypeOf(pattern) ? JsonPattern.from(pattern) : null;
         }
     },
+    /**
+     *
+     */
     VERBATIM {
         @Override
-        public boolean isTargetOf(String pattern) {
+        public boolean isTargetTypeOf(String pattern) {
             return isPatternOfType(this, pattern);
         }
 
         @Override
         LogPattern parsePattern(String pattern) {
-            return this.isTargetOf(pattern) ? VerbatimPattern.from(pattern) : null;
+            return this.isTargetTypeOf(pattern) ? VerbatimPattern.from(pattern) : null;
         }
     };
 
+    /**
+     * @param pattern entire layout pattern text of a writer, including one or more individual pattern segments
+     * @return ordered list of individual patterns forming the entire layout pattern of the writer
+     */
     public static List<LogPattern> parseAllPatternsOrThrow(String pattern) {
         List<LogPattern> logPatterns = new ArrayList<>();
         int length = pattern.length();
@@ -125,7 +156,7 @@ public enum LogPatternType {
 
     private static boolean isPatternOfType(LogPatternType targetPatternType, String pattern) {
         if (targetPatternType == VERBATIM) {
-            return EnumSet.complementOf(EnumSet.of(VERBATIM)).stream().noneMatch(type -> type.isTargetOf(pattern));
+            return EnumSet.complementOf(EnumSet.of(VERBATIM)).stream().noneMatch(type -> type.isTargetTypeOf(pattern));
         }
         return targetPatternType.name().equalsIgnoreCase(pattern.split(":", 2)[0].trim());
     }
@@ -139,7 +170,11 @@ public enum LogPatternType {
                 .orElseThrow(() -> new IllegalArgumentException("pattern: '" + pattern + "' not parsable"));
     }
 
-    public abstract boolean isTargetOf(String pattern);
+    /**
+     * @param pattern text configuration of an individual pattern segment
+     * @return true if this pattern type is the target type of the specified pattern text
+     */
+    public abstract boolean isTargetTypeOf(String pattern);
 
     abstract LogPattern parsePattern(String pattern);
 }

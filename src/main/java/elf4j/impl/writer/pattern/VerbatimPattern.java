@@ -6,13 +6,20 @@ import lombok.Value;
 
 import javax.annotation.Nonnull;
 
+/**
+ *
+ */
 @Value
 public class VerbatimPattern implements LogPattern {
     @NonNull String text;
 
+    /**
+     * @param pattern text pattern to convert
+     * @return converted pattern object
+     */
     @Nonnull
     public static VerbatimPattern from(String pattern) {
-        if (!LogPatternType.VERBATIM.isTargetOf(pattern)) {
+        if (!LogPatternType.VERBATIM.isTargetTypeOf(pattern)) {
             throw new IllegalArgumentException(String.format(
                     "pattern '%s' looks to be targeted at another known pattern type than %s",
                     pattern,

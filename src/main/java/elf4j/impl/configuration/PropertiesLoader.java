@@ -7,11 +7,20 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Properties;
 
+/**
+ *
+ */
 public class PropertiesLoader {
+    /**
+     *
+     */
     public static final String ELF4J_PROPERTIES_LOCATION = "elf4j.properties.location";
     private static final String[] DEFAULT_PROPERTIES_LOCATIONS =
             new String[] { "/elf4j-test.properties", "/elf4j.properties" };
 
+    /**
+     * @return configuration properties loaded from either the default or specified location
+     */
     public Properties load() {
         Properties properties = new Properties();
         InputStream propertiesInputStream;

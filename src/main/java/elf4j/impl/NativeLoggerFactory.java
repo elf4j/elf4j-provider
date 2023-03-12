@@ -13,6 +13,9 @@ import lombok.NonNull;
 
 import java.util.Properties;
 
+/**
+ *
+ */
 public class NativeLoggerFactory implements LoggerFactory {
     private static final Class<Logger> DEFAULT_ACCESS_INTERFACE = Logger.class;
     private static final Level DEFAULT_LOGGER_SEVERITY_LEVEL = Level.TRACE;
@@ -28,6 +31,10 @@ public class NativeLoggerFactory implements LoggerFactory {
         this(DEFAULT_ACCESS_INTERFACE, DEFAULT_SERVICE_INTERFACE);
     }
 
+    /**
+     * @param accessInterface  the class that the API client uses to obtain access to a logger instance
+     * @param serviceInterface the class that the API client uses to invoke logging service
+     */
     public NativeLoggerFactory(@NonNull Class<?> accessInterface, @NonNull Class<?> serviceInterface) {
         this(DEFAULT_LOGGER_SEVERITY_LEVEL,
                 accessInterface,
@@ -46,10 +53,16 @@ public class NativeLoggerFactory implements LoggerFactory {
         this.logService = new DefaultLogService(serviceInterface, loggingConfiguration, writerThreadProvider);
     }
 
+    /**
+     *
+     */
     public static void refreshConfiguration() {
         refreshConfiguration(null);
     }
 
+    /**
+     * @param properties used to override those reloaded from configuration file
+     */
     public static void refreshConfiguration(Properties properties) {
         ConfigurationInstanceHolder.INSTANCE.refresh(properties);
     }

@@ -7,10 +7,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ *
+ */
 public class LevelRepository {
     private static final Level DEFAULT_LOGGER_MINIMUM_LEVEL = Level.TRACE;
     final Map<String, Level> loggerNameValueMap = new HashMap<>();
 
+    /**
+     * @param properties configuration source of all minimum output levels for loggers
+     */
     public LevelRepository(Properties properties) {
         properties.stringPropertyNames().forEach(name -> {
             if (name.trim().startsWith("level")) {
@@ -30,6 +36,10 @@ public class LevelRepository {
         });
     }
 
+    /**
+     * @param nativeLogger to search for configured minimum output level
+     * @return configured min output level for the specified logger
+     */
     public Level getLoggerMinimumLevel(NativeLogger nativeLogger) {
         String callerClassName = nativeLogger.getName();
         int rootPackageLength = callerClassName.indexOf('.');
