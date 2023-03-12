@@ -29,9 +29,8 @@ Java 8 or better
 
   The thought of console output only is the 80/20 principle, for one. Secondly, no matter the application is hosted
   on-prem or in Cloud, it's nowadays trivial to forward standard streams (stdout/stderr) as a data source to files or
-  other types of central repositories. This is usually via system level data collector agents - Fluentd/Fluent Bit, ELK,
-  DataDog, New Relic - to name a few. Setting up output channels other than the standard streams appears more suited
-  outside the concerns of application level logging.
+  other types of central repositories. This is usually done by system-level data collector agents - Fluentd/Fluent Bit,
+  ELK, DataDog, New Relic - to name a few; and no longer a concern of application-level logging.
 * Logging Format Patterns Including JSON
 
   JSON is a supported output pattern, in hopes of helping external log analysis tools. This is in addition to the usual
