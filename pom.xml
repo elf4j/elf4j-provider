@@ -2,7 +2,7 @@
 <!--
   ~ MIT License
   ~
-  ~ Copyright (c) 2023 ELF4J
+  ~ Copyright (c) 2023 Qingtian Wang
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
   ~ of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@
 
     <groupId>io.github.elf4j</groupId>
     <artifactId>elf4j-impl</artifactId>
-    <version>0.6.0</version>
+    <version>0.6.1</version>
     <packaging>jar</packaging>
     <name>elf4j-impl</name>
     <description>Native logging service provider implementation of ELF4J (Easy Logging Facade For Java)
