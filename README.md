@@ -71,7 +71,7 @@ See the ELF4J [usage sample](https://github.com/elf4j/elf4j#for-logging-service-
 
 * Level
 
-  Default global minimum output level is TRACE if not configured. Supports global and package level overrides.
+  The default global logger minimum output level is `TRACE`. Supports global and package level customizations.
 
 * Writer
 
