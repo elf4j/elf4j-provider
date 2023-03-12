@@ -39,6 +39,7 @@ public class PropertiesUtils {
                 .filter(name -> properties.getProperty(name).trim().equals(type))
                 .forEach(typeKeys::add);
         List<Map<String, String>> propertiesGroup = new ArrayList<>();
+        Collections.sort(typeKeys);
         typeKeys.forEach(k -> propertiesGroup.add(getChildProperties(k, properties)));
         return propertiesGroup;
     }

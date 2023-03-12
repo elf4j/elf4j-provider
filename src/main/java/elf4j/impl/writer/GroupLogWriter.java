@@ -3,20 +3,20 @@ package elf4j.impl.writer;
 import elf4j.Level;
 import elf4j.impl.service.LogEntry;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Properties;
-import java.util.Set;
 
 /**
  *
  */
 public class GroupLogWriter implements LogWriter {
-    private final Set<LogWriter> writers;
+    private final List<LogWriter> writers;
     private Level minimumLevel;
     private Boolean includeCallerDetail;
     private Boolean includeCallerThread;
 
-    private GroupLogWriter(Set<LogWriter> writers) {
+    private GroupLogWriter(List<LogWriter> writers) {
         this.writers = writers;
     }
 

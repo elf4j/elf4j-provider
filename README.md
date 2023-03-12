@@ -74,8 +74,9 @@ See the ELF4J [usage sample](https://github.com/elf4j/elf4j#for-logging-service-
 
 - Writer
 
-  Supports multiple console writers, each with individual configurations on output level, stream type (stdout vs.
-  stderr), and format pattern.
+  Supports multiple console writers. Each writer can have individual configurations on output level and format pattern,
+  although, with the comprehensive configuration support on a single writer's pattern and various loggers' levels, more
+  than one console writer is rarely necessary.
 
 - Output Format Pattern
     - timestamp: Format configurable per Java DateTimeFormatter syntax, default to ISO local datetime
@@ -93,26 +94,30 @@ See the ELF4J [usage sample](https://github.com/elf4j/elf4j#for-logging-service-
     - When in doubt, use lower-case.
 
   ```properties
-  ## Any level is optional, default to TRACE if omitted
-  ## This override the default global level
+  ### Any level is optional, default to TRACE if omitted
+  ### This override the default global level
   level=info
-  ## These override level of all caller classes included the specified package 
+  ### Global console output stream type, default to stdout; cannot differ per individual writers
+  #console.out.stream=stderr
+  ### These override level of all caller classes included the specified package
+  #level@elf4j.impl=error
   level@org.springframework=warn
-  ## Any writer is optional, default to a single console writer if no writer configured
+  ### Any writer is optional, default to a single console writer if no writer configured
   writer1=console
-  ## This is the default output pattern
+  ### This is the default output pattern, can be omitted
   writer1.pattern={timestamp} {level} [{thread}] {class} - {message}
-  ## This would customize the format patterns of the specified writer
+  ### This would customize the format patterns of the specified writer
   #writer1.pattern={timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ} {level:5} [{thread:name|id}] {class:simple|full|compressed}: {message}
-  ## Multiple writers are supported, each with its own configurations
+  ### Multiple writers are supported, each with its own configurations
   writer2=console
-  writer2.level=trace
-  ## Default json pattern does not include thread and caller details, and uses pretty print format for the JSON string
+  #writer2.level=trace
+  ### Default json pattern does not include thread and caller details, and uses pretty print format for the JSON string
   #writer2.pattern={json}
-  ## This would force the JSON to include the thread/caller details
+  ### This would force the JSON to include the thread/caller details
   writer2.pattern={json:caller-thread,caller-detail}
-  ## This would minify the JSON string from the pretty print format
+  ### This would minify the JSON string from the pretty print format
   #writer2.pattern={json:caller-thread,caller-detail,minify}
-  ## This would force the writer to use stderr instead of stdout
-  #writer2.stream=stderr
+  ### This would force the writer to use stderr instead of stdout
+  writer3=console
+  writer3.pattern={json}
   ```

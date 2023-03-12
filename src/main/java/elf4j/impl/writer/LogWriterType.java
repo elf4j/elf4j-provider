@@ -13,11 +13,12 @@ public enum LogWriterType {
      */
     CONSOLE {
         @Override
-        Set<LogWriter> parseLogWriters(Properties properties) {
+        List<LogWriter> parseLogWriters(Properties properties) {
             List<Map<String, String>> configurationGroup =
                     PropertiesUtils.getPropertiesGroupOfType("console", properties);
-            Set<LogWriter> consoleWriters = new HashSet<>();
-            configurationGroup.forEach(configuration -> consoleWriters.add(ConsoleWriter.from(configuration)));
+            List<LogWriter> consoleWriters = new ArrayList<>();
+            configurationGroup.forEach(configuration -> consoleWriters.add(ConsoleWriter.from(configuration,
+                    properties.getProperty("console.out.stream"))));
             return consoleWriters;
         }
     };
@@ -26,11 +27,11 @@ public enum LogWriterType {
      * @param properties configuration source
      * @return all writers parsed from the specified properties
      */
-    public static Set<LogWriter> parseAllLogWriters(Properties properties) {
-        Set<LogWriter> logWriters = new HashSet<>();
+    public static List<LogWriter> parseAllLogWriters(Properties properties) {
+        List<LogWriter> logWriters = new ArrayList<>();
         EnumSet.allOf(LogWriterType.class).forEach(type -> logWriters.addAll(type.parseLogWriters(properties)));
         return logWriters;
     }
 
-    abstract Set<LogWriter> parseLogWriters(Properties properties);
+    abstract List<LogWriter> parseLogWriters(Properties properties);
 }

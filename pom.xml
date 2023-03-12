@@ -30,7 +30,7 @@
 
     <groupId>io.github.elf4j</groupId>
     <artifactId>elf4j-impl</artifactId>
-    <version>0.5.0</version>
+    <version>0.6.0</version>
     <packaging>jar</packaging>
     <name>elf4j-impl</name>
     <description>Native logging service provider implementation of ELF4J (Easy Logging Facade For Java)
