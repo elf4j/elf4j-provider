@@ -53,6 +53,7 @@ public class PropertiesLoader {
         if (customPropertiesLocation == null) {
             propertiesInputStream = fromDefaultPropertiesLocation();
             if (propertiesInputStream == null) {
+                properties.setProperty("noop", "true");
                 return properties;
             }
         } else {

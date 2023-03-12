@@ -41,6 +41,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DefaultLoggingConfiguration implements LoggingConfiguration {
     private final Map<NativeLogger, Boolean> loggerConfigurationCache = new ConcurrentHashMap<>();
     private final PropertiesLoader propertiesLoader;
+    private boolean noop;
     private LevelRepository levelRepository;
     private WriterRepository writerRepository;
 
@@ -69,6 +70,9 @@ public class DefaultLoggingConfiguration implements LoggingConfiguration {
 
     @Override
     public boolean isEnabled(NativeLogger nativeLogger) {
+        if (this.noop) {
+            return false;
+        }
         return this.loggerConfigurationCache.computeIfAbsent(nativeLogger, this::loadLoggerConfigurationCache);
     }
 
@@ -91,6 +95,7 @@ public class DefaultLoggingConfiguration implements LoggingConfiguration {
     }
 
     private void setRepositories(@NonNull Properties properties) {
+        this.noop = Boolean.parseBoolean(properties.getProperty("noop"));
         this.levelRepository = new LevelRepository(properties);
         this.writerRepository = new WriterRepository(properties);
     }

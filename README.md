@@ -58,12 +58,17 @@ See the ELF4J [usage sample](https://github.com/elf4j/elf4j#for-logging-service-
 * Properties File Configuration Only
 
   The default configuration file location is at the root of the application class path, with file
-  name `elf4j-test.properties`; or if that is missing, then the `elf4j.properties`. Alternatively, to override the
-  default, the configuration file location can be specified via Java system property as an absolute path:
+  name `elf4j-test.properties`; or if that is missing, then `elf4j.properties`. Alternatively, to override the default
+  location, use Java system property to provide an absolute path:
 
   ```
   java -Delf4j.properties.location=/absoloute/path/to/myConfigurationFile -jar MyApplicaiton.jar
   ``` 
+
+  Absence of a configuration file results in no logging (no-op) at runtime. When present, the configuration file
+  requires no/zero configuration thus can be empty - the default configuration is a stdout writer with a minimum level
+  of `TRACE` and a basic line-based logging pattern. To customize the default logging configuration, see the
+  configuration sample file below.
 
 * Level
 
