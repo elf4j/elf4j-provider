@@ -55,8 +55,8 @@ Java 8 or better
 
 ## Use It...
 
-In Maven or other build tools alike, add the [ELF4J API](https://github.com/elf4j/elf4j) module as compile-scope
-dependency and code against that. Meanwhile, include this module as runtime-scope dependency.
+As with any other [ELF4J](https://github.com/elf4j/elf4j) logging provider, code against the logging service API of the
+ELF4J facade, and include this module as runtime-scope dependency in Maven or other build tools alike:
 
 ```html
 ...
