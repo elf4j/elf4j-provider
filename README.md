@@ -79,20 +79,37 @@ See the ELF4J [usage sample](https://github.com/elf4j/elf4j#for-logging-service-
 * Writer
 
   Supports multiple console writers. Each writer can have individual configurations on output level and format pattern.
-  However, with the comprehensive configuration support on a single writer's pattern and various loggers' levels, more
-  than one console writer is rarely necessary.
+  However, with the comprehensive configuration support on a single writer's pattern and levels per various loggers,
+  more than one console writer is rarely necessary.
 
 * Output Format Pattern
-    * timestamp: Format configurable per Java DateTimeFormatter syntax, default to ISO local datetime
+    * timestamp: Format configurable per Java
+      DateTimeFormatter [pattern syntax](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#patterns),
+      default to ISO local datetime
     * level: Length configurable, default to full length
     * thread: Option of thread name or id, default to name
     * class: Option of simple, full, or compressed (only the first letter for a package segment), default to full
-    * method: Not configurable
-    * file name: Not configurable
-    * line number: Not configurable
+    * method: Not configurable, simple method name
+    * file name: Not configurable, simple file name
+    * line number: Not configurable, where the log is issued in the file
     * log message: Not configurable, always prints user message, and exception stack trace if any
     * json: Options to include thread and caller (method, line number, file name) details and minify the JSON string,
       default to no thread/caller detail and pretty print format
+
+* Output samples of default patterns
+    * Line-based
+      ```
+      2023-03-12T22:59:47.995-05:00 INFO [main] elf4j.impl.IntegrationTest$defaultLogger - Hello, world!
+      ```
+    * JSON
+      ```json
+      {
+        "timestamp": "2023-03-12T22:59:47.9951759-05:00",
+        "level": "INFO",
+        "callerClass": "elf4j.impl.IntegrationTest$defaultLogger",
+        "message": "Hello, world!"
+      }
+      ```
 
 * Sample Configuration File
     * When in doubt, use lower-case.
