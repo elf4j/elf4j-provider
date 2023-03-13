@@ -26,6 +26,7 @@
 package elf4j.impl;
 
 import elf4j.Logger;
+import elf4j.impl.core.NativeLogger;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 

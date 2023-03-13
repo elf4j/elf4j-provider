@@ -5,6 +5,10 @@
 A native logging service provider implementation of [ELF4J](https://github.com/elf4j/elf4j) (Easy Logging Facade for
 Java)
 
+* This is simply a packaging unit of the [elf4j-impl-core](https://github.com/elf4j/elf4j-impl-core) logging library,
+  using the Java [Service Provider Framework](https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html)
+  mechanism. See [elf4j-impl-core](https://github.com/elf4j/elf4j-impl-core) for implementation detail.
+
 ## User Story
 
 As an application developer using the ELF4J logging service API, I want to select a logging service provider that

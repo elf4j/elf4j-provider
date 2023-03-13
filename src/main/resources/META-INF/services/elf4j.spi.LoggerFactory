@@ -23,5 +23,5 @@
 #
 #
 
-elf4j.impl.NativeLoggerFactory
+elf4j.impl.core.NativeLoggerFactory
 #elf4j.util.NoopLoggerFactory
