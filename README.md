@@ -53,14 +53,29 @@ Java 8 or better
 
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.elf4j/elf4j-impl.svg?label=Maven%20Central)](https://central.sonatype.com/search?smo=true&q=pkg%253Amaven%252Fio.github.elf4j%252Felf4j-impl)
 
-Add [ELF4J facade API](https://github.com/elf4j/elf4j) as compile-scope dependency, and this module as runtime-scope
-dependency in Maven or other build tools alike.
-
 ## Use It...
+
+In Maven or other build tools alike, add the [ELF4J API](https://github.com/elf4j/elf4j) module as compile-scope
+dependency and code against that. Meanwhile, include this module as runtime-scope dependency.
+
+```html
+...
+<dependency>
+    <groupId>io.github.elf4j</groupId>
+    <artifactId>elf4j</artifactId>
+    <scope>compile</scope>
+</dependency>
+<dependency>
+    <groupId>io.github.elf4j</groupId>
+    <artifactId>elf4j-impl</artifactId>
+    <scope>runtime</scope>
+</dependency>
+...
+```
 
 ### Usage Sample
 
-See the ELF4J [usage sample](https://github.com/elf4j/elf4j#for-logging-service-api-users).
+See the ELF4J api [usage sample](https://github.com/elf4j/elf4j#for-logging-service-api-users).
 
 ### Configuration
 
