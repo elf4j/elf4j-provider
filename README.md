@@ -53,8 +53,8 @@ Java 8 or better
 
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.elf4j/elf4j-impl.svg?label=Maven%20Central)](https://central.sonatype.com/search?smo=true&q=pkg%253Amaven%252Fio.github.elf4j%252Felf4j-impl)
 
-Add [ELF4J](https://github.com/elf4j/elf4j) facade API as compile dependency, and this module as runtime dependency in
-Maven or other build tools alike.
+Add [ELF4J facade API](https://github.com/elf4j/elf4j) as compile-scope dependency, and this module as runtime-scope
+dependency in Maven or other build tools alike.
 
 ## Use It...
 
