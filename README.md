@@ -45,9 +45,9 @@ Java 8 or better
 
 * Configuration Refresh at Runtime
 
-  Provides API to support configuration refresh during runtime, with option of passing in overriding properties in
-  addition to reloading the configuration file. The most frequent use case would be to change the minimum log output
-  level, without restart of the application.
+  Supports configuration refresh during runtime via API, with option of passing in overriding properties in addition to
+  reloading the configuration file. The most frequent use case would be to change the minimum log output level, without
+  restarting the application.
 
 ## Get It...
 
