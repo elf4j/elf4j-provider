@@ -84,7 +84,7 @@ See the ELF4J [usage sample](https://github.com/elf4j/elf4j#for-logging-service-
 
 * Output Format Pattern
     * timestamp: Format configurable per Java
-      DateTimeFormatter [pattern syntax](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#patterns),
+      `DateTimeFormatter` [pattern syntax](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#patterns),
       default to ISO local datetime
     * level: Length configurable, default to full length
     * thread: Option of thread name or id, default to name
