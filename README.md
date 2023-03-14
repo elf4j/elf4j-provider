@@ -32,11 +32,10 @@ Java 8 or better
 
 * Standard Streams Output Only
 
-  Thoughts of having only the standard streams output include the 80/20 principle, for one. Secondly, no matter the
-  application is hosted on-prem or in Cloud, it's nowadays trivial to forward standard streams (stdout/stderr) as a data
-  source to other destinations than the Console, e.g. files or other types of central repositories. This is usually done
-  by system-level data collector agents - Fluentd/Fluent Bit, ELK, DataDog, and New Relic, to name a few - and no longer
-  a concern of application-level logging.
+  Whether an application is hosted on-prem or in Cloud, it's trivial, as a system-level operation, to forward the
+  standard streams (stdout/stderr) as a data source to other destinations than the Console. Those destinations include
+  files and other types of central repositories. This is usually done by system-level data collector agents nowadays -
+  Fluentd/Fluent Bit, ELK, DataDog, and New Relic, to name a few - and no longer a concern of application-level logging.
 
 * Logging Format Patterns Including JSON
 
