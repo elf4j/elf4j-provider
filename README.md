@@ -83,7 +83,7 @@ See the ELF4J api [usage sample](https://github.com/elf4j/elf4j#for-logging-serv
 * Properties File Configuration Only
 
   The default configuration file location is at the root of the application class path, with file
-  name `elf4j-test.properties`; or if that is missing, then `elf4j.properties`. Alternatively, to override the default
+  name `elf4j-test.properties`, or if that is missing, `elf4j.properties`. Alternatively, to override the default
   location, use Java system property to provide an absolute path:
 
   ```
