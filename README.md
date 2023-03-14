@@ -138,6 +138,8 @@ See the ELF4J api [usage sample](https://github.com/elf4j/elf4j#for-logging-serv
     * When in doubt, use lower-case.
 
   ```properties
+  ### If noop is set to true, it takes precedence and no logging will be performed
+  #noop=true
   ### Any level is optional, default to TRACE if omitted
   ### This override the default global level
   level=info
