@@ -32,10 +32,10 @@ Java 8 or better
 
 * Standard Streams Output Only
 
-  Whether an application is hosted on-prem or in Cloud, it's trivial, as a system-level operation, to forward the
-  standard streams (stdout/stderr) as a data source to other destinations than the Console. Those destinations include
-  files and other types of central repositories. This is usually done by system-level data collector agents nowadays -
-  Fluentd/Fluent Bit, ELK, DataDog, and New Relic, to name a few - and no longer a concern of application-level logging.
+  It's a trivial system-level operation to forward standard streams (stdout/stderr) as a data source to destinations
+  besides the Console. Those destinations include files and other types of central repositories. A recent trend has been
+  that such data aggregation be done via system-level collector agents (open source or commercial), and no longer a
+  concern of the application-level logging.
 
 * Logging Format Patterns Including JSON
 
