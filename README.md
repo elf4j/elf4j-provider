@@ -156,7 +156,7 @@ See the ELF4J api [usage sample](https://github.com/elf4j/elf4j#for-logging-serv
   #writer1.pattern={timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ} {level:5} [{thread:name|id}] {class:simple|full|compressed}: {message}
   ### Multiple writers are supported, each with its own configurations
   writer2=console
-  #writer2.level=trace
+  writer2.level=trace
   ### Default json pattern does not include thread and caller details, and uses pretty print format for the JSON string
   #writer2.pattern={json}
   ### This would force the JSON to include the thread/caller details
