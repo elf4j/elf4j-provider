@@ -163,7 +163,4 @@ See the ELF4J api [usage sample](https://github.com/elf4j/elf4j#for-logging-serv
   writer2.pattern={json:caller-thread,caller-detail}
   ### This would minify the JSON string from the pretty print format
   #writer2.pattern={json:caller-thread,caller-detail,minify}
-  ### This would force the writer to use stderr instead of stdout
-  writer3=console
-  writer3.pattern={json}
   ```
