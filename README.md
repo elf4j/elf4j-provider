@@ -30,12 +30,13 @@ Java 8 or better
   Logging output is always asynchronous, considering performance and moreover the 80/20 rule: When was the last time a
   use case truly required that logging had to be synchronous, and always blocking the application's normal work flow?
 
-* Console Output Only
+* Standard Streams Output Only
 
-  The thought of console output only is the 80/20 principle, for one. Secondly, no matter the application is hosted
-  on-prem or in Cloud, it's nowadays trivial to forward standard streams (stdout/stderr) as a data source to files or
-  other types of central repositories. This is usually done by system-level data collector agents - Fluentd/Fluent Bit,
-  ELK, DataDog, and New Relic, to name a few - and no longer a concern of application-level logging.
+  Thoughts of having only the standard streams output include the 80/20 principle, for one. Secondly, no matter the
+  application is hosted on-prem or in Cloud, it's nowadays trivial to forward standard streams (stdout/stderr) as a data
+  source to other destinations than the Console - files or other types of central repositories. This is usually done by
+  system-level data collector agents - Fluentd/Fluent Bit, ELK, DataDog, and New Relic, to name a few - and no longer a
+  concern of application-level logging.
 
 * Logging Format Patterns Including JSON
 
