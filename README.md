@@ -32,11 +32,11 @@ Java 8 or better
 
 * Standard Streams Output Only
 
-  It may be trivial for logging to support other output channels than the standard streams (stdout/stderr). Yet it's
-  arguably more trivial, on the system level, to forward standard streams as a data source to destinations other than
-  the Console. Those destinations include log files and various types of central repositories. A recent trend has been
-  that such data aggregation be done via system-level collector agents (open source or commercial), and no longer a
-  concern of the application-level logging.
+  Other than the standard streams (stdout/stderr), it may be trivial for logging to support other output channels. Yet
+  on the system level, it's arguably more trivial to forward standard streams as a data source to other destinations
+  than the Console, e.g. log files and various types of central repositories. A recent trend has been that such data
+  aggregation be done via system-level collector agents (open source or commercial), and no longer a concern of the
+  application-level logging.
 
 * Logging Format Patterns Including JSON
 
