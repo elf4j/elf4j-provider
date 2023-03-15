@@ -34,7 +34,7 @@ Java 8 or better
 
   Besides the standard streams (stdout/stderr), it may be trivial for the application logging to support other output
   channels. Yet it's arguably more trivial for the hosting system to redirect/forward standard streams as a data source
-  to destinations other than the Console, e.g. to log files and/or various types of central repositories. This can be as
+  to other destinations than the system Console, e.g. to log files and/or other central repositories. This can be as
   simple as a Linux shell redirect or sophisticated as clustered/managed collector agents, and no longer a concern of
   the application-level logging.
 
