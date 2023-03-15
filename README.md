@@ -35,8 +35,8 @@ Java 8 or better
   Besides the standard streams (stdout/stderr), it may be trivial for the application logging to support other output
   channels. Yet it's arguably more trivial for the hosting system to redirect/forward standard streams as a data source
   to other destinations than the system Console, e.g. to log files and/or other central repositories. This can be as
-  simple as a Linux shell redirect or sophisticated as clustered/managed collector agents, and no longer a concern of
-  the application-level logging.
+  simple as a Linux shell redirect or sophisticated as clustered/managed collector agents, but not a concern of the
+  application-level logging.
 
 * Logging Format Patterns Including JSON
 
@@ -102,10 +102,9 @@ See the ELF4J api [usage sample](https://github.com/elf4j/elf4j#for-logging-serv
 
 * Writer
 
-  Supports multiple console writers. Each writer can have individual configurations on output level and format pattern.
-  However, with the comprehensive configuration support on a single writer's pattern and levels per various loggers,
-  more than one console writer is rarely necessary.
-
+  Supports multiple Standard Streams writers. Each writer can have individual configurations on output level and format
+  pattern. However, with the comprehensive configuration support on minimum output levels and patterns, more than one
+  stream writer is rarely necessary.
 * Output Format Pattern
     * timestamp: Format configurable per Java
       `DateTimeFormatter` [pattern syntax](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#patterns),
@@ -157,19 +156,19 @@ See the ELF4J api [usage sample](https://github.com/elf4j/elf4j#for-logging-serv
   ### Any level is optional, default to TRACE if omitted
   ### This override the default global level
   level=info
-  ### Global console output stream type, default to stdout; cannot differ per individual writers
-  #console.out.stream=stderr
+  ### Global output stream type, default to stdout; cannot differ per individual writers
+  #stream.type=stderr
   ### These override level of all caller classes included the specified package
   #level@elf4j.impl=error
   #level@org.springframework=warn
-  ### Any writer is optional, default to a single console writer if no writer configured
-  writer1=console
+  ### Any writer is optional, default to a single stream writer if no writer configured
+  writer1=stream
   ### This is the default output pattern, can be omitted
   writer1.pattern={timestamp} {level} [{thread}] {class} - {message}
   ### This would customize the format patterns of the specified writer
   #writer1.pattern={timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ} {level:5} [{thread:name|id}] {class:simple|full|compressed}: {message}
   ### Multiple writers are supported, each with its own configurations
-  writer2=console
+  writer2=stream
   writer2.level=trace
   ### Default json pattern does not include thread and caller details, and uses one-line minified JSON string
   #writer2.pattern={json}
