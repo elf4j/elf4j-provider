@@ -120,33 +120,33 @@ See the ELF4J api [usage sample](https://github.com/elf4j/elf4j#for-logging-serv
     * json: Options to include thread and caller (method, line number, file name) details and minify the JSON string,
       default to no thread/caller detail and pretty print format
 
-  * Output samples
-      * Line-based (default pattern: {timestamp} {level} [{thread}] {class} - {message})
-        ```
-        2023-03-14T21:21:33.118-05:00 INFO [main] elf4j.impl.core.IntegrationTest$defaultLogger - Hello, world!
-        ```
-      * JSON (default one-line, no thread or caller detail: {json})
-        ```json
-        {"timestamp":"2023-03-14T21:21:33.1180212-05:00","level":"INFO","callerClass":"elf4j.impl.core.IntegrationTest$defaultLogger","message":"Hello, world!"}
-        ```
-      * JSON (pretty print, with thread and caller detail: {json:caller-thread,caller-detail,pretty})
-        ```json
-        {
-          "timestamp": "2023-03-14T21:21:33.1180212-05:00",
-          "level": "INFO",
-          "callerThread": {
-            "name": "main",
-            "id": 1
-          },
-          "callerDetail": {
-            "className": "elf4j.impl.core.IntegrationTest$defaultLogger",
-            "methodName": "hey",
-            "lineNumber": 41,
-            "fileName": "IntegrationTest.java"
-          },
-          "message": "Hello, world!"
-        }
-        ```
+* Output samples
+    * Line-based (default pattern: {timestamp} {level} [{thread}] {class} - {message})
+      ```
+      2023-03-14T21:21:33.118-05:00 INFO [main] elf4j.impl.core.IntegrationTest$defaultLogger - Hello, world!
+      ```
+    * JSON (default one-line, no thread or caller detail: {json})
+      ```json
+      {"timestamp":"2023-03-14T21:21:33.1180212-05:00","level":"INFO","callerClass":"elf4j.impl.core.IntegrationTest$defaultLogger","message":"Hello, world!"}
+      ```
+    * JSON (pretty print, with thread and caller detail: {json:caller-thread,caller-detail,pretty})
+      ```json
+      {
+        "timestamp": "2023-03-14T21:21:33.1180212-05:00",
+        "level": "INFO",
+        "callerThread": {
+          "name": "main",
+          "id": 1
+        },
+        "callerDetail": {
+          "className": "elf4j.impl.core.IntegrationTest$defaultLogger",
+          "methodName": "hey",
+          "lineNumber": 41,
+          "fileName": "IntegrationTest.java"
+        },
+        "message": "Hello, world!"
+      }
+      ```
 
 * Sample Configuration File
     * When in doubt, use lower-case.
