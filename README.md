@@ -34,7 +34,7 @@ Java 8 or better
 
   Other than the standard streams (stdout/stderr), it may be trivial for logging to support other output channels. Yet
   on the system level, it's arguably more trivial to forward standard streams as a data source to other destinations
-  than the Console, e.g. log files and various types of central repositories. A recent trend has been that such data
+  than the Console, e.g. to log files and various types of central repositories. A recent trend has been that such data
   aggregation be done via system-level collector agents (open source or commercial), and no longer a concern of the
   application-level logging.
 
