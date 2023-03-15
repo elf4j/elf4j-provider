@@ -161,7 +161,7 @@ See the ELF4J api [usage sample](https://github.com/elf4j/elf4j#for-logging-serv
   #console.out.stream=stderr
   ### These override level of all caller classes included the specified package
   #level@elf4j.impl=error
-  level@org.springframework=warn
+  #level@org.springframework=warn
   ### Any writer is optional, default to a single console writer if no writer configured
   writer1=console
   ### This is the default output pattern, can be omitted
