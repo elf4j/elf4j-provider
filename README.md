@@ -178,6 +178,6 @@ See the ELF4J api [usage sample](https://github.com/elf4j/elf4j#for-logging-serv
 
 * Configuration Refresh
 
-`ServiceConfigurationManager.refreshConfiguration()` will reload the configuration file and apply the latest file
-properties during runtime. `ServiceConfigurationManager.refreshConfiguration(Properties)` will apply the passed
-properties as override, in addition to reloading the configuration file.
+  `ServiceConfigurationManager.refreshConfiguration()` will reload the configuration file and apply the latest file
+  properties during runtime. `ServiceConfigurationManager.refreshConfiguration(Properties)` will apply the passed
+  properties as override, in addition to reloading the configuration file.
