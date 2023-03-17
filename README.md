@@ -175,3 +175,9 @@ See the ELF4J api [usage sample](https://github.com/elf4j/elf4j#for-logging-serv
   ### This would force the JSON to include the thread/caller details, and use pretty print format
   writer2.pattern={json:caller-thread,caller-detail,pretty}
   ```
+
+* Configuration Refresh
+
+`ServiceConfigurationManager.refreshConfiguration()` will reload the configuration file and apply the latest file
+properties during runtime. `ServiceConfigurationManager.refreshConfiguration(Properties)` will apply the passed
+properties as override, in addition to reloading the configuration file.
