@@ -102,9 +102,10 @@ See the ELF4J api [usage sample](https://github.com/elf4j/elf4j#for-logging-serv
 
 * Writer
 
-  Supports multiple Standard Streams writers. Each writer can have individual configurations on output level and format
-  pattern. However, with the comprehensive configuration support on minimum output levels and patterns, more than one
-  stream writer is rarely necessary.
+  Supports multiple Standard Streams writers. Each writer can have individual configurations on minimum output level,
+  format pattern, and type of out stream (stdout/err/auto). However, with the comprehensive configuration support on
+  writer patterns and various minimum output levels per caller classes, more than one stream writer is rarely necessary.
+
 * Output Format Pattern
     * timestamp: Format configurable per Java
       `DateTimeFormatter` [pattern syntax](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#patterns),
@@ -120,15 +121,15 @@ See the ELF4J api [usage sample](https://github.com/elf4j/elf4j#for-logging-serv
       default to no thread/caller detail and pretty print format
 
 * Output samples
-    * Line-based (default pattern: {timestamp} {level} [{thread}] {class} - {message})
+    * Line-based Default
       ```
       2023-03-14T21:21:33.118-05:00 INFO [main] elf4j.impl.core.IntegrationTest$defaultLogger - Hello, world!
       ```
-    * JSON (default one-line, no thread or caller detail: {json})
+    * JSON Default (one-line, minified, no thread or caller detail)
       ```json
       {"timestamp":"2023-03-14T21:21:33.1180212-05:00","level":"INFO","callerClass":"elf4j.impl.core.IntegrationTest$defaultLogger","message":"Hello, world!"}
       ```
-    * JSON (pretty print, with thread and caller detail: {json:caller-thread,caller-detail,pretty})
+    * JSON Custom (pretty print, with thread and caller detail)
       ```json
       {
         "timestamp": "2023-03-14T21:21:33.1180212-05:00",
@@ -151,33 +152,31 @@ See the ELF4J api [usage sample](https://github.com/elf4j/elf4j#for-logging-serv
     * When in doubt, use lower-case.
 
   ```properties
-  ### If noop is set to true, it takes precedence and no logging will be performed
-  #noop=true
   ### Any level is optional, default to TRACE if omitted
   ### This override the default global level
   level=info
-  ### Global output stream type, default to stdout; cannot differ per individual writers
-  #stream.type=stderr
   ### These override level of all caller classes included the specified package
   #level@elf4j.impl=error
-  #level@org.springframework=warn
-  ### Any writer is optional, default to a single stream writer if no writer configured
-  writer1=stream
+  level@org.springframework=warn
+  ### Any writer is optional, default to a single standard streams writer if no writer configured
+  writer1=standard
+  ### Writer stream can be stdout/stderr/auto, default to stdout; auto means to use stdout if severity level is lower than WARN, otherwise stderr
+  #writer1.stream=auto
   ### This is the default output pattern, can be omitted
   writer1.pattern={timestamp} {level} [{thread}] {class} - {message}
   ### This would customize the format patterns of the specified writer
-  #writer1.pattern={timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ} {level:5} [{thread:name|id}] {class:simple|full|compressed}: {message}
+  #writer1.pattern={timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ} {level:5} [{thread:name|id}] {class:simple|full|compressed} - {message}
   ### Multiple writers are supported, each with its own configurations
-  writer2=stream
-  writer2.level=trace
-  ### Default json pattern does not include thread and caller details, and uses one-line minified JSON string
+  writer2=standard
+  #writer2.level=trace
+  ### Default json pattern does not include thread and caller details, and uses minified one-line format for the JSON string
   #writer2.pattern={json}
-  ### This would force the JSON to include the thread/caller details, and use pretty print format
+  ### This would force the JSON to include the thread/caller details
   writer2.pattern={json:caller-thread,caller-detail,pretty}
   ```
 
 * Configuration Refresh
 
   `ServiceConfigurationManager.refreshConfiguration()` will reload the configuration file and apply the latest file
-  properties during runtime. `ServiceConfigurationManager.refreshConfiguration(Properties)` will apply the passed
+  properties during runtime. `ServiceConfigurationManager.refreshConfiguration(Properties)` will apply the passed-in
   properties as override, in addition to reloading the configuration file.
