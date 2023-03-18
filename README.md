@@ -3,17 +3,13 @@
 # elf4j-impl
 
 A native logging service provider implementation of [ELF4J](https://github.com/elf4j/elf4j) (Easy Logging Facade for
-Java)
-
-* This is simply a packaging unit of the [elf4j-impl-core](https://github.com/elf4j/elf4j-impl-core) logging library,
-  using the Java [Service Provider Framework](https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html)
-  mechanism. See [elf4j-impl-core](https://github.com/elf4j/elf4j-impl-core) for implementation detail.
+Java), and complete drop-in logging solution for any Java application
 
 ## User Story
 
-As an application developer using the ELF4J logging service API, I want to select a logging service provider that
-natively implements the ELF4J API, so that I can opt to use it at application deploy time, without code change, as with
-any other ELF4J logging service providers.
+As an application developer using the ELF4J logging facade, I want to have a logging service provider that natively
+implements the ELF4J API, so that I can opt to use it at application deploy time, without code change, as with any other
+ELF4J logging service providers.
 
 ## Prerequisite
 
@@ -22,6 +18,10 @@ Java 8 or better
 ## Implementation Notes
 
 * Guiding principle: Reasonable default and Pareto's 80/20 rule
+
+* This is simply a packaging unit of the [elf4j-impl-core](https://github.com/elf4j/elf4j-impl-core) logging library,
+  using the Java [Service Provider Framework](https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html)
+  mechanism. See [elf4j-impl-core](https://github.com/elf4j/elf4j-impl-core) for implementation detail.
 
 ## Features
 
