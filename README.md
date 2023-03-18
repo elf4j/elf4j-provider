@@ -154,13 +154,15 @@ See ELF4J facade [usage sample](https://github.com/elf4j/elf4j#for-logging-servi
     * When in doubt, use lower-case.
 
   ```properties
+  ### noop flag if set to true will be globally overriding, no logging will be performed
+  #noop=true
   ### Any level is optional, default to TRACE if omitted
   ### This override the default global level
   level=info
   ### These override level of all caller classes included the specified package
   #level@elf4j.impl=error
   level@org.springframework=warn
-  ### Any writer is optional, default to a single standard streams writer if no writer configured
+  ### Any writer is optional, default to a single standard writer if no writer configured
   writer1=standard
   ### Writer stream can be stdout/stderr/auto, default to stdout; auto means to use stdout if severity level is lower than WARN, otherwise stderr
   #writer1.stream=auto
