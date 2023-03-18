@@ -8,8 +8,8 @@ Java), and complete drop-in logging solution for any Java application
 ## User Story
 
 As an application developer using the ELF4J logging facade, I want to have a logging service provider that natively
-implements the ELF4J API, so that I can opt to use it at application deploy time, without code change, as with any other
-ELF4J logging service providers.
+implements the ELF4J [API](https://github.com/elf4j/elf4j#service-interface-and-access-api), so that I can opt to use it
+at application deploy time, without code change, as with any other ELF4J logging service providers.
 
 ## Prerequisite
 
