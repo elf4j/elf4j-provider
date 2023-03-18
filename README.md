@@ -57,8 +57,8 @@ Java 8 or better
 ## Use It...
 
 As with any other [ELF4J](https://github.com/elf4j/elf4j) logging provider, client application should code
-against [service API](https://github.com/elf4j/elf4j#service-interface-and-access-api) of the ELF4J facade, and include
-this module as runtime-scope dependency in Maven or other build tools alike:
+against [service API](https://github.com/elf4j/elf4j#service-interface-and-access-api) of the ELF4J facade, and drop in
+this provider implementation as a runtime-scope dependency in Maven or other build tools alike:
 
 ```html
 ...
@@ -74,6 +74,8 @@ this module as runtime-scope dependency in Maven or other build tools alike:
 </dependency>
 ...
 ```
+
+More details [here](https://github.com/elf4j/elf4j#for-logging-service-api-users).
 
 ### Usage Sample
 
