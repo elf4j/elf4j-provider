@@ -75,7 +75,7 @@ this provider implementation as a runtime-scope dependency in Maven or other bui
 ...
 ```
 
-More details [here](https://github.com/elf4j/elf4j#for-logging-service-api-users).
+More details [here](https://github.com/elf4j/elf4j#no-op-by-default).
 
 ### API Sample Usage
 
