@@ -72,6 +72,12 @@ this provider implementation as a runtime-scope dependency in Maven or other bui
 ...
 ```
 
+In case of multiple ELF4J service providers in classpath, pick this one like so:
+
+```
+java -Delf4j.logger.factory.fqcn="elf4j.impl.core.NativeLoggerFactory" MyApplication
+```
+
 More details [here](https://github.com/elf4j/elf4j#no-op-by-default).
 
 ### API Sample Usage
