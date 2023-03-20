@@ -1,5 +1,3 @@
-[![](https://img.shields.io/static/v1?label=github&message=repo&color=blue)](https://github.com/elf4j/elf4j-impl)
-
 # elf4j-impl
 
 A native logging service provider implementation of [ELF4J](https://github.com/elf4j/elf4j) (Easy Logging Facade for
@@ -7,9 +5,8 @@ Java), and a complete drop-in logging solution for any Java application
 
 ## User Story
 
-As an application developer using the ELF4J logging facade, I want to have a logging service provider that natively
-implements the ELF4J [API](https://github.com/elf4j/elf4j#service-interface-and-access-api), so that I can opt to use it
-at application deploy time, without code change, as with any other ELF4J logging service providers.
+As an application developer using the ELF4J logging facade, I want to have the option of using a logging service
+provider that natively implements the ELF4J [API](https://github.com/elf4j/elf4j#service-interface-and-access-api).
 
 ## Prerequisite
 
