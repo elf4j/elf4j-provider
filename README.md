@@ -3,7 +3,7 @@
 # elf4j-impl
 
 A native logging service provider implementation of [ELF4J](https://github.com/elf4j/elf4j) (Easy Logging Facade for
-Java), and complete drop-in logging solution for any Java application
+Java), and a complete drop-in logging solution for any Java application
 
 ## User Story
 
