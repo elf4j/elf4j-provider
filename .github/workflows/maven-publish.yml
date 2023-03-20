@@ -1,4 +1,4 @@
-name: OSSRH Maven Central Deploy
+name: Publish Artifact
 
 on:
   release:
@@ -20,10 +20,9 @@ jobs:
         server-password: MAVEN_PASSWORD
         gpg-private-key: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
         gpg-passphrase: MAVEN_GPG_PASSPHRASE
-    - name: Publish to OSSRH for Maven Central
+    - name: Publish to OSSRH
       run: mvn --batch-mode deploy -Prelease
       env:
         MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
         MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
         MAVEN_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
-        
