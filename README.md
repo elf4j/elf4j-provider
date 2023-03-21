@@ -164,7 +164,6 @@ See ELF4J facade [usage sample](https://github.com/elf4j/elf4j#for-logging-servi
   ### This override the default global level
   level=info
   ### These override level of all caller classes included the specified package
-  #level@elf4j.providerider=error
   level@org.springframework=warn
   ### Any writer is optional, default to a single standard writer if no writer configured
   writer1=standard
@@ -179,7 +178,7 @@ See ELF4J facade [usage sample](https://github.com/elf4j/elf4j#for-logging-servi
   #writer2.level=trace
   ### Default json pattern does not include thread and caller details, and uses minified one-line format for the JSON string
   #writer2.pattern={json}
-  ### This would force the JSON to include the thread/caller details
+  ### This would force the JSON to include the thread/caller details with pretty print format
   writer2.pattern={json:caller-thread,caller-detail,pretty}
   ```
 
