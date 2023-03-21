@@ -23,7 +23,7 @@
  *
  */
 
-package elf4j.impl;
+package elf4j.provider;
 
 import elf4j.Logger;
 import org.junit.jupiter.api.Nested;

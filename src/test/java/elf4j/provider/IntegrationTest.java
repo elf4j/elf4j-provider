@@ -23,10 +23,10 @@
  *
  */
 
-package elf4j.impl;
+package elf4j.provider;
 
 import elf4j.Logger;
-import elf4j.impl.core.NativeLogger;
+import elf4j.engine.NativeLogger;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 

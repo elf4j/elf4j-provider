@@ -1,12 +1,12 @@
-# elf4j-impl
+# elf4j-provider
 
-A native log service provider implementation of [ELF4J](https://github.com/elf4j/elf4j) (Easy Logging Facade for Java),
-and a complete drop-in logging solution for any Java application
+A native log _service provider_ implementation of [ELF4J](https://github.com/elf4j/elf4j) (Easy Logging Facade for
+Java), and a complete drop-in logging solution for any Java application
 
 ## User Story
 
-As an application developer using ELF4J for logging, I want to have the option of using a runtime log service
-provider that natively implements the [API and SPI](https://github.com/elf4j/elf4j#service-interface-and-access-api) of
+As an application developer using the ELF4J logging facade, I want to have the option of using a runtime log _service
+provider_ that natively implements the [API and SPI](https://github.com/elf4j/elf4j#service-interface-and-access-api) of
 ELF4J.
 
 ## Prerequisite
@@ -17,9 +17,9 @@ Java 8 or better
 
 * Guiding principle: Reasonable default and Pareto's 80/20 rule
 
-* This is simply a packaging unit of the [elf4j-impl-core](https://github.com/elf4j/elf4j-impl-core) logging library,
-  using the Java [Service Provider Framework](https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html)
-  mechanism. See [elf4j-impl-core](https://github.com/elf4j/elf4j-impl-core) for implementation detail.
+* This is simply a packaging unit of the [elf4j-engine](https://github.com/elf4j/elf4j-engine), using the
+  Java [Service Provider Framework](https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html) mechanism.
+  See [elf4j-engine](https://github.com/elf4j/elf4j-engine) for implementation details.
 
 ## Features
 
@@ -50,7 +50,7 @@ Java 8 or better
 
 ## Get It...
 
-[![Maven Central](https://img.shields.io/maven-central/v/io.github.elf4j/elf4j-impl.svg?label=Maven%20Central)](https://central.sonatype.com/search?smo=true&q=pkg%253Amaven%252Fio.github.elf4j%252Felf4j-impl)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.elf4j/elf4j-provider.svg?label=Maven%20Central)](https://central.sonatype.com/search?smo=true&q=pkg%253Amaven%252Fio.github.elf4j%252Felf4j-provider)
 
 ## Use It...
 
@@ -67,7 +67,7 @@ this provider implementation as a runtime-scope dependency in Maven or other bui
 </dependency>
 <dependency>
     <groupId>io.github.elf4j</groupId>
-    <artifactId>elf4j-impl</artifactId>
+    <artifactId>elf4j-provider</artifactId>
     <scope>runtime</scope>
 </dependency>
 ...
@@ -76,7 +76,7 @@ this provider implementation as a runtime-scope dependency in Maven or other bui
 In case of multiple ELF4J service providers in classpath, pick this one like so:
 
 ```
-java -Delf4j.logger.factory.fqcn="elf4j.impl.core.NativeLoggerFactory" MyApplication
+java -Delf4j.logger.factory.fqcn="elf4j.engine.NativeLoggerFactory" MyApplication
 ```
 
 More details [here](https://github.com/elf4j/elf4j#no-op-by-default).
@@ -129,11 +129,11 @@ See ELF4J facade [usage sample](https://github.com/elf4j/elf4j#for-logging-servi
 * Output samples
     * Line-based Default
       ```
-      2023-03-14T21:21:33.118-05:00 INFO [main] elf4j.impl.core.IntegrationTest$defaultLogger - Hello, world!
+      2023-03-14T21:21:33.118-05:00 INFO [main] elf4j.provider.core.IntegrationTest$defaultLogger - Hello, world!
       ```
     * JSON Default (one-line, minified, no thread or caller detail)
       ```json
-      {"timestamp":"2023-03-14T21:21:33.1180212-05:00","level":"INFO","callerClass":"elf4j.impl.core.IntegrationTest$defaultLogger","message":"Hello, world!"}
+      {"timestamp":"2023-03-14T21:21:33.1180212-05:00","level":"INFO","callerClass":"elf4j.providerider.core.IntegrationTest$defaultLogger","message":"Hello, world!"}
       ```
     * JSON Custom (pretty print, with thread and caller detail)
       ```json
@@ -145,7 +145,7 @@ See ELF4J facade [usage sample](https://github.com/elf4j/elf4j#for-logging-servi
           "id": 1
         },
         "callerDetail": {
-          "className": "elf4j.impl.core.IntegrationTest$defaultLogger",
+          "className": "elf4j.providerider.core.IntegrationTest$defaultLogger",
           "methodName": "hey",
           "lineNumber": 41,
           "fileName": "IntegrationTest.java"
@@ -164,7 +164,7 @@ See ELF4J facade [usage sample](https://github.com/elf4j/elf4j#for-logging-servi
   ### This override the default global level
   level=info
   ### These override level of all caller classes included the specified package
-  #level@elf4j.impl=error
+  #level@elf4j.providerider=error
   level@org.springframework=warn
   ### Any writer is optional, default to a single standard writer if no writer configured
   writer1=standard
