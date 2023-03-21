@@ -1,11 +1,11 @@
 # elf4j-impl
 
-A native logging service provider implementation of [ELF4J](https://github.com/elf4j/elf4j) (Easy Logging Facade for
+A native log service provider implementation of [ELF4J](https://github.com/elf4j/elf4j) (Easy Logging Facade for
 Java), and a complete drop-in logging solution for any Java application
 
 ## User Story
 
-As an application developer using the ELF4J logging facade, I want to have the option of using a logging service
+As an application developer using ELF4J for logging, I want to have the option of using a runtime log service
 provider that natively implements the ELF4J [API](https://github.com/elf4j/elf4j#service-interface-and-access-api).
 
 ## Prerequisite
