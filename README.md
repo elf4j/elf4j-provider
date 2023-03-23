@@ -120,11 +120,11 @@ writer patterns and various minimum output levels per caller classes, more than 
 * level: Length configurable, default to full length
 * thread: Option of thread name or id, default to name
 * class: Option of simple, full, or compressed (only the first letter for a package segment), default to full
-* method: Not configurable, simple method name
-* file name: Not configurable, simple file name
-* line number: Not configurable, where the log is issued in the file
-* log message: Not configurable, always prints user message, and exception stack trace if any
-* json: Options to include thread and caller (method, line number, file name) details and minify the JSON string,
+* method: No configuration options, simple method name
+* file name: No configuration options, simple file name
+* line number: No configuration options, where the log is issued in the file
+* log message: No configuration options, always prints user message, and exception stack trace if any
+* json: Options to include thread (name, id) and caller (method, line number, file name) details and minify the JSON string,
   default to no thread/caller detail and pretty print format
 
 **Output samples**
