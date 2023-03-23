@@ -124,8 +124,8 @@ writer patterns and various minimum output levels per caller classes, more than 
 * file name: No configuration options, simple file name
 * line number: No configuration options, where the log is issued in the file
 * log message: No configuration options, always prints user message, and exception stack trace if any
-* json: Options to include thread (name, id) and caller (method, line number, file name) details and minify the JSON
-  string, default to no thread/caller detail and pretty print format
+* json: Options to include thread (name, id) and caller (method, line number, file name) details and pretty-print the JSON
+  string, default is no thread/caller detail and the one-line minified print format
 
 **Output samples**
 
