@@ -129,61 +129,71 @@ writer patterns and various minimum output levels per caller classes, more than 
 
 **Output samples**
 
-* Line-based Default
-  ```
-  2023-03-14T21:21:33.118-05:00 INFO [main] elf4j.provider.core.IntegrationTest$defaultLogger - Hello, world!
-  ```
-* JSON Default (one-line, minified, no thread or caller detail)
-  ```json
-  {"timestamp":"2023-03-14T21:21:33.1180212-05:00","level":"INFO","callerClass":"elf4j.providerider.core.IntegrationTest$defaultLogger","message":"Hello, world!"}
-  ```
-* JSON Custom (pretty print, with thread and caller detail)
-  ```json
-  {
-    "timestamp": "2023-03-14T21:21:33.1180212-05:00",
-    "level": "INFO",
-    "callerThread": {
-      "name": "main",
-      "id": 1
-    },
-    "callerDetail": {
-      "className": "elf4j.providerider.core.IntegrationTest$defaultLogger",
-      "methodName": "hey",
-      "lineNumber": 41,
-      "fileName": "IntegrationTest.java"
-    },
-    "message": "Hello, world!"
-  }
-  ```
+Line-based Default
+
+```
+2023-03-14T21:21:33.118-05:00 INFO [main] elf4j.provider.core.IntegrationTest$defaultLogger - Hello, world!
+```
+
+JSON Default (one-line, minified, no thread or caller detail)
+
+```json
+{
+  "timestamp": "2023-03-14T21:21:33.1180212-05:00",
+  "level": "INFO",
+  "callerClass": "elf4j.provider.IntegrationTest$defaultLogger",
+  "message": "Hello, world!"
+}
+```
+
+JSON Custom (pretty print, with thread and caller detail)
+
+```json
+{
+  "timestamp": "2023-03-14T21:21:33.1180212-05:00",
+  "level": "INFO",
+  "callerThread": {
+    "name": "main",
+    "id": 1
+  },
+  "callerDetail": {
+    "className": "elf4j.provider.IntegrationTest$defaultLogger",
+    "methodName": "hey",
+    "lineNumber": 41,
+    "fileName": "IntegrationTest.java"
+  },
+  "message": "Hello, world!"
+}
+```
 
 **Sample Configuration File**
 
 * When in doubt, use lower-case.
 
-  ```properties
-  ### noop flag if set to true will be globally overriding, no logging will be performed
-  #noop=true
-  ### Any level is optional, default to TRACE if omitted
-  ### This override the default global level
-  level=info
-  ### These override level of all caller classes included the specified package
-  level@org.springframework=warn
-  ### Any writer is optional, default to a single standard writer if no writer configured
-  writer1=standard
-  ### Writer stream can be stdout/stderr/auto, default to stdout; auto means to use stdout if severity level is lower than WARN, otherwise stderr
-  #writer1.stream=auto
-  ### This is the default output pattern, can be omitted
-  writer1.pattern={timestamp} {level} [{thread}] {class} - {message}
-  ### This would customize the format patterns of the specified writer
-  #writer1.pattern={timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ} {level:5} [{thread:name|id}] {class:simple|full|compressed} - {message}
-  ### Multiple writers are supported, each with its own configurations
-  writer2=standard
-  #writer2.level=trace
-  ### Default json pattern does not include thread and caller details, and uses minified one-line format for the JSON string
-  #writer2.pattern={json}
-  ### This would force the JSON to include the thread/caller details with pretty print format
-  writer2.pattern={json:caller-thread,caller-detail,pretty}
-  ```
+```properties
+### noop flag if set to true will be globally overriding, no logging will be performed
+#noop=true
+### Any level is optional, default to TRACE if omitted
+### This override the default global level
+level=info
+### These override level of all caller classes included the specified package
+level@org.springframework=warn
+### Any writer is optional, default to a single standard writer if no writer configured
+writer1=standard
+### Writer stream can be stdout/stderr/auto, default to stdout; auto means to use stdout if severity level is lower than WARN, otherwise stderr
+#writer1.stream=auto
+### This is the default output pattern, can be omitted
+writer1.pattern={timestamp} {level} [{thread}] {class} - {message}
+### This would customize the format patterns of the specified writer
+#writer1.pattern={timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ} {level:5} [{thread:name|id}] {class:simple|full|compressed} - {message}
+### Multiple writers are supported, each with its own configurations
+writer2=standard
+#writer2.level=trace
+### Default json pattern does not include thread and caller details, and uses minified one-line format for the JSON string
+#writer2.pattern={json}
+### This would force the JSON to include the thread/caller details with pretty print format
+writer2.pattern={json:caller-thread,caller-detail,pretty}
+```
 
 **Configuration Refresh**
 
