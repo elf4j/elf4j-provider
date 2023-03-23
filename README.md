@@ -144,12 +144,7 @@ Line-based (Pattern: {timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ} {level:5} [{thre
 JSON Default (one-line, minified, no thread or caller detail)
 
 ```json
-{
-  "timestamp": "2023-03-14T21:21:33.1180212-05:00",
-  "level": "INFO",
-  "callerClass": "elf4j.provider.IntegrationTest$defaultLogger",
-  "message": "Hello, world!"
-}
+{"timestamp":"2023-03-22T21:21:29.7319284-05:00","level":"INFO","callerClass":"elf4j.engine.IntegrationTest$defaultLogger","message":"Hello, world!"}
 ```
 
 JSON Custom (pretty print, with thread and caller detail)
