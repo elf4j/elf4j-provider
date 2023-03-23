@@ -195,6 +195,7 @@ JSON Customized
 level=info
 ### These override level of all caller classes included the specified package
 level@org.springframework=warn
+level@org.apache=error
 ### Any writer is optional, default to a single standard writer if no writer configured
 ### Global override of standard writer default out stream type - stdout/stderr/auto. auto means to use stdout if severity level is lower than WARN, otherwise use stderr
 standard.stream=stderr
