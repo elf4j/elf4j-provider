@@ -124,30 +124,31 @@ writer patterns and various minimum output levels per caller classes, more than 
 * file name: No configuration options, simple file name
 * line number: No configuration options, where the log is issued in the file
 * log message: No configuration options, always prints user message, and exception stack trace if any
-* json: Options to include thread (name, id) and caller (method, line number, file name) details and minify the JSON string,
-  default to no thread/caller detail and pretty print format
+* json: Options to include thread (name, id) and caller (method, line number, file name) details and minify the JSON
+  string, default to no thread/caller detail and pretty print format
 
 **Output samples**
 
-Line-based Default
+Line-based Default (Pattern: none)
 
 ```
 2023-03-22T21:11:33.040-05:00 INFO elf4j.engine.IntegrationTest$defaultLogger - Hello, world!
 ```
 
-Line-based (Pattern: {timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ} {level:5} [{thread:name}] {class:compressed}#{method} - {message})
+Line-based Customized (
+Pattern: `{timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ} {level:5} [{thread:name}] {class:compressed}#{method} - {message}`)
 
 ```
 2023-03-22T21:14:24.051-05:00 INFO  [main] e.e.IntegrationTest$defaultLogger#hey - Hello, world!
 ```
 
-JSON Default (one-line, minified, no thread or caller detail)
+JSON Default (Pattern: `{json}`)
 
-```json
+```
 {"timestamp":"2023-03-22T21:21:29.7319284-05:00","level":"INFO","callerClass":"elf4j.engine.IntegrationTest$defaultLogger","message":"Hello, world!"}
 ```
 
-JSON Custom (pretty print, with thread and caller detail)
+JSON Customized (Pattern: `{json:caller-thread,caller-detail,pretty}`)
 
 ```json
 {
