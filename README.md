@@ -132,7 +132,13 @@ writer patterns and various minimum output levels per caller classes, more than 
 Line-based Default
 
 ```
-2023-03-14T21:21:33.118-05:00 INFO [main] elf4j.provider.IntegrationTest$defaultLogger - Hello, world!
+2023-03-22T21:11:33.040-05:00 INFO elf4j.engine.IntegrationTest$defaultLogger - Hello, world!
+```
+
+Line-based (Pattern: {timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ} {level:5} [{thread:name}] {class:compressed}#{method} - {message})
+
+```
+2023-03-22T21:14:24.051-05:00 INFO  [main] e.e.IntegrationTest$defaultLogger#hey - Hello, world!
 ```
 
 JSON Default (one-line, minified, no thread or caller detail)
