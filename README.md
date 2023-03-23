@@ -50,7 +50,7 @@ Java 8 or better
 
 ## Get It...
 
-[![Maven Central](https://img.shields.io/maven-central/v/io.github.elf4j/elf4j-provider.svg?label=Maven%20Central)](https://central.sonatype.com/search?smo=true&q=pkg%253Amaven%252Fio.github.elf4j%252Felf4j-provider)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.elf4j/elf4j-provider.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.elf4j%22%20AND%20a:%22elf4j-provider%22)
 
 ## Use It...
 
@@ -83,79 +83,82 @@ More details [here](https://github.com/elf4j/elf4j#no-op-by-default).
 
 ### API Sample Usage
 
-See ELF4J facade [usage sample](https://github.com/elf4j/elf4j#for-logging-service-api-users).
+See ELF4J facade [usage sample](https://github.com/elf4j/elf4j#use-it---for-logging-service-api-clients).
 
 ### Configuration
 
-* Properties File Configuration Only
+**Properties File Configuration Only**
 
-  The default configuration file location is at the root of the application class path, with file
-  name `elf4j-test.properties`, or if that is missing, `elf4j.properties`. Alternatively, to override the default
-  location, use Java system property to provide an absolute path:
+The default configuration file location is at the root of the application class path, with file
+name `elf4j-test.properties`, or if that is missing, `elf4j.properties`. Alternatively, to override the default
+location, use Java system property to provide an absolute path:
 
+```
+java -Delf4j.properties.location=/absoloute/path/to/myConfigurationFile -jar MyApplicaiton.jar
+``` 
+
+Absence of a configuration file results in no logging (no-op) at runtime. When present, the configuration file
+requires zero/no configuration thus can be empty - the default configuration is a stdout writer with a minimum level
+of `TRACE` and a basic line-based logging pattern. To customize the default logging configuration, see the
+configuration sample file below.
+
+**Level**
+
+The default global logger minimum output level is `TRACE`. Supports global and package level customizations.
+
+**Writer**
+
+Supports multiple Standard Streams writers. Each writer can have individual configurations on minimum output level,
+format pattern, and type of out stream (stdout/err/auto). However, with the comprehensive configuration support on
+writer patterns and various minimum output levels per caller classes, more than one stream writer is rarely necessary.
+
+**Output Format Pattern**
+
+* timestamp: Format configurable per Java
+  `DateTimeFormatter` [pattern syntax](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#patterns),
+  default to ISO local datetime
+* level: Length configurable, default to full length
+* thread: Option of thread name or id, default to name
+* class: Option of simple, full, or compressed (only the first letter for a package segment), default to full
+* method: Not configurable, simple method name
+* file name: Not configurable, simple file name
+* line number: Not configurable, where the log is issued in the file
+* log message: Not configurable, always prints user message, and exception stack trace if any
+* json: Options to include thread and caller (method, line number, file name) details and minify the JSON string,
+  default to no thread/caller detail and pretty print format
+
+**Output samples**
+
+* Line-based Default
   ```
-  java -Delf4j.properties.location=/absoloute/path/to/myConfigurationFile -jar MyApplicaiton.jar
-  ``` 
+  2023-03-14T21:21:33.118-05:00 INFO [main] elf4j.provider.core.IntegrationTest$defaultLogger - Hello, world!
+  ```
+* JSON Default (one-line, minified, no thread or caller detail)
+  ```json
+  {"timestamp":"2023-03-14T21:21:33.1180212-05:00","level":"INFO","callerClass":"elf4j.providerider.core.IntegrationTest$defaultLogger","message":"Hello, world!"}
+  ```
+* JSON Custom (pretty print, with thread and caller detail)
+  ```json
+  {
+    "timestamp": "2023-03-14T21:21:33.1180212-05:00",
+    "level": "INFO",
+    "callerThread": {
+      "name": "main",
+      "id": 1
+    },
+    "callerDetail": {
+      "className": "elf4j.providerider.core.IntegrationTest$defaultLogger",
+      "methodName": "hey",
+      "lineNumber": 41,
+      "fileName": "IntegrationTest.java"
+    },
+    "message": "Hello, world!"
+  }
+  ```
 
-  Absence of a configuration file results in no logging (no-op) at runtime. When present, the configuration file
-  requires zero/no configuration thus can be empty - the default configuration is a stdout writer with a minimum level
-  of `TRACE` and a basic line-based logging pattern. To customize the default logging configuration, see the
-  configuration sample file below.
+**Sample Configuration File**
 
-* Level
-
-  The default global logger minimum output level is `TRACE`. Supports global and package level customizations.
-
-* Writer
-
-  Supports multiple Standard Streams writers. Each writer can have individual configurations on minimum output level,
-  format pattern, and type of out stream (stdout/err/auto). However, with the comprehensive configuration support on
-  writer patterns and various minimum output levels per caller classes, more than one stream writer is rarely necessary.
-
-* Output Format Pattern
-    * timestamp: Format configurable per Java
-      `DateTimeFormatter` [pattern syntax](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#patterns),
-      default to ISO local datetime
-    * level: Length configurable, default to full length
-    * thread: Option of thread name or id, default to name
-    * class: Option of simple, full, or compressed (only the first letter for a package segment), default to full
-    * method: Not configurable, simple method name
-    * file name: Not configurable, simple file name
-    * line number: Not configurable, where the log is issued in the file
-    * log message: Not configurable, always prints user message, and exception stack trace if any
-    * json: Options to include thread and caller (method, line number, file name) details and minify the JSON string,
-      default to no thread/caller detail and pretty print format
-
-* Output samples
-    * Line-based Default
-      ```
-      2023-03-14T21:21:33.118-05:00 INFO [main] elf4j.provider.core.IntegrationTest$defaultLogger - Hello, world!
-      ```
-    * JSON Default (one-line, minified, no thread or caller detail)
-      ```json
-      {"timestamp":"2023-03-14T21:21:33.1180212-05:00","level":"INFO","callerClass":"elf4j.providerider.core.IntegrationTest$defaultLogger","message":"Hello, world!"}
-      ```
-    * JSON Custom (pretty print, with thread and caller detail)
-      ```json
-      {
-        "timestamp": "2023-03-14T21:21:33.1180212-05:00",
-        "level": "INFO",
-        "callerThread": {
-          "name": "main",
-          "id": 1
-        },
-        "callerDetail": {
-          "className": "elf4j.providerider.core.IntegrationTest$defaultLogger",
-          "methodName": "hey",
-          "lineNumber": 41,
-          "fileName": "IntegrationTest.java"
-        },
-        "message": "Hello, world!"
-      }
-      ```
-
-* Sample Configuration File
-    * When in doubt, use lower-case.
+* When in doubt, use lower-case.
 
   ```properties
   ### noop flag if set to true will be globally overriding, no logging will be performed
@@ -182,8 +185,8 @@ See ELF4J facade [usage sample](https://github.com/elf4j/elf4j#for-logging-servi
   writer2.pattern={json:caller-thread,caller-detail,pretty}
   ```
 
-* Configuration Refresh
+**Configuration Refresh**
 
-  `ServiceConfigurationManager.refreshConfiguration()` will reload the configuration file and apply the latest file
-  properties during runtime. `ServiceConfigurationManager.refreshConfiguration(Properties)` will apply the passed-in
-  properties as override, in addition to reloading the configuration file.
+`ServiceConfigurationManager.refreshConfiguration()` will reload the configuration file and apply the latest file
+properties during runtime. `ServiceConfigurationManager.refreshConfiguration(Properties)` will apply the passed-in
+properties as override, in addition to reloading the configuration file.
