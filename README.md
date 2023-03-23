@@ -129,44 +129,58 @@ writer patterns and various minimum output levels per caller classes, more than 
 
 **Output samples**
 
-Line-based Default (Pattern: none)
+Line-based Default
 
-```
-2023-03-22T21:11:33.040-05:00 INFO elf4j.engine.IntegrationTest$defaultLogger - Hello, world!
-```
+* Pattern: none
 
-Line-based Customized (
-Pattern: `{timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ} {level:5} [{thread:name}] {class:compressed}#{method} - {message}`)
+* Output:
+  
+  `2023-03-22T21:11:33.040-05:00 INFO elf4j.engine.IntegrationTest$defaultLogger - Hello, world!`
 
-```
-2023-03-22T21:14:24.051-05:00 INFO  [main] e.e.IntegrationTest$defaultLogger#hey - Hello, world!
-```
+Line-based Customized
 
-JSON Default (Pattern: `{json}`)
+* Pattern:
+  ```
+  {timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ} {level:5} [{thread:name}] {class:compressed}#{method} - {message}
+  ```
+* Output:
+  
+  `2023-03-22T21:14:24.051-05:00 INFO  [main] e.e.IntegrationTest$defaultLogger#hey - Hello, world!`
 
-```
-{"timestamp":"2023-03-22T21:21:29.7319284-05:00","level":"INFO","callerClass":"elf4j.engine.IntegrationTest$defaultLogger","message":"Hello, world!"}
-```
+JSON Default
 
-JSON Customized (Pattern: `{json:caller-thread,caller-detail,pretty}`)
+* Pattern:
+  ```
+  {json}
+  ```
+* Output:
 
-```json
-{
-  "timestamp": "2023-03-14T21:21:33.1180212-05:00",
-  "level": "INFO",
-  "callerThread": {
-    "name": "main",
-    "id": 1
-  },
-  "callerDetail": {
-    "className": "elf4j.provider.IntegrationTest$defaultLogger",
-    "methodName": "hey",
-    "lineNumber": 41,
-    "fileName": "IntegrationTest.java"
-  },
-  "message": "Hello, world!"
-}
-```
+  `{"timestamp":"2023-03-22T21:21:29.7319284-05:00","level":"INFO","callerClass":"elf4j.engine.IntegrationTest$defaultLogger","message":"Hello, world!"}`
+
+JSON Customized
+
+* Pattern:
+  ```
+  {json:caller-thread,caller-detail,pretty}
+  ```
+* Output:
+  ```json
+  {
+    "timestamp": "2023-03-14T21:21:33.1180212-05:00",
+    "level": "INFO",
+    "callerThread": {
+      "name": "main",
+      "id": 1
+    },
+    "callerDetail": {
+      "className": "elf4j.provider.IntegrationTest$defaultLogger",
+      "methodName": "hey",
+      "lineNumber": 41,
+      "fileName": "IntegrationTest.java"
+    },
+    "message": "Hello, world!"
+  }
+  ```
 
 **Sample Configuration File**
 
