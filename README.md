@@ -188,7 +188,7 @@ JSON Customized
 * When in doubt, use lower-case.
 
 ```properties
-### noop flag if set to true will be globally overriding, no logging will be performed
+### global no-op flag, overriding if set true
 #noop=true
 ### Any level is optional, default to TRACE if omitted
 ### This override the default global level
@@ -196,11 +196,13 @@ level=info
 ### These override level of all caller classes included the specified package
 level@org.springframework=warn
 ### Any writer is optional, default to a single standard writer if no writer configured
+### Global override of standard writer default out stream type - stdout/stderr/auto. auto means to use stdout if severity level is lower than WARN, otherwise use stderr
+standard.stream=stderr
 writer1=standard
-### Writer stream can be stdout/stderr/auto, default to stdout; auto means to use stdout if severity level is lower than WARN, otherwise stderr
-#writer1.stream=auto
+### Writer stream type if present overrides global level type. If no stream type configured at either global or writer level, default to stdout
+writer1.stream=auto
 ### This is the default output pattern, can be omitted
-writer1.pattern={timestamp} {level} [{thread}] {class} - {message}
+#writer1.pattern={timestamp} {level} [{thread}] {class} - {message}
 ### This would customize the format patterns of the specified writer
 #writer1.pattern={timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ} {level:5} [{thread:name|id}] {class:simple|full|compressed} - {message}
 ### Multiple writers are supported, each with its own configurations
@@ -208,8 +210,11 @@ writer2=standard
 #writer2.level=trace
 ### Default json pattern does not include thread and caller details, and uses minified one-line format for the JSON string
 #writer2.pattern={json}
-### This would force the JSON to include the thread/caller details with pretty print format
+### This would force the JSON to include the thread/caller details
 writer2.pattern={json:caller-thread,caller-detail,pretty}
+### This would print JSON string in pretty format
+#writer2.pattern={json:caller-thread,caller-detail,pretty}
+### This would force the writer to use stderr instead of stdout
 ```
 
 **Configuration Refresh**
