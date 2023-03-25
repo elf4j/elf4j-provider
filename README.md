@@ -201,7 +201,7 @@ level=info
 ### These override the output level of all caller classes included the specified packages
 level@org.springframework=warn
 level@org.apache=error
-### Writer is optional, default to a single standard streams writer
+### Writer is optional, default to a simple standard streams writer
 ### Global standard out stream type - stdout/stderr/auto - default to stdout. auto means to use stdout if severity level is lower than WARN, otherwise use stderr
 standard.stream=stderr
 ### standard out stream is the only supported writer type
