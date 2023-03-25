@@ -225,4 +225,4 @@ writer2.pattern={json:caller-thread,caller-detail,pretty}
 
 `ServiceConfigurationManager.refreshConfiguration()` will reload the configuration file and apply the latest file
 properties during runtime. `ServiceConfigurationManager.refreshConfiguration(Properties)` will apply the passed-in
-properties as replacement, instead of reloading the configuration file.
+properties as the complete configuration replacement, and the configuration file will be ignored.
