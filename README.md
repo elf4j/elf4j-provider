@@ -44,7 +44,7 @@ Java 8 or better
 
 * Configuration Refresh at Runtime
 
-  Supports configuration refresh during runtime via API, with option of passing in overriding properties in addition to
+  Supports configuration refresh during runtime via API, with option of passing in replacement properties instead of
   reloading the configuration file. The most frequent use case would be to change the minimum log output level, without
   restarting the application.
 
@@ -104,7 +104,8 @@ configuration sample file below.
 
 **Level**
 
-The default global logger minimum output level is `TRACE`. Supports global and package level customizations.
+The default level of a logger from the static factory method `Logger.instance()` is `INFO`. The default global minimum
+logging output level is `TRACE`; elf4j-engine supports global and package level customizations.
 
 **Writer**
 
@@ -124,7 +125,8 @@ writer patterns and various minimum output levels per caller classes, more than 
 * file name: No configuration options, simple file name
 * line number: No configuration options, where the log is issued in the file
 * log message: No configuration options, always prints user message, and exception stack trace if any
-* json: Options to include thread (name, id) and caller (method, line number, file name) details and pretty-print the JSON
+* json: Options to include thread (name, id) and caller (method, line number, file name) details and pretty-print the
+  JSON
   string, default is no thread/caller detail and the minified single-line format
 
 **Output samples**
@@ -222,4 +224,4 @@ writer2.pattern={json:caller-thread,caller-detail,pretty}
 
 `ServiceConfigurationManager.refreshConfiguration()` will reload the configuration file and apply the latest file
 properties during runtime. `ServiceConfigurationManager.refreshConfiguration(Properties)` will apply the passed-in
-properties as override, in addition to reloading the configuration file.
+properties as replacement, instead of reloading the configuration file.
