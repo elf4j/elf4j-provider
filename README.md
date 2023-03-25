@@ -198,7 +198,7 @@ JSON Customized
 ### Minimum output level is optional, default to TRACE if omitted
 ### This override the default global minimum output level
 level=info
-### These override the output level of all caller classes included the specified package
+### These override the output level of all caller classes included the specified packages
 level@org.springframework=warn
 level@org.apache=error
 ### Writer is optional, default to a single standard streams writer
