@@ -38,6 +38,7 @@ class IntegrationTest {
     void afterEach() throws InterruptedException {
         Thread.sleep(500);
     }
+
     @Nested
     class defaultLogger {
         @Test
