@@ -26,6 +26,7 @@
 package elf4j.provider;
 
 import elf4j.Logger;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -33,6 +34,11 @@ import java.util.function.Supplier;
 
 class SampleUsageTest {
     static Logger logger = Logger.instance();
+
+    @AfterEach
+    void afterEach() throws InterruptedException {
+        Thread.sleep(500);
+    }
 
     @Nested
     class plainText {
@@ -78,7 +84,7 @@ class SampleUsageTest {
     class throwable {
         @Test
         void asTheFirstArgument() {
-            Exception exception = new Exception("Exception message");
+            Exception exception = new Exception("Exception message", new Exception("Causal ex message"));
             logger.atError().log(exception);
             logger.atError().log(exception, "Optional log message");
             logger.atInfo()

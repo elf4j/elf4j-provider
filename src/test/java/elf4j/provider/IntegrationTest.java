@@ -27,16 +27,21 @@ package elf4j.provider;
 
 import elf4j.Logger;
 import elf4j.engine.NativeLogger;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class IntegrationTest {
+    @AfterEach
+    void afterEach() throws InterruptedException {
+        Thread.sleep(500);
+    }
     @Nested
     class defaultLogger {
         @Test
-        void hey() {
+        void hey() throws InterruptedException {
             Logger logger = Logger.instance();
 
             logger.atInfo().log("Hello, world!");

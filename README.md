@@ -196,7 +196,6 @@ JSON Customized
 ### global no-op flag, overriding and will turn off all logging if set true
 #noop=true
 ### Minimum output level is optional, default to TRACE if omitted
-### This override the default global minimum output level
 level=info
 ### These override the output level of all caller classes included the specified packages
 level@org.springframework=warn

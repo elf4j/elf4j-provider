@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 public class Main {
     static Logger logger = Logger.instance();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         logger.atInfo().log("Hello, world!");
         Exception issue = new Exception("Test ex message");
         logger.atWarn().log(issue, "Testing issue '{}' in {}", issue, Main.class);
@@ -49,6 +49,7 @@ public class Main {
                         "optional",
                         (Supplier) () -> "as usual");
 
+        Thread.sleep(200);
         LogServiceManager.shutdown();
     }
 }
