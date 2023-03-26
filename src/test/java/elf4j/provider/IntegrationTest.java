@@ -42,7 +42,7 @@ class IntegrationTest {
     @Nested
     class defaultLogger {
         @Test
-        void hey() throws InterruptedException {
+        void hey() {
             Logger logger = Logger.instance();
 
             logger.atInfo().log("Hello, world!");
