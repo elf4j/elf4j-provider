@@ -97,8 +97,8 @@ location, use Java system property to provide an absolute path:
 java -Delf4j.properties.location=/absoloute/path/to/myConfigurationFile -jar MyApplicaiton.jar
 ``` 
 
-Absence of a configuration file results in no logging (no-op) at runtime. When present, the configuration file
-requires zero/no configuration thus can be empty - the default configuration is a stdout writer with a minimum level
+Absence of a configuration file results in no logging (no-op) at runtime. When present, though, the configuration file
+requires zero/no configuration thus can be empty: the default configuration is a stdout writer with a minimum level
 of `TRACE` and a basic line-based logging pattern. To customize the default logging configuration, see the
 configuration sample file below.
 
