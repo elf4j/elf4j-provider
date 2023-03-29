@@ -111,9 +111,10 @@ configurable: Use the ELF4J [API](https://github.com/elf4j/elf4j#logging-service
 
 **Writer**
 
-Supports multiple Standard Streams writers. Each writer can have individual configurations on minimum output level,
-format pattern, and type of out stream (stdout/err/auto). However, with the comprehensive configuration support on
-writer patterns and various minimum output levels per caller classes, more than one stream writer is rarely necessary.
+Supports multiple writers; a log entry will be output by each writer once per configuration. Each writer can have 
+individual configurations on minimum output level, format pattern, and type of out stream (stdout/err/auto). However,
+given the comprehensive support on writer patterns and various minimum output levels per caller classes, more than 
+one stream writer is rarely necessary.
 
 **Output Format Pattern**
 
@@ -128,8 +129,7 @@ writer patterns and various minimum output levels per caller classes, more than 
 * line number: No configuration options, where the log is issued in the file
 * log message: No configuration options, always prints user message, and exception stack trace if any
 * json: Options to include thread (name, id) and caller (method, line number, file name) details and pretty-print the
-  JSON
-  string, default is no thread/caller detail and the minified single-line format
+  JSON string, default is no thread/caller detail and the minified single-line format
 
 **Output samples**
 
