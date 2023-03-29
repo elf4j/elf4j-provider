@@ -104,9 +104,9 @@ configuration sample file below.
 
 **Level**
 
-The default minimum output level is `TRACE` for elf4j-engine, which can be configured on global, package, and individual
-class level based on the caller classes. The default severity level of a logger instance from `Logger.instance()`
-is `INFO`, which is not configurable - `Logger` instance level switch has to be through the
+The default minimum output level is `TRACE`, which can be configured on global, package, or individual class level based
+on the caller classes. The default severity level of a logger instance from `Logger.instance()` is `INFO`, which is not
+configurable: `Logger` instance level switch should use the
 ELF4J [API](https://github.com/elf4j/elf4j#logging-service-interface-and-access-api).
 
 **Writer**
