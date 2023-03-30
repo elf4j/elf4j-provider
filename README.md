@@ -129,8 +129,8 @@ one stream writer is rarely necessary.
 * `linenumber`: No configuration options, where the log is issued in the file
 * `message`: No configuration options, always prints user message, and exception stack trace if any
 * `json`: Options of `caller-thread` and `caller-detail` - to include caller thread (name and id) and stack details (
-  class, method, filename, linenumber); also option of `pretty` - indent the JSON text to more readable format. Default
-  is no thread/caller detail and the minified single-line format
+  class, method, filename, linenumber); also option of `pretty` - to indent the JSON text to more readable format.
+  Default is no thread/caller detail and the minified single-line format
 
 **Output samples**
 
