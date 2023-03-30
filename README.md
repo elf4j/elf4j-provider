@@ -106,30 +106,31 @@ configuration sample file below.
 
 The default minimum output level is `TRACE`, which can be configured on global, package, or individual class level of
 the caller classes. The default severity level of a logger instance from `Logger.instance()` is `INFO`, which is not
-configurable: Use the ELF4J [API](https://github.com/elf4j/elf4j#logging-service-interface-and-access-api) to switch 
+configurable: Use the ELF4J [API](https://github.com/elf4j/elf4j#logging-service-interface-and-access-api) to switch
 `Logger` levels per application needs.
 
 **Writer**
 
-Supports multiple writers; a log entry will be output by each writer once per configuration. Each writer can have 
+Supports multiple writers; a log entry will be output by each writer once per configuration. Each writer can have
 individual configurations on minimum output level, format pattern, and type of out stream (stdout/err/auto). However,
-given the comprehensive support on writer patterns and various minimum output levels per caller classes, more than 
+given the comprehensive support on writer patterns and various minimum output levels per caller classes, more than
 one stream writer is rarely necessary.
 
 **Output Format Pattern**
 
-* timestamp: Format configurable per Java
+* `timestamp`: Format configurable per Java
   `DateTimeFormatter` [pattern syntax](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#patterns),
   default to ISO local datetime
-* level: Length configurable, default to full length
-* thread: Option of thread name or id, default to name
-* class: Option of simple, full, or compressed (only the first letter for a package segment), default to full
-* method: No configuration options, simple method name
-* file name: No configuration options, simple file name
-* line number: No configuration options, where the log is issued in the file
-* log message: No configuration options, always prints user message, and exception stack trace if any
-* json: Options to include thread (name, id) and caller (method, line number, file name) details and pretty-print the
-  JSON string, default is no thread/caller detail and the minified single-line format
+* `level`: Length configurable, default to full length
+* `thread`: Option of `name` or `id`, default to name
+* `class`: Option of `simple`, `full`, or `compressed` (only the first letter for a package segment), default to `full`
+* `method`: No configuration options, simple method name
+* `filename`: No configuration options, simple file name
+* `linenumber`: No configuration options, where the log is issued in the file
+* `message`: No configuration options, always prints user message, and exception stack trace if any
+* `json`: Options of `caller-thread` and `caller-detail` - to include caller thread (name and id) and stack details (
+  class, method, filename, linenumber); also option of `pretty` - indent the JSON text to more readable format. Default
+  is no thread/caller detail and the minified single-line format
 
 **Output samples**
 
@@ -145,11 +146,11 @@ Line-based Customized
 
 * Pattern:
   ```
-  {timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ} {level:5} [{thread:name}] {class:compressed}#{method} - {message}
+  {timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSXXX} {level:5} [{thread:name}] {class:compressed}#{method}(L{linenumber}@{filename}) -- {message}
   ```
 * Output:
 
-  `2023-03-22T21:14:24.051-05:00 INFO  [main] e.e.IntegrationTest$defaultLogger#hey - Hello, world!`
+  `2023-03-30T17:14:54.735-05:00 INFO  [main] e.e.IntegrationTest$defaultLogger#hey(L50@IntegrationTest.java) -- Hello, world!`
 
 JSON Default
 
@@ -210,7 +211,7 @@ writer1.stream=auto
 ### This is the default output pattern, can be omitted
 #writer1.pattern={timestamp} {level} [{thread}] {class} - {message}
 ### This would customize the format patterns of the specified writer
-#writer1.pattern={timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ} {level:5} [{thread:name|id}] {class:simple|full|compressed} - {message}
+#writer1.pattern={timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSXXX} {level:5} [{thread:id}] {class:compressed}#{method}(L{linenumber}@{filename}) - {message}
 ### Multiple writers are supported, each with its own configurations
 writer2=standard
 #writer2.level=trace
