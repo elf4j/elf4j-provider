@@ -7,7 +7,7 @@ Java), and a complete drop-in logging solution for any Java application
 
 As an application developer using the ELF4J logging facade, I want to have the option of using a runtime log _service
 provider_ that natively implements
-the [API and SPI](https://github.com/elf4j/elf4j#logging-service-interface-and-access-api) of ELF4J.
+the [API and SPI](https://github.com/elf4j/elf4j#log-service-interface-and-access-api) of ELF4J.
 
 ## Prerequisite
 
