@@ -23,40 +23,34 @@ Java 8 or better
 
 ## Features
 
-**Async Logging Only**
+### Async Logging Only
 
-  Logging output is always asynchronous, considering performance and moreover the 80/20 rule: When was the last time a
-  use case truly required that logging had to be synchronous, and always blocking the application's normal work flow?
+Logging output is always asynchronous, considering performance and moreover the 80/20 rule: When was the last time a use
+case truly required that logging had to be synchronous, and always blocking the application's normal work flow?
 
-**Standard Streams Output Only**
+### Standard Streams Output Only
 
-  Besides the standard streams (stdout/stderr), it may be trivial for the application logging to support other output
-  channels. Yet it's arguably more trivial for the hosting system to redirect/forward standard streams as a data source
-  to other destinations than the system Console, e.g. to log files and/or other central repositories. Such log data
-  aggregation can be as simple as a Linux shell redirect or sophisticated as collector agents of
-  monitoring/observability services, but not a concern of the application-level logging.
+Besides the standard streams (stdout/stderr), it may be trivial for the application logging to support other output
+channels. Yet it's arguably more trivial for the hosting system to redirect/forward standard streams as a data source to
+other destinations than the system Console, e.g. to log files and/or other central repositories. Such log data
+aggregation can be as simple as a Linux shell redirect or sophisticated as collector agents of monitoring/observability
+services, but not a concern of the application-level logging.
 
-**Logging Format Patterns Including JSON**
+### Logging Format Patterns Including JSON
 
-  JSON is a supported output pattern, in hopes of helping external log analysis tools. This is in addition to the usual
-  line-based patterns - timestamp, level, thread, class, method, file name, line number, and log message. The JSON
-  pattern can either be the only output of the log entry, or mixed together with other patterns.
+JSON is a supported output pattern, in hopes of helping external log analysis tools. This is in addition to the usual
+line-based patterns - timestamp, level, thread, class, method, file name, line number, and log message. The JSON pattern
+can either be the only output of the log entry, or mixed together with other patterns.
 
-**Configuration Refresh at Runtime**
+### Configuration Refresh at Runtime
 
-  Supports configuration refresh during runtime via API, with option of passing in replacement properties instead of
-  reloading the configuration file. The most frequent use case would be to change the minimum log output level, without
-  restarting the application.
+Supports configuration refresh during runtime via API, with option of passing in replacement properties instead of
+reloading the configuration file. The most frequent use case would be to change the minimum log output level, without
+restarting the application.
 
-## Get It...
+## Installation
 
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.elf4j/elf4j-provider.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.elf4j%22%20AND%20a:%22elf4j-provider%22)
-
-## Use It...
-
-As with any other [ELF4J](https://github.com/elf4j/elf4j) logging provider, client application should code
-against [service API](https://github.com/elf4j/elf4j#service-interface-and-access-api) of the ELF4J facade, and drop in
-this provider implementation as a runtime-scope dependency in Maven or other build tools alike:
 
 ```html
 ...
@@ -73,6 +67,14 @@ this provider implementation as a runtime-scope dependency in Maven or other bui
 ...
 ```
 
+## Usage
+
+As with any other [ELF4J](https://github.com/elf4j/elf4j) logging provider, client application should code
+against [service API](https://github.com/elf4j/elf4j#service-interface-and-access-api) of the ELF4J facade, and drop in
+this provider implementation as a runtime-scope dependency in Maven or other build tools alike:
+
+See ELF4J facade [usage sample](https://github.com/elf4j/elf4j#use-it---for-logging-service-api-clients).
+
 In case of multiple ELF4J service providers in classpath, pick this one like so:
 
 ```
@@ -81,13 +83,9 @@ java -Delf4j.logger.factory.fqcn="elf4j.engine.NativeLoggerFactory" MyApplicatio
 
 More details [here](https://github.com/elf4j/elf4j#no-op-by-default).
 
-### API Sample Usage
+## Configuration
 
-See ELF4J facade [usage sample](https://github.com/elf4j/elf4j#use-it---for-logging-service-api-clients).
-
-### Configuration
-
-**Properties File Configuration Only**
+### Properties File
 
 The default configuration file location is at the root of the application class path, with file
 name `elf4j-test.properties`, or if that is missing, `elf4j.properties`. Alternatively, to override the default
@@ -102,21 +100,21 @@ requires zero/no configuration thus can be empty: the default configuration is a
 of `TRACE` and a basic line-based logging pattern. To customize the default logging configuration, see the
 configuration sample file below.
 
-**Level**
+### Level
 
 The default minimum output level is `TRACE`, which can be configured on global, package, or individual class level of
 the caller classes. The default severity level of a logger instance from `Logger.instance()` is `INFO`, which is not
 configurable: Use the ELF4J [API](https://github.com/elf4j/elf4j#logging-service-interface-and-access-api) to switch
 `Logger` levels per application needs.
 
-**Writer**
+### Writer
 
 Supports multiple writers; a log entry will be output by each writer once per configuration. Each writer can have
 individual configurations on minimum output level, format pattern, and type of out stream (stdout/err/auto). However,
 given the comprehensive support on writer patterns and various minimum output levels per caller classes, more than
 one stream writer is rarely necessary.
 
-**Output Format Pattern**
+### Output Format Pattern
 
 * `timestamp`: Format configurable per Java
   `DateTimeFormatter` [pattern syntax](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#patterns),
@@ -222,7 +220,7 @@ writer2=standard
 writer2.pattern={json:caller-thread,caller-detail,pretty}
 ```
 
-**Configuration Refresh**
+### Configuration Refresh
 
 `LogServiceManager.INSTANCE.refreshAll()` will reload the configuration file and apply the latest file properties during
 runtime. `LogServiceManager.INSTANCE.refreshAll(Properties)` will apply the passed-in properties as the replacement of
