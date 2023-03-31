@@ -205,7 +205,7 @@ level@org.apache=error
 ### Writer is optional, default to a simple standard streams writer
 ### Global standard out stream type - stdout/stderr/auto - default to stdout. auto means to use stdout if severity level is lower than WARN, otherwise use stderr
 standard.stream=stderr
-### standard out stream is the only supported writer type
+### standard (stdout/stderr/auto) is the only supported writer type
 writer1=standard
 ### Writer stream type if present overrides global type. If no stream type configured at either global or writer level, default to stdout
 writer1.stream=auto
@@ -224,6 +224,6 @@ writer2.pattern={json:caller-thread,caller-detail,pretty}
 
 **Configuration Refresh**
 
-`ServiceConfigurationManager.refreshConfiguration()` will reload the configuration file and apply the latest file
-properties during runtime. `ServiceConfigurationManager.refreshConfiguration(Properties)` will apply the passed-in
-properties as the complete configuration replacement, and the configuration file will be ignored.
+`LogServiceManager.INSTANCE.refreshAll()` will reload the configuration file and apply the latest file properties during
+runtime. `LogServiceManager.INSTANCE.refreshAll(Properties)` will apply the passed-in properties as the replacement of
+the current properties, and the configuration file will be ignored.
