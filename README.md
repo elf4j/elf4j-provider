@@ -73,7 +73,7 @@ As with any other [ELF4J](https://github.com/elf4j/elf4j) logging provider, clie
 against [service API](https://github.com/elf4j/elf4j#service-interface-and-access-api) of the ELF4J facade, and drop in
 this provider implementation as a runtime-scope dependency in Maven or other build tools alike.
 
-See ELF4J facade [sample usage](https://github.com/elf4j/elf4j#use-it---for-log-service-api-clients).
+See the ELF4J facade [sample usage](https://github.com/elf4j/elf4j#use-it---for-log-service-api-clients).
 
 In case of multiple ELF4J service providers in classpath, pick this one like so:
 
