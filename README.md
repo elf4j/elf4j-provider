@@ -71,9 +71,9 @@ restarting the application.
 
 As with any other [ELF4J](https://github.com/elf4j/elf4j) logging provider, client application should code
 against [service API](https://github.com/elf4j/elf4j#service-interface-and-access-api) of the ELF4J facade, and drop in
-this provider implementation as a runtime-scope dependency in Maven or other build tools alike:
+this provider implementation as a runtime-scope dependency in Maven or other build tools alike.
 
-See ELF4J facade [usage sample](https://github.com/elf4j/elf4j#use-it---for-logging-service-api-clients).
+See ELF4J facade [sample usage](https://github.com/elf4j/elf4j#use-it---for-log-service-api-clients).
 
 In case of multiple ELF4J service providers in classpath, pick this one like so:
 
@@ -81,7 +81,7 @@ In case of multiple ELF4J service providers in classpath, pick this one like so:
 java -Delf4j.logger.factory.fqcn="elf4j.engine.NativeLoggerFactory" MyApplication
 ```
 
-More details [here](https://github.com/elf4j/elf4j#no-op-by-default).
+More details [here](https://github.com/elf4j/elf4j/blob/main/README.md#only-one-in-effect-logging-provider).
 
 ## Configuration
 
