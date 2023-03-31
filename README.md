@@ -132,7 +132,7 @@ one stream writer is rarely necessary.
   class, method, filename, linenumber); also option of `pretty` - to indent the JSON text to more readable format.
   Default is no thread/caller detail and the minified single-line format
 
-**Output samples**
+**Output Samples**
 
 Line-based Default
 
