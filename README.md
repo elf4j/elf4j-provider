@@ -23,12 +23,12 @@ Java 8 or better
 
 ## Features
 
-* Async Logging Only
+**Async Logging Only**
 
   Logging output is always asynchronous, considering performance and moreover the 80/20 rule: When was the last time a
   use case truly required that logging had to be synchronous, and always blocking the application's normal work flow?
 
-* Standard Streams Output Only
+**Standard Streams Output Only**
 
   Besides the standard streams (stdout/stderr), it may be trivial for the application logging to support other output
   channels. Yet it's arguably more trivial for the hosting system to redirect/forward standard streams as a data source
@@ -36,13 +36,13 @@ Java 8 or better
   aggregation can be as simple as a Linux shell redirect or sophisticated as collector agents of
   monitoring/observability services, but not a concern of the application-level logging.
 
-* Logging Format Patterns Including JSON
+**Logging Format Patterns Including JSON**
 
   JSON is a supported output pattern, in hopes of helping external log analysis tools. This is in addition to the usual
   line-based patterns - timestamp, level, thread, class, method, file name, line number, and log message. The JSON
   pattern can either be the only output of the log entry, or mixed together with other patterns.
 
-* Configuration Refresh at Runtime
+**Configuration Refresh at Runtime**
 
   Supports configuration refresh during runtime via API, with option of passing in replacement properties instead of
   reloading the configuration file. The most frequent use case would be to change the minimum log output level, without
