@@ -36,7 +36,7 @@ other destinations than the system Console, e.g. to log files and/or other centr
 aggregation can be as simple as a Linux shell redirect or sophisticated as collector agents of monitoring/observability
 services, but not a concern of the application-level logging.
 
-### Logging Format Patterns Including JSON
+### Log Patterns Including JSON
 
 JSON is a supported output pattern, in hopes of helping external log analysis tools. This is in addition to the usual
 line-based patterns - timestamp, level, thread, class, method, file name, line number, and log message. The JSON pattern
