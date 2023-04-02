@@ -138,7 +138,11 @@ with any other patterns.
 
 Line-based Default
 
-* Pattern: none
+* Pattern: none, which is the same as
+
+  ```
+  {timestamp} {level} {class} - {message}
+  ```
 
 * Output:
 
@@ -212,7 +216,7 @@ writer1=standard
 ### Writer stream type if present overrides global type. If no stream type configured at either global or writer level, default to stdout
 writer1.stream=auto
 ### This is the default output pattern, can be omitted
-#writer1.pattern={timestamp} {level} [{thread}] {class} - {message}
+#writer1.pattern={timestamp} {level} {class} - {message}
 ### This would customize the format patterns of the specified writer
 #writer1.pattern={timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSXXX} {level:5} [{thread:id}] {class:compressed}#{method}(L{linenumber}@{filename}) - {message}
 ### Multiple writers are supported, each with its own configurations
