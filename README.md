@@ -104,7 +104,7 @@ configuration sample file below.
 
 The default minimum output level is `TRACE`, which can be configured on global, package, or individual class level of
 the caller classes. The default severity level of a logger instance from `Logger.instance()` is `INFO`, which is not
-configurable - switch of `Logger` levels needs to use the 
+configurable - switch of `Logger` levels needs to use the
 ELF4J [API](https://github.com/elf4j/elf4j#logging-service-interface-and-access-api).
 
 ### Writer
@@ -126,8 +126,8 @@ one stream writer is rarely necessary.
 * `filename`: No configuration options, simple file name
 * `linenumber`: No configuration options, where the log is issued in the file
 * `message`: No configuration options, always prints user message, and exception stack trace if any
-* `json`: Options of `caller-thread` and `caller-detail` - to include caller thread (name and id) and stack details (
-  class, method, filename, linenumber); also option of `pretty` - to indent the JSON text to more readable format.
+* `json`: Options of `caller-thread` and `caller-detail` - to include caller thread (name and id) and stack details
+  (class, method, filename, linenumber); also option of `pretty` - to indent the JSON text to more readable format.
   Default is no thread/caller detail and the minified single-line format
 
 **Output Samples**
