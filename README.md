@@ -21,6 +21,25 @@ Java 8 or better
   Java [Service Provider Framework](https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html) mechanism.
   See [elf4j-engine](https://github.com/elf4j/elf4j-engine) for implementation details.
 
+## Installation
+
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.elf4j/elf4j-provider.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.elf4j%22%20AND%20a:%22elf4j-provider%22)
+
+```html
+...
+<dependency>
+    <groupId>io.github.elf4j</groupId>
+    <artifactId>elf4j</artifactId>
+    <scope>compile</scope>
+</dependency>
+<dependency>
+    <groupId>io.github.elf4j</groupId>
+    <artifactId>elf4j-provider</artifactId>
+    <scope>runtime</scope>
+</dependency>
+...
+```
+
 ## Features
 
 ### Async Logging Only
@@ -47,25 +66,6 @@ can either be the only output of the log entry, or mixed together with other pat
 Supports configuration refresh during runtime via API, with option of passing in replacement properties instead of
 reloading the configuration file. The most frequent use case would be to change the minimum log output level, without
 restarting the application.
-
-## Installation
-
-[![Maven Central](https://img.shields.io/maven-central/v/io.github.elf4j/elf4j-provider.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.elf4j%22%20AND%20a:%22elf4j-provider%22)
-
-```html
-...
-<dependency>
-    <groupId>io.github.elf4j</groupId>
-    <artifactId>elf4j</artifactId>
-    <scope>compile</scope>
-</dependency>
-<dependency>
-    <groupId>io.github.elf4j</groupId>
-    <artifactId>elf4j-provider</artifactId>
-    <scope>runtime</scope>
-</dependency>
-...
-```
 
 ## Usage
 
