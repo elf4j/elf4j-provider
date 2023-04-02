@@ -109,10 +109,10 @@ ELF4J [API](https://github.com/elf4j/elf4j#logging-service-interface-and-access-
 
 ### Writer
 
-Supports multiple writers; a log entry will be output by each writer once per configuration. Each writer can have
-individual configurations on minimum output level, format pattern, and type of out stream (stdout/err/auto). However,
-given the comprehensive support on writer patterns and various minimum output levels per caller classes, more than
-one stream writer is rarely necessary.
+Supports multiple standard-stream writers; a log entry will be output by each writer once per its configuration. Each
+writer can have individual configurations on format pattern, minimum output level, and type of out stream
+(stdout/err/auto). However, given the comprehensive support on log patterns and minimum output levels per caller
+classes, more than one writer is rarely necessary.
 
 ### Output Format Pattern
 
