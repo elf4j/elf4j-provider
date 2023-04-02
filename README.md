@@ -58,8 +58,7 @@ services, but no longer a concern of the application-level logging.
 ### Log Patterns Including JSON
 
 JSON is a supported output pattern, in hopes of helping external log analysis tools. This is in addition to the usual
-line-based patterns - timestamp, level, thread, class, method, file name, line number, and log message. The JSON pattern
-can either be the only output of the log entry, or mixed together with other patterns.
+line-based patterns - timestamp, level, thread, class, method, file name, line number, and log message.
 
 ### Configuration Refresh at Runtime
 
@@ -117,6 +116,9 @@ writer can have individual configurations on format pattern, minimum output leve
 classes, more than one writer is rarely necessary.
 
 ### Output Format Pattern
+
+All individual patterns, including the JSON pattern, can either be the only output of the log entry, or mixed together
+with any other patterns.
 
 * `timestamp`: Date time format configurable via Java
   `DateTimeFormatter` [pattern syntax](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#patterns),
