@@ -1,7 +1,7 @@
 # elf4j-provider
 
-A native log _service provider_ implementation of [ELF4J](https://github.com/elf4j/elf4j) (Easy Logging Facade for
-Java), and a complete drop-in logging solution for any Java application
+The native logging _service provider_ implementation of [ELF4J](https://github.com/elf4j/elf4j) (Easy Logging Facade for
+Java), and an independent drop-in logging solution for any Java application
 
 ## User Story
 
