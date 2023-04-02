@@ -118,7 +118,7 @@ one stream writer is rarely necessary.
 
 * `timestamp`: Date time format configurable via Java
   `DateTimeFormatter` [pattern syntax](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#patterns),
-  default to ISO datetime with time zone offset of the application running host
+  default to ISO datetime format with time zone offset of the application running host
 * `level`: Length configurable, default to full length
 * `thread`: Option of `name` or `id`, default to name
 * `class`: Option of `simple`, `full`, or `compressed` (only the first letter for a package segment), default to `full`
