@@ -126,7 +126,8 @@ with any other patterns.
   default to ISO datetime format with time zone offset of the application running host
 * `level`: Length configurable, default to full length
 * `thread`: Option of `name` or `id`, default to name
-* `class`: Option of `simple`, `full`, or `compressed` (only the first letter for a package segment), default to `full`
+* `class`: Option of `simple`, `full`, or `compressed` (only the first letter for a package segment), default
+  to `simple`
 * `method`: No configuration options, simple method name
 * `filename`: No configuration options, simple file name
 * `linenumber`: No configuration options, where the log is issued in the file
