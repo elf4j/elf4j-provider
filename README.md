@@ -111,10 +111,10 @@ the caller class.
 
 ### Writer
 
-elf4j-engine supports multiple standard-stream writers. Each writer can have individual configurations on format
+The elf4j-engine supports multiple standard-stream writers. Each writer can have individual configurations on format
 pattern, minimum output level, and type of out stream (stdout/err/auto). The same log entry will be output once per each
-writer. Given the comprehensive support on log patterns and minimum output levels per caller classes, however, more than
-one writer is rarely necessary.
+writer. More than one writer is rarely necessary, however, given what a single writer can achieve with the comprehensive
+support on log patterns and minimum output levels per caller classes.
 
 ### Output Format Pattern
 
