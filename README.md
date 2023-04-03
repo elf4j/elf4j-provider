@@ -107,7 +107,7 @@ on `Logger` instances. However, the minimum output level for both log writers an
 the default of `TRACE`. For log writers, the default level can be configured/overridden per each writer. For caller
 classes, the minimum output level can be configured on global, packages, or individual classes. A log output is only
 rendered when the `Logger` instance level is on or above the configured minimum output levels of both the log writer and
-caller class.
+the caller class.
 
 ### Writer
 
