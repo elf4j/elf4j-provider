@@ -105,7 +105,9 @@ The default severity level of a `Logger` instance from `Logger.instance()` is `I
 the ELF4J [API](https://github.com/elf4j/elf4j#logging-service-interface-and-access-api) should be used to switch levels
 on `Logger` instances. However, the minimum output level for both log writers and caller classes is configurable, with
 the default of `TRACE`. For log writers, the default level can be configured/overridden per each writer. For caller
-classes, the minimum output level can be configured on global, packages, or individual classes.
+classes, the minimum output level can be configured on global, packages, or individual classes. A log output is only
+rendered when the `Logger` instance level is on or above the configured minimum output levels of both the log writer and
+caller class.
 
 ### Writer
 
