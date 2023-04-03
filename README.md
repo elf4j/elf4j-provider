@@ -147,7 +147,9 @@ Line-based Default
 
 * Output:
 
-  `2023-03-22T21:11:33.040-05:00 INFO IntegrationTest$defaultLogger - Hello, world!`
+  ```
+  2023-03-22T21:11:33.040-05:00 INFO IntegrationTest$defaultLogger - Hello, world!
+  ```
 
 Line-based Customized
 
