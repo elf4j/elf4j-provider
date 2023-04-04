@@ -119,7 +119,9 @@ support on log patterns and minimum output levels per caller classes.
 ### Output Format Pattern
 
 All individual patterns, including the JSON pattern, can either be the only output of the log entry, or mixed together
-with any other patterns.
+with any other patterns. They take the form of `{pattern:displayOptions}`, where multiple display options are separated
+by commas. Patterns inside curly brace pairs are predefined and will be interpreted before output, while patterns
+outside curly brace pairs are output verbatim. The predefined patterns are:
 
 * `timestamp`: Date time format configurable via Java
   `DateTimeFormatter` [pattern syntax](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#patterns),
@@ -131,12 +133,12 @@ with any other patterns.
 * `method`: No configuration options, simple method name
 * `filename`: No configuration options, simple file name
 * `linenumber`: No configuration options, where the log is issued in the file
-* `sysprop`: Option is the name of the JRE System Property
-* `sysenv`: Option is the name of the system environment variable
+* `sysprop`: Option `name` for the JRE System Property
+* `sysenv`: Option `name` for the system environment variable
 * `message`: No configuration options, always prints user message, and exception stack trace if any
-* `json`: Options of `caller-thread` and `caller-detail` - to include caller thread (name and id) and stack details
-  (class, method, filename, linenumber); also option of `pretty` - to indent the JSON text to more readable format.
-  Default is no thread/caller detail and the minified single-line format
+* `json`: Multiple options allowed - `caller-thread` to include caller thread (name and id), `caller-detail` to include
+  caller stack detail (class, method, filename, linenumber), and option `pretty` to indent the JSON text to more
+  readable format. Default is no thread/caller detail and the minified single-line format
 
 **Pattern Output Samples**
 
