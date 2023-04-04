@@ -131,6 +131,8 @@ with any other patterns.
 * `method`: No configuration options, simple method name
 * `filename`: No configuration options, simple file name
 * `linenumber`: No configuration options, where the log is issued in the file
+* `sysprop`: Option is the name of the JRE System Property
+* `sysenv`: Option is the name of the system environment variable
 * `message`: No configuration options, always prints user message, and exception stack trace if any
 * `json`: Options of `caller-thread` and `caller-detail` - to include caller thread (name and id) and stack details
   (class, method, filename, linenumber); also option of `pretty` - to indent the JSON text to more readable format.
