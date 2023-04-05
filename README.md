@@ -272,4 +272,4 @@ back to its business workflow.
 
   due to the buffering effect of `cat`.
 
-  Such data collection manipulation on the output side is considered outside the scope of application logging.
+  Such data collection manipulation on the output side, though, is considered outside the scope of application logging.
