@@ -244,8 +244,8 @@ the current properties, and the configuration file will be ignored.
 
 ## Performance
 
-It's not how fast you fill up the log file or repository, it's how fast you relieve the application from logging duty
-back to business workflow.
+It's not how fast you fill up the target log file or repository, it's how fast you relieve the application from logging
+duty back to business workflow.
 
 * On the application side, this log engine aims to minimize the work the application thread has to do before handing
   over the rest of the logging work to the asynchronous output process. At the minimum, the application thread has to
@@ -270,6 +270,6 @@ back to business workflow.
   java MyApplication >logFile
   ```
 
-  because of the buffering effect of `cat`.
+  due to the buffering effect of `cat`.
 
   Such data collection manipulation on the output side, though, is considered outside the scope of application logging.
