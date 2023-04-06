@@ -245,18 +245,18 @@ the current properties, and the configuration file will be ignored.
 ## Performance
 
 It's not how fast you fill up the log file or repository, it's how fast you relieve the application from logging duty
-back to its business workflow.
+back to business workflow.
 
-* On the application side, this log engine aims to minimize the work the application thread has to perform before
-  handing over the rest of logging to the asynchronous output process. At the minimum, the application thread has to
-  gather all the required log data that the output thread cannot asynchronously, e.g., caller thread information or
-  caller details such as line number, file name, and method name. Excluding such information from the log output
-  patterns when possible should help performance. (The default output pattern does not include call thread and detail
+* On the application side, this log engine aims to minimize the work the application thread has to do before handing
+  over the rest of the logging work to the asynchronous output process. At the minimum, the application thread has to
+  gather all the required log data that the output thread cannot gather asynchronously, e.g., the caller thread
+  information or caller details such as line number, file name, and method name. Excluding such information from the log
+  output patterns should help performance. (The default output pattern does not include call thread and detail
   information.)
 
 * On the output side, to keep the chronicle order of the log entries, the log engine flushes the out stream once per
   each log entry on all the writers. Although less critical than minimizing the work load of the application thread,
-  some form of out stream buffering may help the output speed depending on the type of the target log repository.
+  some form of out stream buffering may help the output speed, depending on the type of the target log repository.
 
   For instance, if the target repository is a log file on disk, then
 
@@ -270,6 +270,6 @@ back to its business workflow.
   java MyApplication >logFile
   ```
 
-  due to the buffering effect of `cat`.
+  because of the buffering effect of `cat`.
 
   Such data collection manipulation on the output side, though, is considered outside the scope of application logging.
