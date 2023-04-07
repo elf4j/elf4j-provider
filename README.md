@@ -270,5 +270,5 @@ duty back to business workflow.
   due to the buffering effect of `cat`.
 
   Such external manipulation for data collecting performance, though, is considered outside the scope of
-  application-level logging. It may be more important to the application's monitoring/observability that usually have
-  different performance requirement than the regular business workflow.
+  application-level logging. It may be more important to the application's monitoring/observability which usually has
+  different performance requirements than the regular business workflow.
