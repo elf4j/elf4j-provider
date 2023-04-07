@@ -261,7 +261,7 @@ duty back to business workflow.
   java MyApplication | cat >logFile
   ```
 
-  _may_ outperform
+  might outperform
 
   ```shell
   java MyApplication >logFile
