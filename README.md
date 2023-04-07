@@ -254,8 +254,8 @@ duty back to business workflow.
   method name. When acceptable, it helps to exclude such performance-sensitive information from the logging output. (The
   default output pattern does not include caller detail and thread information.)
 * On the asynchronous output side, the elf4j-engine buffers and flushes each log entry atomically per each writer.
-  Depending on the target log repository, further manoeuvres it may help the output performance. For example, if the
-  target repository is a log file on disk, then
+  Depending on the target log repository, further manoeuvres may help the output performance. For example, if the target
+  repository is a log file on disk, then
 
   ```shell
   java MyApplication | cat >logFile
