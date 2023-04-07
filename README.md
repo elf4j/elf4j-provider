@@ -250,18 +250,18 @@ duty back to business workflow.
 * Essentially, on the application side where logging is synchronous to the business workflow, the elf4j-engine aims to
   minimize what the application thread has to do before handing over the rest of the logging work to the asynchronous
   output process. At the minimum, the application thread has to gather all the required log data that the output thread
-  cannot gather asynchronously, e.g., the caller thread information or caller details such as line number, file name,
-  and method name. When acceptable, it helps to exclude such performance-sensitive information from the logging
-  output. (The default output pattern does not include caller detail and thread information.)
+  cannot gather asynchronously, such as the caller thread information or caller details like line number, file name, and
+  method name. When acceptable, it helps to exclude such performance-sensitive information from the logging output. (The
+  default output pattern does not include caller detail and thread information.)
 * On the asynchronous output side, the elf4j-engine buffers and flushes each log entry atomically per each writer.
-  Depending on the target log repository, it may help the output performance to have additional buffering externally.
-  For instance, if the target repository is a log file on disk, then
+  Depending on the target log repository, further manoeuvres it may help the output performance. For example, if the
+  target repository is a log file on disk, then
 
   ```shell
   java MyApplication | cat >logFile
   ```
 
-  may outperform
+  _may_ outperform
 
   ```shell
   java MyApplication >logFile
@@ -269,6 +269,6 @@ duty back to business workflow.
 
   due to the buffering effect of `cat`.
 
-  Such external manipulation for data collecting performance, though, is considered outside the scope of
-  application-level logging. It may be more important to the application's monitoring/observability which usually has
-  different performance requirements than the regular business workflow.
+  Such external moves for data collecting performance, though, are considered outside the scope of application-level
+  logging. It may be more important to the application's monitoring/observability that has different (often more
+  relaxed) performance requirements than the regular business workflow.
