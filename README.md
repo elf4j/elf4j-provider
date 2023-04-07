@@ -247,17 +247,14 @@ the current properties, and the configuration file will be ignored.
 It's not how fast you fill up the target log file or repository, it's how fast you relieve the application from logging
 duty back to business workflow.
 
-* On the application side, this log engine aims to minimize the work the application thread has to do before handing
-  over the rest of the logging work to the asynchronous output process. At the minimum, the application thread has to
-  gather all the required log data that the output thread cannot gather asynchronously, e.g., the caller thread
-  information or caller details such as line number, file name, and method name. Excluding such information from the log
-  output patterns should help performance. (The default output pattern does not include call thread and detail
-  information.)
-
-* On the output side, to keep the chronicle order of the log entries, the log engine flushes the out stream once per
-  each log entry on all the writers. Although less critical than minimizing the work load of the application thread,
-  some form of out stream buffering may help the output speed, depending on the type of the target log repository.
-
+* Essentially, on the application side where logging is synchronous to the business workflow, the elf4j-engine aims to
+  minimize what the application thread has to do before handing over the rest of the logging work to the asynchronous
+  output process. At the minimum, the application thread has to gather all the required log data that the output thread
+  cannot gather asynchronously, e.g., the caller thread information or caller details such as line number, file name,
+  and method name. When acceptable, it helps to exclude such performance-sensitive information from the logging
+  output. (The default output pattern does not include caller detail and thread information.)
+* On the asynchronous output side, the elf4j-engine buffers and flushes each log entry atomically per each writer.
+  Depending on the target log repository, it may help the output performance to have additional buffering externally.
   For instance, if the target repository is a log file on disk, then
 
   ```shell
@@ -272,4 +269,6 @@ duty back to business workflow.
 
   due to the buffering effect of `cat`.
 
-  Such data collection manipulation on the output side, though, is considered outside the scope of application logging.
+  Such external manipulation for data collecting performance, though, is considered outside the scope of
+  application-level logging. It may be more important to the application's monitoring/observability that usually have
+  different performance requirement than the regular business workflow.
