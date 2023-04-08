@@ -247,7 +247,7 @@ the current properties, and the configuration file will be ignored.
 It's not how fast you fill up the target log file or repository, it's how fast you relieve the application from logging
 duty back to business workflow.
 
-* On the application side, some portion of logging needs to be synchronous to the business workflo. The elf4j-engine aims to
+* On the application side, some portion of the logging process needs to be synchronous to the business workflow. The elf4j-engine aims to
   minimize what the application thread has to do for logging before handing off the rest to the asynchronous
   output process. At the minimum, the application thread has to gather all the required log data that the output thread
   cannot gather asynchronously, such as the caller thread information or caller details like line number, file name, and
