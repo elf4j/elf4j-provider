@@ -247,12 +247,14 @@ the current properties, and the configuration file will be ignored.
 It's not how fast you fill up the target log file or repository, it's how fast you relieve the application from logging
 duty back to business workflow.
 
-* On the application side, some portion of the logging process needs to be synchronous to the business workflow. The elf4j-engine aims to
-  minimize what the application thread has to do for logging before handing off the rest to the asynchronous
-  output process. At the minimum, the application thread has to gather all the required log data that the output thread
-  cannot gather asynchronously, such as the caller thread information or caller details like line number, file name, and
-  method name. When acceptable, it helps to exclude such performance-sensitive information from the logging output. (The
-  default output pattern does not include caller detail and thread information.)
+* On the application side, some logging information needs to be gathered synchronously to the main business domain
+  workflow. For example, caller thread and caller details such as method name, line number, or file name are
+  performance-wise expensive to retrieve, yet cannot be done by a different/asynchronous thread. At minimum, the main
+  application thread has to gather all the data required by the logging output configuration before handing off the rest
+  to an asynchronous process. The elf4j-engine aims to minimize what the application thread has to do for logging prior
+  to the hand-off. On the user's end, it helps to exclude performance-sensitive information from the logging
+  configuration when situation permits. (The default output pattern does not include caller detail and thread
+  information.)
 * On the asynchronous output side, the elf4j-engine buffers and flushes each log entry atomically per each writer.
   Depending on the target log repository, further manoeuvres may help the output performance. For example, if the target
   repository is a log file on disk, then
@@ -270,5 +272,5 @@ duty back to business workflow.
   due to the buffering effect of `cat`.
 
   Such external moves for data collecting performance, though, are considered outside the scope of application-level
-  logging. It may be more important to the application's monitoring/observability that has different (often more
-  relaxed) performance requirements than the regular business workflow.
+  logging. They may be more important to the application's monitoring/observability that has different (often more
+  relaxed) performance requirements than the business domain workflow.
