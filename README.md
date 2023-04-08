@@ -245,7 +245,7 @@ the current properties, and the configuration file will be ignored.
 ## Performance
 
 It's not how fast you fill up the target log file or repository, it's how fast you relieve the application from logging
-duty back to business workflow.
+duty back to its own business.
 
 * On the application side, some logging information needs to be gathered synchronously to the main business domain
   workflow. For example, caller thread and caller details such as method name, line number, or file name are
