@@ -253,7 +253,7 @@ duty back to its own business.
   application thread has to gather all the data required by the logging output configuration before handing off the rest
   to an asynchronous process. The elf4j-engine aims to minimize what the application thread has to do for logging prior
   to the hand-off. On the user's end, it helps to exclude performance-sensitive information from the logging
-  configuration when situation permits. (The default output pattern does not include caller detail and thread
+  configuration when circumstances permit. (The default output pattern does not include caller detail and thread
   information.)
 * On the asynchronous output side, the elf4j-engine buffers and flushes each log entry atomically per each writer.
   Depending on the target log repository, further manoeuvres may help the output performance. For example, if the target
