@@ -257,8 +257,8 @@ duty back to its own business.
   information.)
 * On the output side, the output performance does not directly impact the business domain workflow as the process is
   asynchronous. The elf4j-engine buffers and then flushes each log entry atomically per each writer. Depending on the
-  target log repository, further manoeuvres may help the output performance. For example, if the target repository is a
-  log file on disk, then
+  target log repository, further manoeuvres may help the data collection performance. For example, if the target
+  repository is a log file on disk, then
 
   ```shell
   java MyApplication | cat >logFile
@@ -272,6 +272,6 @@ duty back to its own business.
 
   due to the buffering effect of `cat`.
 
-  Such external moves for data collecting performance, though, are considered outside the scope of application-level
+  Such external moves for data shipping performance, though, are considered outside the scope of application-level
   logging. They may be more important to the application's monitoring/observability that has different (often more
   relaxed) performance requirements than the business domain workflow.
