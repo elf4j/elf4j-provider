@@ -272,6 +272,6 @@ duty back to its own business.
 
   due to the buffering effect of `cat`.
 
-  Such external moves for data shipping performance, though, are considered outside the scope of application-level
+  Such external setups for data shipping performance, though, are considered outside the scope of application-level
   logging. They may be more important to the application's monitoring/observability that has different (often more
   relaxed) performance requirements than the business domain workflow.
