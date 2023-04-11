@@ -255,10 +255,10 @@ duty back to its own business.
   to the hand-off. On the user's end, it helps to exclude performance-sensitive information from the logging
   configuration when circumstances permit. (The default output pattern does not include caller detail and thread
   information.)
-* On the output side, the output performance does not directly impact the business domain workflow as the process is
-  asynchronous. The elf4j-engine buffers and then flushes each log entry atomically per each writer. Depending on the
-  target log repository, further manoeuvres may help the data collection performance. For example, if the target
-  repository is a log file on disk, then
+* On the log data output side, the process is asynchronous and does not directly impact the business domain workflow.
+  The elf4j-engine buffers and then flushes each log entry atomically per each writer. Depending on the target log
+  repository, further manoeuvres may help the data collection process. For example, if the target repository is a log
+  file on disk, then
 
   ```shell
   java MyApplication | cat >logFile
