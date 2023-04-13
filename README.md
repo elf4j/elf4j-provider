@@ -68,19 +68,17 @@ restarting the application.
 
 ## Usage
 
-As with any other [ELF4J](https://github.com/elf4j/elf4j) logging provider, client application should code
-against [service API](https://github.com/elf4j/elf4j#service-interface-and-access-api) of the ELF4J facade, and drop in
-this provider implementation as a runtime dependency shown in the "Installation" section.
+* As with any other [ELF4J](https://github.com/elf4j/elf4j) logging provider, client application should code
+  against [service API](https://github.com/elf4j/elf4j#service-interface-and-access-api) of the ELF4J facade, and drop
+  in this provider implementation as a runtime dependency shown in the "Installation" section.
 
-See ELF4J for [API sample usage](https://github.com/elf4j/elf4j#use-it---for-log-service-api-clients).
+* See ELF4J for [API sample usage](https://github.com/elf4j/elf4j#use-it---for-log-service-api-clients).
 
-In case of multiple ELF4J service providers in classpath, pick this one like so:
-
-```
-java -Delf4j.logger.factory.fqcn="elf4j.engine.NativeLoggerFactory" MyApplication
-```
-
-More details [here](https://github.com/elf4j/elf4j/blob/main/README.md#only-one-in-effect-logging-provider).
+* In case of multiple ELF4J service providers in classpath, pick this one like so:
+  ```
+  java -Delf4j.logger.factory.fqcn="elf4j.engine.NativeLoggerFactory" MyApplication
+  ```  
+  More details [here](https://github.com/elf4j/elf4j/blob/main/README.md#only-one-in-effect-logging-provider).
 
 ## Configuration
 
@@ -205,8 +203,6 @@ JSON Customized
 
 **Sample Configuration File**
 
-* When in doubt, use lower-case.
-
 ```properties
 ### Zero configuration mandatory, this file can be empty - default to a line-based writer with simple log pattern
 ### global no-op flag, overriding and will turn off all logging if set true
@@ -247,31 +243,31 @@ the current properties, and the configuration file will be ignored.
 It's not how fast you fill up the target log file or repository, it's how fast you relieve the application from logging
 duty back to its own business.
 
-* On the application side, some logging information needs to be gathered synchronously to the main business domain
-  workflow. For example, caller thread and caller details such as method name, line number, or file name are
-  performance-wise expensive to retrieve, yet cannot be done by a different/asynchronous thread. At minimum, the main
-  application thread has to gather all the data required by the logging output configuration before handing off the rest
-  to an asynchronous process. The elf4j-engine aims to minimize what the application thread has to do for logging prior
-  to the hand-off. On the user's end, it helps to exclude performance-sensitive information from the logging
-  configuration when circumstances permit. (The default output pattern does not include caller detail and thread
-  information.)
-* On the log data output side, the process is asynchronous and does not directly impact the business domain workflow.
-  The elf4j-engine buffers and then flushes each log entry atomically per each writer. Depending on the target log
-  repository, further manoeuvres may help the data collection process. For example, if the target repository is a log
-  file on disk, then
+On the application side, some logging information needs to be gathered synchronously to the main business domain
+workflow. For example, caller thread and caller details such as method name, line number, or file name are
+performance-wise expensive to retrieve, yet cannot be done by a different/asynchronous thread. At minimum, the main
+application thread has to gather all the data required by the logging output configuration before handing off the rest
+to an asynchronous process. The elf4j-engine aims to minimize what the application thread has to do for logging prior to
+the hand-off. On the user's end, it helps to exclude performance-sensitive information from the logging configuration
+when circumstances permit. (The default output pattern does not include caller detail and thread information.)
 
-  ```shell
-  java MyApplication | cat >logFile
-  ```
+On the log data output side, the process is asynchronous and does not directly impact the business domain workflow. The
+elf4j-engine buffers and then flushes each log entry atomically per each writer. Depending on the target log repository,
+further manoeuvres may help the data collection process. For example, if the target repository is a log file on disk,
+then
 
-  might outperform
+```shell
+java MyApplication | cat >logFile
+```
 
-  ```shell
-  java MyApplication >logFile
-  ```
+might outperform
 
-  due to the buffering effect of `cat`.
+```shell
+java MyApplication >logFile
+```
 
-  Such external setups for data shipping performance, though, are considered outside the scope of application-level
-  logging. They may be more important to the application's monitoring/observability that has different (often more
-  relaxed) performance requirements than the business domain workflow.
+due to the buffering effect of `cat`.
+
+Such external setups for data shipping performance, though, are considered outside the scope of application-level
+logging. They may be more important to the application's monitoring/observability that has different (often more
+relaxed) performance requirements than the business domain workflow.
