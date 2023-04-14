@@ -245,10 +245,10 @@ duty back to its own business.
 
 Some logging information has to be gathered by the main application thread, synchronously to the business domain
 workflow. Namely, caller thread and detail information such as method name, line number, or file name are
-performance-wise expensive to retrieve, yet unattainable from a different/asynchronous thread. The elf4j-engine takes
-measures to minimize the synchronous work portion before handing off the rest to the asynchronous process. Nevertheless,
-it helps for the client application to exclude performance-sensitive data when circumstances permit; e.g. the default
-log pattern configuration does not include caller detail and thread information.
+performance-wise expensive to retrieve, yet unavailable for a different/asynchronous thread to look up. In general, the
+elf4j-engine takes measures to minimize the synchronous work portion before handing off the rest to an asynchronous
+process. Nevertheless, it helps if the client application can do without performance-sensitive log information when
+circumstances permit; e.g. the default log pattern configuration does not include caller detail and thread information.
 
 Once all the log information is gathered, the rest of the logging process (data processing and output) is asynchronous
 and does not directly impact the business domain workflow. The elf4j-engine buffers and then flushes each log entry
