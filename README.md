@@ -243,7 +243,7 @@ the current properties, and the configuration file will be ignored.
 It's not how fast you fill up the target log file or repository, it's how fast you relieve the application from logging
 duty back to its own business.
 
-On the application side, some logging information needs to be gathered by the main application thread synchronously to
+On the application side, some logging information needs to be gathered by the main application thread, synchronously to
 the business domain workflow. For example, caller thread and caller details such as method name, line number, or file
 name are performance-wise expensive to retrieve, yet unattainable by a different/asynchronous thread. At minimum, the
 main application thread has to gather all the required information before handing off the rest of the logging work to an
