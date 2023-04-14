@@ -248,8 +248,8 @@ workflow. For example, caller thread and caller details such as method name, lin
 performance-wise expensive to retrieve, yet cannot be done by a different/asynchronous thread. At minimum, the main
 application thread has to gather all the data required by the logging output configuration before handing off the rest
 to an asynchronous process. The elf4j-engine aims to minimize what the application thread has to do for logging prior to
-the hand-off. On the user's end, it helps to exclude performance-sensitive information from the logging configuration
-when circumstances permit. (The default output pattern does not include caller detail and thread information.)
+the hand-off. It helps to exclude performance-sensitive information from the logging configuration when circumstances
+permit. (The default output pattern does not include caller detail and thread information.)
 
 On the log data output side, the process is asynchronous and does not directly impact the business domain workflow. The
 elf4j-engine buffers and then flushes each log entry atomically per each writer. Depending on the target log repository,
@@ -269,5 +269,5 @@ java MyApplication >logFile
 due to the buffering effect of `cat`.
 
 Such external setups for data shipping performance, though, are considered outside the scope of application-level
-logging. They may be more important to the application's monitoring/observability that has different (often more
+logging. They may be more important to the application's monitoring/observability which often has different (more
 relaxed) performance requirements than the business domain workflow.
