@@ -243,19 +243,17 @@ the current properties, and the configuration file will be ignored.
 It's not how fast you fill up the target log file or repository, it's how fast you relieve the application from logging
 duty back to its own business.
 
-On the application side, some logging information needs to be gathered by the main application thread, synchronously to
-the business domain workflow. For example, caller thread and caller details such as method name, line number, or file
-name are performance-wise expensive to retrieve, yet unattainable by a different/asynchronous thread. At minimum, the
-main application thread has to gather all the required information before handing off the rest of the logging work to an
-asynchronous process. It helps to exclude performance-sensitive information from the logging configuration when
-circumstances permit; the default output pattern does not include caller detail and thread information. Regardless what
-logging data is required, the elf4j-engine aims to minimize what the application thread has to do for logging prior to
-the hand-off.
+Some logging information has to be gathered by the main application thread, synchronously to the business domain
+workflow. Namely, caller thread and detail information such as method name, line number, or file name are
+performance-wise expensive to retrieve, yet unattainable from a different/asynchronous thread. The elf4j-engine takes
+measures to minimize the synchronous work portion before handing off the rest to the asynchronous process. Nevertheless,
+it helps for the client application to exclude performance-sensitive data when circumstances permit; e.g. the default
+log pattern configuration does not include caller detail and thread information.
 
-On the log data output side, the process is asynchronous and does not directly impact the business domain workflow. The
-elf4j-engine buffers and then flushes each log entry atomically per each writer. Depending on the target log repository,
-further manoeuvres may help the data collection process. For example, if the target repository is a log file on disk,
-then
+Once all the log information is gathered, the rest of the logging process (data processing and output) is asynchronous
+and does not directly impact the business domain workflow. The elf4j-engine buffers and then flushes each log entry
+atomically. Depending on the target log repository, further manoeuvres may help the data collection process. For
+example, if the target repository is a log file on disk, then
 
 ```shell
 java MyApplication | cat >logFile
