@@ -244,7 +244,7 @@ It's not how fast you fill up the target log file or repository, it's how fast y
 duty back to its own business.
 
 Some logging information has to be gathered by the main application thread, synchronously to the business domain
-workflow. Namely, caller thread and detail information such as method name, line number, or file name are
+workflow. For example, caller thread and detail information such as method name, line number, or file name are
 performance-wise expensive to retrieve, yet unavailable for a different/asynchronous thread to look up. In general, the
 elf4j-engine takes measures to minimize the synchronous work portion before handing off the rest to an asynchronous
 process. Nevertheless, it helps if the client application can do without performance-sensitive log information when
