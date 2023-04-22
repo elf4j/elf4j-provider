@@ -245,15 +245,15 @@ duty back to its own business.
 
 Some logging information has to be gathered by the main application thread, synchronously to the business domain
 workflow. For example, caller thread and detail information such as method name, line number, or file name are
-performance-wise expensive to retrieve, yet unavailable for a different/asynchronous thread to look up. In general, the
-elf4j-engine takes measures to minimize the synchronous work portion before handing off the rest to an asynchronous
+performance-wise expensive to retrieve, yet unavailable for a different/asynchronous thread to look up. The elf4j-engine
+takes measures to minimize the synchronous portion of the logging work before handing off the rest to an asynchronous
 process. Nevertheless, it helps if the client application can do without performance-sensitive log information in the
 first place; e.g. the default log pattern configuration does not include caller detail and thread information.
 
-Once all the log information is gathered, the rest of the logging process (data processing and output) is asynchronous
-and does not directly impact the business domain workflow. The elf4j-engine buffers and then flushes each log entry
-atomically. Depending on the target log repository, further manoeuvres may help the data collection process. For
-example, if the target repository is a log file on disk, then
+Once required information is gathered, the rest of the logging process (data processing and output) is asynchronous, and
+does not directly impact the business domain workflow. The elf4j-engine atomically buffers and then flushes each log
+entry. Depending on the target log repository, further manoeuvres may help the data collection process. For example, if
+the target repository is a log file on disk, then
 
 ```shell
 java MyApplication | cat >logFile
@@ -268,5 +268,5 @@ java MyApplication >logFile
 due to the buffering effect of `cat`.
 
 Such external setups for data shipping performance, though, are considered outside the scope of application-level
-logging. They may be more important to the application's monitoring/observability which often has different (more
+logging. They may be more important to the application's monitoring/observability which often has different (and more
 relaxed) performance requirements than the business domain workflow.
