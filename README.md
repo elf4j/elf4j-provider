@@ -251,9 +251,9 @@ process. Nevertheless, it helps if the client application can do without perform
 first place; e.g. the default log pattern configuration does not include caller detail and thread information.
 
 Once required information is gathered, the rest of the logging process (data processing and output) is asynchronous, and
-does not directly impact the business domain workflow. The elf4j-engine atomically buffers and then flushes each log
-entry. Depending on the target log repository, further manoeuvres may help the data collection process. For example, if
-the target repository is a log file on disk, then
+does not directly impact the business domain workflow. The elf4j-engine atomically flushes each log entry. Depending on
+the target log repository, further manoeuvres may help the data collection process. For example, if the target
+repository is a log file on disk, then
 
 ```shell
 java MyApplication | cat >logFile
