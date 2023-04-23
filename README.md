@@ -252,8 +252,9 @@ first place; e.g. the default log pattern configuration does not include caller 
 
 Once required information is gathered, the rest of the logging process (data processing and output) is asynchronous, and
 does not directly impact the business domain workflow. The elf4j-engine atomically flushes each log entry. Depending on
-the target log repository, further manoeuvres may help the data collection process. For example, if the target
-repository is a log file on disk, then
+the actual target log repository (the standard stream destinations are often redirected/replaced by the host environment
+or user), further manoeuvres may help the data collection process. For example, if the target repository is a log file
+on disk, then
 
 ```shell
 java MyApplication | cat >logFile
