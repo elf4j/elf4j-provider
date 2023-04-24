@@ -99,13 +99,13 @@ configuration sample file below.
 
 ### Level
 
-The default severity level of a `Logger` instance from `Logger.instance()` is `INFO`, which is not configurable because
-the ELF4J [API](https://github.com/elf4j/elf4j#logging-service-interface-and-access-api) should be used to switch levels
-on `Logger` instances. However, the minimum output level for both log writers and caller classes is configurable, with
-the default of `TRACE`. For log writers, the default level can be configured/overridden per each writer. For caller
+The default severity level of a `Logger` instance from `Logger.instance()` is `INFO`, which is not configurable: if
+needed, use the ELF4J [API](https://github.com/elf4j/elf4j#logging-service-interface-and-access-api) to switch levels
+on `Logger` instances. By contrast, the level of minimum output for both log writers and caller classes is configurable,
+with the default of `TRACE`. For log writers, the default level can be configured/overridden per each writer. For caller
 classes, the minimum output level can be configured on global, packages, or individual classes. A log output is only
-rendered when the `Logger` instance level is on or above the configured minimum output levels of both the log writer and
-the caller class.
+rendered when the `Logger` instance severity level is on or above the configured minimum output levels of both the log
+writer and the caller class.
 
 ### Writer
 
