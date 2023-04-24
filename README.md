@@ -266,7 +266,7 @@ might outperform
 java MyApplication >logFile
 ```
 
-due to the buffering effect of `cat`.
+due to the buffering effect of piping and `cat`.
 
 Such external setups for data shipping performance, though, are considered outside the scope of application-level
 logging. They may be more important to the application's monitoring/observability which often has different (and more
