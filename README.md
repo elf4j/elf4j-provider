@@ -271,8 +271,9 @@ usually needs to be limited in reality. The other way is to balance the output c
 application's log volume, such that the bandwidth is in general large enough compared to the volume, to the extent that
 buffer overload is still a situation that happens, but rarely over time.
 
-For example, depending on the actual target log repository (the standard stream destinations are often
-redirected/replaced by the host environment or user), further manoeuvres may help the data collecting performance. For
+To keep chronic order of logs, the elf4j-engine atomically flushes each log entry only once. However, more flushes
+may happen automatically, depending on the actual target log repository (the standard stream destinations are often
+redirected/replaced by the host environment or user). Sometimes, further manoeuvres may help the data collecting performance. For
 example, if the target repository is a log file on disk, then
 
 ```shell
