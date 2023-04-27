@@ -214,7 +214,9 @@ level@org.springframework=warn
 level@org.apache=error
 ### Writer is optional, default to a simple standard streams writer
 ### Default standard out stream type when omitted at writer level - stdout/stderr/auto - default to stdout. auto means to use stdout if severity level is lower than WARN, otherwise use stderr
-standard.stream=stderr
+stream=stderr
+### Optional default override of writer pattern
+#pattern={json}
 ### standard (stdout/stderr/auto) is the only supported writer type
 writer1=standard
 ### Writer stream type if present takes precedence
@@ -250,24 +252,40 @@ takes measures to minimize the synchronous portion of the logging work before ha
 process. Nevertheless, it helps if the client application can do without performance-sensitive log information in the
 first place; e.g. the default log pattern configuration does not include caller detail and thread information.
 
-Once required information is gathered, the rest of the logging process (data processing and output) is asynchronous, and
-does not directly impact the business domain workflow. The elf4j-engine atomically flushes each log entry. Depending on
-the actual target log repository (the standard stream destinations are often redirected/replaced by the host environment
-or user), further manoeuvres may help the data collection process. For example, if the target repository is a log file
-on disk, then
+Once required information is gathered, the rest of the logging process (data processing and output) is asynchronous. As
+long as the work queue of the asynchronous logging tasks (a.k.a. the asynchronous buffer) is not full, an asynchronous
+logging has the benefit of causing little friction to the main business workflow. However, when the buffer is full
+(a.k.a. "overloaded"), an asynchronous logging may delay the main workflow more severely because not only it has to
+block while awaiting available buffer capacity but also the extra cost of facilitating a-synchrony will now effectively
+add to the main workflow. By contrast, an inline synchronous logging (where buffer does not apply) will always delay the
+main workflow with every transaction, albeit having no additional cost for a-synchrony.
+
+Frequent asynchronous buffer overload usually indicates that the underlying output channel does not have enough
+bandwidth to support the logging application without blocking it. In that case, a synchronous logging may perform a bit
+better but will not resolve the fundamental mismatch; the application is essentially delayed by the output channel
+bandwidth, regardless of the logging mechanism.
+
+The desired advantage of asynchronous logging is the low friction to the main workflow, provided the buffer is not
+overloaded. One way to avoid buffer overload is to set no limit on the buffer size; unfortunately, the buffer size
+usually needs to be limited in reality. The other way is to balance the output channel's bandwidth with the
+application's log volume, such that the bandwidth is in general large enough compared to the volume, to the extent that
+buffer overload is still a situation that happens, but rarely over time.
+
+For example, depending on the actual target log repository (the standard stream destinations are often
+redirected/replaced by the host environment or user), further manoeuvres may help the data collecting performance. For
+example, if the target repository is a log file on disk, then
 
 ```shell
 java MyApplication | cat >logFile
 ```
 
-might outperform
+may outperform
 
 ```shell
 java MyApplication >logFile
 ```
 
-due to the buffering effect of piping and `cat`.
+due to the further buffering effect of piping and `cat`.
 
-Such external setups for data shipping performance, though, are considered outside the scope of application-level
-logging. They may be more important to the application's monitoring/observability which often has different (and more
-relaxed) performance requirements than the business domain workflow.
+Such external setups fall into the category of increasing channel bandwidth, and are considered outside the scope of
+application-level logging.
