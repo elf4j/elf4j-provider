@@ -253,28 +253,29 @@ process. Nevertheless, it helps if the client application can do without perform
 first place; e.g. the default log pattern configuration does not include caller detail and thread information.
 
 Once required information is gathered, the rest of the logging process (data processing and output) is asynchronous. As
-long as the work queue of the asynchronous logging tasks (a.k.a. the asynchronous buffer) is not full, an asynchronous
-logging has the benefit of causing little friction to the main business workflow. However, when the buffer is full
-(a.k.a. "overloaded"), an asynchronous logging may delay the main workflow more severely because not only it has to
-block while awaiting available buffer capacity but also the extra cost of facilitating a-synchrony will now effectively
-add to the main workflow. By contrast, an inline synchronous logging (where buffer does not apply) will always delay the
-main workflow with every transaction, albeit having no additional cost for a-synchrony.
+long as the work queue hosting the asynchronous logging tasks (a.k.a. asynchronous buffer) is not full, asynchronous
+logging has the benefit of having little performance impact to the main business workflow. However, when the buffer is
+full (a.k.a. buffer overload), asynchronous logging may delay the main workflow more severely than its synchronous
+counterpart because not only it has to block while awaiting available buffer capacity but also the extra cost of
+facilitating asynchronous communication will now add to that of the main workflow. By contrast, synchronous logging
+(where buffer does not apply) will always delay the main workflow with every transaction regardless, albeit having no
+additional cost for asynchrony.
 
-Frequent asynchronous buffer overload usually indicates that the underlying output channel does not have enough
-bandwidth to support the logging application without blocking it. In that case, a synchronous logging may perform a bit
-better but will not resolve the fundamental mismatch; the application is essentially delayed by the output channel
+Frequent asynchronous buffer overload often indicates that the underlying output channel does not have enough bandwidth
+to support the logging application without blocking it. In that case, synchronous logging may perform a bit better than
+asynchronous but will not resolve the fundamental mismatch; the application is essentially delayed by the output channel
 bandwidth, regardless of the logging mechanism.
 
-The desired advantage of asynchronous logging is the low friction to the main workflow, provided the buffer is not
-overloaded. One way to avoid buffer overload is to set no limit on the buffer size; unfortunately, the buffer size
-usually needs to be limited in reality. The other way is to balance the output channel's bandwidth with the
-application's log volume, such that the bandwidth is in general large enough compared to the volume, to the extent that
-buffer overload is still a situation that happens, but rarely over time.
+The desired advantage of asynchronous logging is the low friction to the main workflow - provided the buffer is not
+overloaded. One way to avoid buffer overload is an unlimited buffer capacity; unfortunately, the buffer size usually
+needs to be limited in reality. The other way is to balance the output channel's bandwidth with the application's log
+volume, such that the bandwidth is in general large enough for the volume, to the extent that buffer overload may still
+happen, but rarely over time.
 
-To keep chronic order of logs, the elf4j-engine atomically flushes each log entry only once. However, more flushes
-may happen automatically, depending on the actual target log repository (the standard stream destinations are often
-redirected/replaced by the host environment or user). Sometimes, further manoeuvres may help the data collecting performance. For
-example, if the target repository is a log file on disk, then
+To ensure chronological order of log appearance, the elf4j-engine atomically flushes the output channel once per each
+log entry. However, more down-line flushes may happen depending on the actual channel and destination. The standard
+stream destinations are often redirected/replaced by the host environment or user, in which case further manoeuvres may
+help channel performance. For example, if the target repository is a log file on disk, then
 
 ```shell
 java MyApplication | cat >logFile
@@ -286,7 +287,7 @@ may outperform
 java MyApplication >logFile
 ```
 
-due to the further buffering effect of piping and `cat`.
+due to the buffering effect of piping and `cat`.
 
 Such external setups fall into the category of increasing channel bandwidth, and are considered outside the scope of
 application-level logging.
