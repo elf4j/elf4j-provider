@@ -50,6 +50,6 @@ public class Main {
                         (Supplier) () -> "as usual");
 
         Thread.sleep(200);
-        LogServiceManager.INSTANCE.shutdownAll();
+        LogServiceManager.INSTANCE.stopAll();
     }
 }
