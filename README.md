@@ -235,7 +235,7 @@ writer2=standard
 #writer2.pattern={json}
 ### This would force the JSON to include the thread/caller details, and pretty print
 writer2.pattern={json:caller-thread,caller-detail,pretty}
-### Optional buffer capacity of log events before the main application will be blocked by logging, default 262144
+### Optional buffer capacity of log events before the main application will be back-pressured by logging, default 262144
 buffer.front=262144
 ### Optional buffer capacity for data bytes batched before flushing to the out stream, default is 256 log events
 buffer.back=256
