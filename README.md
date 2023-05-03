@@ -298,7 +298,7 @@ to first set the front buffer to the capacity your host environment can afford f
 larger/dominant capacity between the two; then start to test and adjust the back buffer capacity for best possible
 overall throughput of the system. It usually does not take a large back buffer to batch the bytes flushed to the out
 stream. It is also possible to set both buffer capacities to zero (0); this would simulate a synchronous logging, whose
-throughput may be a useful reference for comparison.
+throughput may be a useful reference for comparison. To some extent, "performance is a choice".
 
 Note that more down-line flushes may happen than what the back buffer is configured, depending on the actual channel and
 destination e.g. the stdout console stream may flush on every line of text, and stderr may flush every character.
