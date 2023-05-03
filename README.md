@@ -60,11 +60,16 @@ monitoring/observability services, but no longer a concern of the application-le
 JSON is a supported output pattern, in hopes of helping external log analysis tools. This is in addition to the usual
 line-based patterns - timestamp, level, thread, class, method, file name, line number, and log message.
 
-### Configuration Refresh at Runtime
+### Service Administration at Runtime
 
-Supports configuration refresh during runtime via API, with option of passing in replacement properties instead of
-reloading the configuration file. The most frequent use case would be to change the minimum log output level, without
-restarting the application.
+* Supports configuration refresh during runtime via API, with option of passing in replacement properties instead of
+  reloading the configuration file. The most frequent use case would be to change the minimum log output level, without
+  restarting the application.
+* If it is required that no logs should be lost when the application shuts down, it is the user's responsibility to call
+  the `LogServiceManger.stopAll()` before the application exits. Upon that call, the log service will
+    1. stop accepting new log events
+    2. block and wait for the front buffer to drain
+    3. block and wait for the back buffer to drain
 
 ## Usage
 
