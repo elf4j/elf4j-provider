@@ -254,10 +254,10 @@ throughput. Regardless the logging process is synchronous or asynchronous to the
 if the application's logging frequency is higher than the logging throughput limit, then over time, the main workflow
 will be blocked and bound by the logging throughput.
 
-For the log processing throughput alone, synchronous process often outperform its asynchronous counterpart because
+For the logging process throughput alone, synchronous execution often outperforms its asynchronous counterpart because
 synchronous process does not incur the additional cost of resources to facilitate asynchronous communications. However,
 for the main application process that issues the logs, the benefit of asynchronous logging is that, when the logging
-task buffer is not full between the application process and the asynchronous log processing, the logging throughput has
+task buffer is not full between the application process and the asynchronous logging process, the logging throughput has
 little impact on the main workflow. The application would just "fire and forget" the logging events, and continue its
 main business workflow without further blocking.
 
@@ -274,7 +274,7 @@ logging has little performance impact to the main business workflow. However, wh
 overload), asynchronous logging may delay the main workflow more severely than its synchronous counterpart because not
 only it has to block while awaiting available buffer capacity but also the extra cost of facilitating asynchronous
 communication will now add to that of the main workflow. By contrast, synchronous logging without buffer will always
-delay the main workflow with every transaction regardless, albeit having no additional cost for asynchrony.
+delay the main workflow with every transaction, albeit having no additional cost for asynchrony.
 
 To take the desired advantage of asynchronous logging, it requires that the buffer is not overloaded. Buffer can also
 help a conceptually synchronous pipeline by providing some "batch effect", e.g. flushing data to an output stream in
@@ -283,7 +283,7 @@ limited, it is important to set up the capacity to maximize the log process thro
 
 The elf4j-engine has two buffers. A front buffer that, on the one end, takes in log entries/events from the main
 application process and, on the other end, hands over the logging tasks to a single log processing thread. The single
-thread ensures chronological order among log events, although, the processing of a single log event can be
+thread ensures chronological order among log events, although, the processing of each single log event can be
 multithreaded. For example, in case of multiple writers, they can process the same log event in parallel; however, they
 need to coordinate and await the completion of all writer threads for that log event before converging back to the
 single processing thread and moving on to process the next. There is also a back buffer that, on the one end, takes in
@@ -292,14 +292,16 @@ buffer provides the batch effect for the stream data flushing.
 
 The default front buffer capacity is 262,144 log entries/events (hydrated in-memory objects), and the default back
 buffer capacity is 256 log events (in bytes). If that does not fit your needs, one way to adjust the capacities would be
-to first set the front buffer to the capacity your host environment can afford for logging; this can be the
-larger/dominant capacity between the two; then start to test and adjust the back buffer capacity for best possible
+to first set the front buffer to the capacity your host environment can afford for logging (this can be the
+larger/dominant capacity between the two); then start to test and adjust the back buffer capacity for best possible
 overall throughput of the system. It usually does not take a large back buffer to batch the bytes flushed to the out
-stream. It is also possible to set both buffer capacities to zero (0); this would simulate a synchronous logging, whose
-throughput may be a useful reference for comparison. To some extent, "performance is a choice".
+stream, given the throughput limit of the logging thread. It is also possible to set both buffer capacities to zero (0);
+this would simulate a synchronous logging, whose throughput may be a useful reference for comparison. To some extent, "
+performance is a choice".
 
-Note that more down-line flushes may happen than what the back buffer is configured, depending on the actual channel and
-destination e.g. the stdout console stream may flush on every line of text, and stderr may flush every character.
+Note that more down-line flushes may happen than what the back buffer is configured for, depending on the actual channel
+and destination. For example, the stdout console stream may flush on every line of text, and stderr may flush on every
+character.
 
 The standard stream destinations are often redirected/replaced by the host environment or user, in which case further
 manoeuvres may help channel performance. For example, if the target repository is a log file on disk, then
