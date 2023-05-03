@@ -66,7 +66,7 @@ line-based patterns - timestamp, level, thread, class, method, file name, line n
   reloading the configuration file. The most frequent use case would be to change the minimum log output level, without
   restarting the application.
 * If it is required that no logs should be lost when the application shuts down, it is the user's responsibility to call
-  the `LogServiceManger.stopAll()` before the application exits. Upon that call, the log service will
+  the `LogServiceManger.INSTANCE.stopAll()` before the application exits. Upon that call, the log service will
     1. stop accepting new log events
     2. block and wait for the front buffer to drain
     3. block and wait for the back buffer to drain
@@ -115,9 +115,9 @@ writer and the caller class.
 ### Writer
 
 The elf4j-engine supports multiple standard-stream writers. Each writer can have individual configurations on format
-pattern, minimum output level, and type of out stream (stdout/err/auto). The same log entry will be output once per each
-writer. Practically, however, more than one writer is rarely necessary given what a single writer can achieve with the
-comprehensive support on log patterns and minimum output levels per caller classes.
+pattern, minimum output level. The same log entry will be output once per each writer. Practically, however, more than
+one writer is rarely necessary given what a single writer can achieve with the comprehensive support on log patterns and
+minimum output levels per caller classes.
 
 ### Output Format Pattern
 
@@ -131,11 +131,11 @@ outside curly brace pairs are output verbatim. The predefined patterns are:
   default to ISO datetime format with time zone offset of the application running host
 * `level`: Length configurable, default to full length
 * `thread`: Option of `name` or `id`, default to name
-* `class`: Option of `simple`, `full`, or `compressed` (only the first letter for a package segment), default
-  to `simple`
+* `class`: Option of `simple`, `full`, or `compressed` (only the first letter for each package segment) for class names,
+  default to `simple`
 * `method`: No configuration options, simple method name
 * `filename`: No configuration options, simple file name
-* `linenumber`: No configuration options, where the log is issued in the file
+* `linenumber`: No configuration options, the line number where the log is issued in the file
 * `sysprop`: Option `name` for the JRE System Property
 * `sysenv`: Option `name` for the system environment variable
 * `message`: No configuration options, always prints user message, and exception stack trace if any
@@ -212,17 +212,17 @@ JSON Customized
 ### Zero configuration mandatory, this file can be empty - default to a line-based writer with simple log pattern
 ### global no-op flag, overriding and will turn off all logging if set true
 #noop=true
-### Minimum output level is optional, default to TRACE if omitted
+### Minimum output level is optional, default to TRACE for all caller classes if omitted
 level=info
-### These override the output level of all caller classes included the specified packages
+### These override the output level of all caller classes included the specified package spaces
 level@org.springframework=warn
 level@org.apache=error
-### Writer is optional, default to a simple standard streams writer
 ### Standard out stream type, stdout or stderr, default is stdout
 stream=stderr
-### Optional default override of writer pattern
+### Global writer output pattern if omitted on individual writer, default to a simple line based
 #pattern={json}
-### standard is the only supported writer type
+### Any writer is optional, default to a simple standard streams writer
+### 'standard' is currently the only supported writer type
 writer1=standard
 ### This is the default output pattern, can be omitted
 #writer1.pattern={timestamp} {level} {class} - {message}
@@ -235,10 +235,10 @@ writer2=standard
 #writer2.pattern={json}
 ### This would force the JSON to include the thread/caller details, and pretty print
 writer2.pattern={json:caller-thread,caller-detail,pretty}
-### Optional buffer capacity for dispatch of log entry tasks
-buffer.front=256
-### Optional buffer capacity for data bytes queued for standard out stream
-buffer.back=262144
+### Optional buffer capacity of log events before the main application will be blocked by logging, default 262144
+buffer.front=262144
+### Optional buffer capacity for data bytes batched before flushing to the out stream, default is 256 log events
+buffer.back=256
 ```
 
 ### Configuration Refresh
@@ -254,62 +254,63 @@ duty back to its own business.
 
 For most log destinations (e.g. system console or log files), it is a requirement that logs arrive at the final
 destination in chronological order. That means the entire logging process needs to happen sequentially for all the log
-entries/events. In other words, the logging process is conceptually a single-thread activity, which has a limited
+entries/events. In other words, the logging process is conceptually a single-thread activity, which has a fixed limit on
 throughput. Regardless the logging process is synchronous or asynchronous to the application's main business workflow,
 if the application's logging frequency is higher than the logging throughput limit, then over time, the main workflow
-will be blocked and bound by the logging throughput.
+will be blocked ("back-pressured") and bound by the logging throughput.
 
 For the logging process throughput alone, synchronous execution often outperforms its asynchronous counterpart because
-synchronous process does not incur the additional cost of resources to facilitate asynchronous communications. However,
-for the main application process that issues the logs, the benefit of asynchronous logging is that, when the logging
-task buffer is not full between the application process and the asynchronous logging process, the logging throughput has
-little impact on the main workflow. The application would just "fire and forget" the logging events, and continue its
-main business workflow without further blocking.
+synchronous process does not incur the additional cost of facilitating asynchronous communications. However, for the
+main application that issues the logs, the benefit of asynchronous logging is that, when the logging task buffer is not
+full between the application and the asynchronous logging process, the logging throughput has little impact on the main
+workflow. The application would just "fire and forget" the logging events, and continue its main business flow without
+further blocking.
 
-Some logging information has to be gathered by the main application thread, synchronously to the business domain
-workflow. For example, caller thread and detail information such as method name, line number, or file name are
-performance-wise expensive to retrieve, yet unavailable for a different/asynchronous thread to look up. The elf4j-engine
-takes measures to minimize the synchronous portion of the logging work before handing off the rest to an asynchronous
-process. Nevertheless, it helps if the client application can do without performance-sensitive log information in the
-first place; e.g. the default log pattern configuration does not include caller detail and thread information.
+Some logging information has to be gathered by the main application thread, synchronously to the business workflow. For
+example, caller thread and detail information such as method name, line number, or file name are performance-wise
+expensive to retrieve, yet unavailable for a different/asynchronous thread to look up. The elf4j-engine takes measures
+to minimize the synchronous portion of the logging work before handing off the rest to an asynchronous process.
+Nevertheless, it helps if the client application can do without performance-sensitive log information in the first
+place; e.g. the default log pattern configuration does not include caller detail and thread information.
 
-Once required information is gathered, the rest of the logging process (data processing and output) is asynchronous. As
-long as the work queue hosting the asynchronous logging tasks (a.k.a. the asynchronous buffer) is not full, asynchronous
-logging has little performance impact to the main business workflow. However, when the buffer is full (a.k.a. buffer
-overload), asynchronous logging may delay the main workflow more severely than its synchronous counterpart because not
-only it has to block while awaiting available buffer capacity but also the extra cost of facilitating asynchronous
-communication will now add to that of the main workflow. By contrast, synchronous logging without buffer will always
-delay the main workflow with every transaction, albeit having no additional cost for asynchrony.
+Once the required information is gathered, the rest of the logging process (data processing and output) is asynchronous.
+As long as the work queue hosting the asynchronous logging tasks (a.k.a. the asynchronous buffer) is not full,
+asynchronous logging has little performance impact to the main application. However, when the buffer is full (a.k.a.
+buffer overload), asynchronous logging may delay the main workflow more severely than its synchronous counterpart
+because not only it has to block while awaiting available buffer capacity but also the extra cost of facilitating
+asynchronous communications will now add to that of the main workflow. By contrast, synchronous logging without buffer
+will always delay the main workflow with every transaction, albeit having no additional cost for asynchrony.
 
-To take the desired advantage of asynchronous logging, it requires that the buffer is not overloaded. Buffer can also
-help a conceptually synchronous pipeline by providing some "batch effect", e.g. flushing data to an output stream in
-larger "batches" often outperforms frequent and smaller-sized flushes. Since in reality the buffer capacity is always
-limited, it is important to set up the capacity to maximize the log process throughput and minimize buffer overloads.
+To take the desired advantage of asynchronous logging, buffer overload should be minimized. Buffering may also help a
+conceptually synchronous pipeline by providing some "batch effect", e.g. flushing data bytes to an output stream in
+larger batches often outperforms frequent and smaller-sized flushes. Since in reality the buffer capacity is always
+limited, it is important to set up the capacity to maximize the logging process throughput and minimize buffer
+overloads.
 
 The elf4j-engine has two buffers. A front buffer that, on the one end, takes in log entries/events from the main
-application process and, on the other end, hands over the logging tasks to a single log processing thread. The single
-thread ensures chronological order among log events, although, the processing of each single log event can be
-multithreaded. For example, in case of multiple writers, they can process the same log event in parallel; however, they
-need to coordinate and await the completion of all writer threads for that log event before converging back to the
-single processing thread and moving on to process the next. There is also a back buffer that, on the one end, takes in
-the data bytes from the log processing thread and, on the other end, flushes to the target standard out stream. The back
-buffer provides the batch effect for the stream data flushing.
+application process and, on the other end, hands off the logging tasks to a single log processing thread. The single
+thread ensures chronological order across all log events, although, the processing of each single log event can be
+multithreaded. In case of multiple writers, they can fan-out to process the same log event in parallel; however, they
+need to coordinate and await the completion of all writer threads for the same log event before converging back to the
+single thread and moving on to process the next. There is also a back buffer that, on the one end, takes in
+the data bytes from the log processing thread and, on the other end, flushes to the target standard out stream in
+batches (i.e. providing the batch effect).
 
-The default front buffer capacity is 262,144 log entries/events (hydrated in-memory objects), and the default back
-buffer capacity is 256 log events (in bytes). If that does not fit your needs, one way to adjust the capacities would be
-to first set the front buffer to the capacity your host environment can afford for logging (this can be the
-larger/dominant capacity between the two); then start to test and adjust the back buffer capacity for best possible
-overall throughput of the system. It usually does not take a large back buffer to batch the bytes flushed to the out
-stream, given the throughput limit of the logging thread. It is also possible to set both buffer capacities to zero (0);
-this would simulate a synchronous logging, whose throughput may be a useful reference for comparison. To some extent,
-"performance is a choice".
+The default front buffer capacity is 262,144 log entries/events (hydrated in-memory objects); the default back buffer
+capacity is 256 log events (in bytes). If those do not fit the host environment, one way to adjust the capacities is to
+first set the front buffer to the capacity the host environment can afford/budget for logging (this can be the
+larger/dominant capacity of the two); then start to test and adjust the back buffer capacity to optimize the overall
+throughput of the system. It usually does not take a large back buffer to batch the bytes flushed to the out stream,
+given the throughput limit of the logging thread. It is also possible to set both buffer capacities to zero (0); this
+would simulate a synchronous logging, whose throughput may be a useful reference. To some extent, "performance is a
+choice".
 
 Note that more down-line flushes may happen than what the back buffer is configured for, depending on the actual channel
-and destination. For example, the stdout console stream may flush on every line of text, and stderr may flush on every
-character.
+and destination (e.g. the stdout console stream may flush on every line of text, and stderr may flush on every
+character).
 
 The standard stream destinations are often redirected/replaced by the host environment or user, in which case further
-manoeuvres may help channel performance. For example, if the target repository is a log file on disk, then
+manoeuvres may help such data channel's performance. For example, if the target repository is a log file on disk, then
 
 ```shell
 java MyApplication | cat >logFile
