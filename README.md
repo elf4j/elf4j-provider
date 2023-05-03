@@ -257,7 +257,7 @@ destination in chronological order. That means the entire logging process needs 
 entries/events. In other words, the logging process is conceptually a single-thread activity, which has a fixed limit on
 throughput. Regardless the logging process is synchronous or asynchronous to the application's main business workflow,
 if the application's logging frequency is higher than the logging throughput limit, then over time, the main workflow
-will be blocked ("back-pressured") and bound by the logging throughput.
+will be blocked and bound ("back-pressured") by the logging throughput.
 
 For the logging process throughput alone, synchronous execution often outperforms its asynchronous counterpart because
 synchronous process does not incur the additional cost of facilitating asynchronous communications. However, for the
