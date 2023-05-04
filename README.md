@@ -304,7 +304,7 @@ larger/dominant capacity over the back buffer); then, if needed, start to test a
 optimize the overall throughput of the system. It usually does not take a large back buffer to properly batch the data
 bytes flushing into the out stream (under the hard throughput limit of chronological-order log processing). It is also
 possible to set both front and back buffer capacities to zero (0); this would simulate a synchronous logging, whose
-throughput may be a useful reference. To some extent, "performance is a choice".
+throughput may be a useful reference. To some extent, "performance is a choice" based on the host environment.
 
 Note that more down-line flushes may happen than what the back buffer is configured for, depending on the actual channel
 and destination (e.g. the stdout console stream may flush on every line of text, and stderr may flush on every
