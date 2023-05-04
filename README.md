@@ -252,10 +252,10 @@ the current properties, and the configuration file will be ignored.
 It's not how fast you fill up the target log file or repository, it's how fast you relieve the application from logging
 duty back to its own business.
 
-Chronological order is generally required for the log entries to arrive at their final destination (especially for
-destinations like the system display console or log files). That essentially means the entire logging process needs to
-happen sequentially for all the log entries/events. In other words, the logging process is conceptually a
-single-threaded activity, which inevitably has a limit on its throughput. Regardless the logging process is synchronous
+Chronological order is generally required for the log entries to arrive at their final destination (Otherwise e.g. it'd look
+ strange and confusing on the system console or a log file). Essentially, it means the entire logging process needs to
+happen sequentially for all the log entries/event. The process is conceptually a
+single-threaded activity, which inevitably has a limit on throughput. Regardless the logging process is synchronous
 or asynchronous to the application's main business workflow, if the application's logging frequency is higher than the
 logging throughput limit, then over time, the main workflow will be blocked and bound ("back-pressured") by the logging
 throughput.
