@@ -261,27 +261,30 @@ workflow will be blocked and bound ("back-pressured") by the log processing thro
 
 Some logging information has to be gathered by the main application thread, synchronously to the business workflow. For
 example, caller thread and code detail information such as method name, line number, or file name are performance-wise
-expensive to retrieve, yet unavailable for a different/asynchronous thread to look up. The elf4j-engine takes measures
-to minimize the synchronous portion of the logging work by generating a log event, before handing off the event for
-asynchronous processing. Nevertheless, it helps if the client application can do without performance-sensitive
-information in the first place; the default log pattern configuration does not include caller code detail and thread
-information.
+expensive to retrieve, yet unavailable for a different/asynchronous thread to look up. The elf4j-engine gathers such
+minimally required information by synchronously generating a log event, before handing it off for asynchronous
+processing (formatting log data and output to final destination). Nevertheless, it helps if the client application can
+do without performance-sensitive information in the first place; the default log pattern configuration does not include
+caller code detail and thread information.
 
-Once the required information is gathered, the rest of the log processing (data processing and output) is asynchronous.
-The ideal situation of asynchronous logging is that the application would just "fire and forget" the log events, and
+The ideal situation of asynchronous logging is for the main application to "fire and forget" the log events, and
 continue its main business flow without further blocking, in which case the log processing throughput has little impact
 on the main application. That only happens, however, when the work queue hosting the asynchronous log events (a.k.a. the
 asynchronous buffer) is not full between the main application and the asynchronous log process. When the asynchronous
 buffer is full ("overloaded"), the log process becomes pseudo-synchronous, in which case not only will the main
 application be back-pressured while awaiting available buffer capacity, but also the extra cost of facilitating
 asynchronous communications will now add to that of the main workflow. By contrast, a true synchronous logging without
-buffer will delay the main workflow in each transaction, albeit having no additional cost for asynchrony.
+buffering will delay the main workflow in each transaction, albeit having no additional cost for asynchrony.
+
+For asynchronous logging to work well, the log processing throughput should, over time, exceed the log event generation
+rate; the work queue hosting the log events should serve as temporary buffer when the log eventing rate is momentarily
+higher than the log processing throughput.
 
 Buffering may also help a conceptually synchronous pipeline by providing the "batch effect"; e.g. flushing data bytes to
-an output stream in larger batches often outperforms that in smaller-sized chunks. To take the desired advantage of
-buffering and asynchronous logging, buffer overload should be minimized. Since in reality there is always a limit that a
-host environment can accommodate, it is important to set up the proper capacity to maximize the log processing
-throughput and minimize buffer overloads.
+an output stream in larger-sized batches often outperforms that in smaller-sized chunks. To take the desired advantage
+of buffering and asynchronous logging, buffer overload should be minimized. Since in reality there is always a limit on
+the buffer capacity a host environment can accommodate, it is important to set up the proper capacity to maximize the
+log processing throughput and minimize buffer overloads.
 
 The elf4j-engine has two buffers.
 
@@ -294,14 +297,14 @@ The elf4j-engine has two buffers.
 2. A back buffer that, on the one end, takes in the data bytes from the log processing thread and, on the other end,
    flushes to the target out stream in batches (i.e. providing the batch effect).
 
-The default buffer capacity is 262,144 log events (hydrated in-memory objects) for the front, and 256 log events (in
-bytes) for the back. If the defaults do not fit the host environment, one way to customize is to first set/fix the front
-buffer capacity to what the host environment can afford/budget for logging (assuming the front buffer has the
+The default buffer capacity is 262,144 log events (hydrated in-memory objects) for the front, and 256 log events (as
+byte arrays) for the back. If the defaults do not fit the host environment, one way to customize is to first set/fix the
+front buffer capacity to what the host environment can afford/budget for logging (assuming the front buffer has the
 larger/dominant capacity over the back buffer); then, if needed, start to test and adjust the back buffer capacity to
 optimize the overall throughput of the system. It usually does not take a large back buffer to properly batch the data
-bytes flushing into the out stream (under the throughput limit for the chronological log order). It is also possible to
-set both front and back buffer capacities to zero (0); this would simulate a synchronous logging, whose throughput may
-be a useful reference. To some extent, "performance is a choice".
+bytes flushing into the out stream (under the hard throughput limit of chronological-order log processing). It is also
+possible to set both front and back buffer capacities to zero (0); this would simulate a synchronous logging, whose
+throughput may be a useful reference. To some extent, "performance is a choice".
 
 Note that more down-line flushes may happen than what the back buffer is configured for, depending on the actual channel
 and destination (e.g. the stdout console stream may flush on every line of text, and stderr may flush on every
