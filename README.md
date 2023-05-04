@@ -288,16 +288,16 @@ log processing throughput and minimize buffer overloads.
 
 The elf4j-engine has two buffers.
 
-1. A front buffer that, on the one end, takes in log events from the main application process and, on the other
-   end, hands off the logging tasks to a single log processing thread. The single thread ensures chronological order
-   across all log events, although, the processing of each single log event can be multithreaded. In case of multiple
-   writers, they can fan-out to process the same log event in parallel; however, they need to coordinate and await the
-   completion of all writer threads to process the same log event before converging back to the single thread and moving
-   on to processing the next.
+1. A front buffer that, on the one end, takes in log events from the main application and, on the other end, hands off
+   the log events to a single log processing thread. The single thread ensures chronological order across all log
+   events, although, the processing of each single log event can be multithreaded. In case of multiple writers, the
+   single thread can fan-out to multiple writer threads to process the same log event in parallel; however, the
+   concurrent writer threads need to coordinate and await all threads to finish processing the same log event before
+   converging back to the single thread and move on to the next log event.
 2. A back buffer that, on the one end, takes in the data bytes from the log processing thread and, on the other end,
    flushes to the target out stream in batches (i.e. providing the batch effect).
 
-The default buffer capacity is 262,144 log events (hydrated in-memory objects) for the front, and 256 log events (as
+The default buffer capacity is 262,144 log events (as hydrated in-memory objects) for the front, and 256 log events (as
 byte arrays) for the back. If the defaults do not fit the host environment, one way to customize is to first set/fix the
 front buffer capacity to what the host environment can afford/budget for logging (assuming the front buffer has the
 larger/dominant capacity over the back buffer); then, if needed, start to test and adjust the back buffer capacity to
