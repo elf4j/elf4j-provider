@@ -288,22 +288,25 @@ advantage of asynchronous logging, buffer overload should be minimized. Since in
 limited, it is important to set up the proper capacity to maximize the log processing throughput and minimize buffer
 overloads.
 
-The elf4j-engine has two buffers. There is a front buffer that, on the one end, takes in log entries/events from the
-main application process and, on the other end, hands off the logging tasks to a single log processing thread. The
-single thread ensures chronological order across all log events, although, the processing of each single log event can
-be multithreaded. In case of multiple writers, they can fan-out to process the same log event in parallel; however, they
-need to coordinate and await the completion of all writer threads to process the same log event before converging back
-to the single thread and moving on to processing the next. There is also a back buffer that, on the one end, takes in
-the data bytes from the log processing thread and, on the other end, flushes to the target standard out stream in
-batches (i.e. providing the batch effect).
+The elf4j-engine has two buffers.
+
+1. A front buffer that, on the one end, takes in log entries/events from the main application process and, on the other
+   end, hands off the logging tasks to a single log processing thread. The single thread ensures chronological order
+   across all log events, although, the processing of each single log event can be multithreaded. In case of multiple
+   writers, they can fan-out to process the same log event in parallel; however, they need to coordinate and await the
+   completion of all writer threads to process the same log event before converging back to the single thread and moving
+   on to processing the next.
+2. A back buffer that, on the one end, takes in the data bytes from the log processing thread and, on the other end,
+   flushes to the target out stream in batches (i.e. providing the batch effect).
 
 The default front buffer capacity is 262,144 log entries/events (hydrated in-memory objects); the default back buffer
 capacity is 256 log events (in bytes). If those do not fit the host environment, one way to adjust the capacities is to
-first set the front buffer capacity to what the host environment can afford/budget for logging (this can be the
-larger/dominant capacity of the two); then start to test and adjust the back buffer capacity to optimize the overall
-throughput of the system. It usually does not take a large back buffer to properly batch the out stream bytes, with the
-throughput limit of the logging thread. It is also possible to set both buffer capacities to zero (0); this would
-simulate the synchronous logging, whose throughput may be a useful reference. To some extent, "performance is a choice".
+first set the front buffer capacity to what the host environment can afford/budget for logging (assuming the front
+buffer has the larger/dominant capacity over the back buffer); then start to test and adjust the back buffer capacity to
+optimize the overall throughput of the system. It usually does not take a large back buffer to properly batch the bytes
+into the out stream (given the throughput limit of the logging thread). It is also possible to set both front and back
+buffer capacities to zero (0); this would simulate the synchronous logging, whose throughput may be a useful reference.
+To some extent, "performance is a choice".
 
 Note that more down-line flushes may happen than what the back buffer is configured for, depending on the actual channel
 and destination (e.g. the stdout console stream may flush on every line of text, and stderr may flush on every
