@@ -252,12 +252,12 @@ the current properties, and the configuration file will be ignored.
 It's not how fast you fill up the target log file or repository, it's how fast you relieve the application from logging
 duty back to its own business.
 
-Chronological order is generally required for the log events to arrive at their final destination (Otherwise e.g. the
-out-of-order display would look strange and confusing on the system Console or in a log file). That means the log
-processing needs to happen sequentially for all the log events, as with a pseudo single-thread; this inevitably impose
-a limit on the throughput. No matter the log processing is synchronous or asynchronous to the main business workflow, if
-the application's log issuing frequency is higher than the throughput of the log processing, then over time, the main
-workflow will be blocked and bound ("back-pressured") by the log processing throughput.
+Chronological order is generally required for log events to arrive at their final destination (Otherwise e.g. the
+out-of-order display would be strange and confusing on the system Console or in a log file). That means all the log
+events need to be processed sequentially, as if with a pseudo single-thread. This inevitably imposes an upper limit on
+the log processing throughput. No matter the log processing is synchronous or asynchronous to the main business
+workflow, if the application's log issuing frequency is higher than the throughput of the log processing, then over
+time, the main workflow will be blocked and bound ("back-pressured") by the log processing throughput limit.
 
 Some logging information has to be gathered by the main application thread, synchronously to the business workflow. For
 example, caller thread and code detail information such as method name, line number, or file name are performance-wise
