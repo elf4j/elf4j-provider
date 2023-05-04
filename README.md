@@ -282,10 +282,10 @@ because not only it has to block while awaiting available buffer capacity, but a
 asynchronous communications will now add to that of the main workflow. By contrast, synchronous logging without buffer
 will always delay the main workflow per each transaction, albeit having no additional cost for asynchrony.
 
-Buffering may also help a conceptually synchronous pipeline by providing some "batch effect", e.g. flushing data bytes
+Buffering may also help a conceptually synchronous pipeline by providing some "batch effect"; e.g. flushing data bytes
 to an output stream in larger batches often outperforms more-frequent and smaller-sized flushes. To take the desired
 advantage of asynchronous logging, buffer overload should be minimized. Since in reality the buffer capacity is always
-limited, it is important to set the proper capacity to maximize the log processing throughput and minimize buffer
+limited, it is important to set up the proper capacity to maximize the log processing throughput and minimize buffer
 overloads.
 
 The elf4j-engine has two buffers. There is a front buffer that, on the one end, takes in log entries/events from the
