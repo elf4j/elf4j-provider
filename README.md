@@ -252,12 +252,12 @@ the current properties, and the configuration file will be ignored.
 It's not how fast you fill up the target log file or repository, it's how fast you relieve the application from logging
 duty back to its own business.
 
-Chronological order is generally required for log events to arrive at their final destination (Otherwise e.g. the
-out-of-order display would be strange and confusing on the system Console or in a log file). That means all the log
-events need to be processed sequentially, as if with a pseudo single-thread. This inevitably imposes an upper limit on
-the log processing throughput. No matter the log processing is synchronous or asynchronous to the main business
-workflow, if the application's log issuing frequency is higher than the throughput of the log processing, then over
-time, the main workflow will be blocked and bound ("back-pressured") by the log processing throughput limit.
+Chronological order is generally required for log events to arrive at their final destination. The usual destination of
+the standard out streams is the system Console, where an out-of-order display would be strange and confusing. That means
+log events need to be processed sequentially, which inevitably imposes some limit on the log processing throughput. No
+matter the log processing is synchronous or asynchronous to the main business workflow, if the application's log issuing
+frequency is higher than the throughput of the log processing, then over time, the main workflow should be blocked and
+bound ("back-pressured") by the log processing throughput limit.
 
 Some logging information has to be gathered by the main application thread, synchronously to the business workflow. For
 example, caller thread and code detail information such as method name, line number, or file name are performance-wise
@@ -289,11 +289,10 @@ log processing throughput and minimize buffer overloads.
 The elf4j-engine has two buffers.
 
 1. A front buffer that, on the one end, takes in log events from the main application and, on the other end, hands off
-   the log events to a single log processing thread. The single thread ensures chronological order across all log
-   events, although, the processing of each single log event can be multithreaded. In case of multiple writers, the
-   single thread can fan-out to multiple writer threads to process the same log event in parallel; however, the
-   concurrent writer threads need to coordinate and await all threads to finish processing the same log event before
-   converging back to the single thread and move on to the next log event.
+   the log events to a single log processing thread. The single-threaded event intake ensures chronological order for
+   the events to arrive at the shared/same destination (e.g. the system Console or, if redirected, a log file). Even
+   when multithreading/fan-out is involved later, the chronological order is kept for those events issued by the same
+   caller application thread.
 2. A back buffer that, on the one end, takes in the data bytes from the log processing thread and, on the other end,
    flushes to the target out stream in batches (i.e. providing the batch effect).
 
