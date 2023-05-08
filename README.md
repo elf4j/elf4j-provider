@@ -60,7 +60,7 @@ monitoring/observability services, but no longer a concern of the application-le
 JSON is a supported output pattern, in hopes of helping external log analysis tools. This is in addition to the usual
 line-based patterns - timestamp, level, thread, class, method, file name, line number, and log message.
 
-### Service Administration at Runtime
+### Service Administration
 
 * Supports configuration refresh during runtime via API, with option of passing in replacement properties instead of
   reloading the configuration file. The most frequent use case would be to change the minimum log output level, without
