@@ -300,8 +300,9 @@ The elf4j-engine has two buffers:
 2. A back buffer that, on the one end, takes in the data bytes from the log processing thread and, on the other end,
    flushes to the target out stream in batches (i.e. providing the batch effect).
 
-The default capacity is 256 log events for both front (as hydrated in-memory objects) and back (as byte arrays) buffers.
-The default asynchronous log event processing concurrency is the
+* The default front buffer capacity is 256 log events (as hydrated in-memory objects)
+* The default back buffer capacity is 8192 log events (as byte arrays) 
+* The default asynchronous log event processing concurrency is the
 JVM [Runtime#availableProcessors](https://docs.oracle.com/javase/8/docs/api/java/lang/Runtime.html#availableProcessors--)
 at the application startup time (or when the log service is refreshed). All defaults can be customized if need be.
 
