@@ -235,10 +235,12 @@ writer2=standard
 #writer2.pattern={json}
 ### This would force the JSON to include the thread/caller details, and pretty print
 writer2.pattern={json:caller-thread,caller-detail,pretty}
-### Optional buffer capacity of log events before the main application will be back-pressured by logging, default 262144
-buffer.front=262144
-### Optional buffer capacity for data bytes batched before flushing to the out stream, default is 256 log events
-buffer.back=256
+### Optional front buffer - log event processor work queue capacity, default 256 log events (as hydrated in-memory objects)
+#buffer.front=256
+### Optional back buffer - output stream batch size, default 256 log events (as byte arrays)
+#buffer.back=256
+### Optional log event processing concurrency, default is jvm runtime available processors at application start time
+#concurrency=20
 ```
 
 ### Configuration Refresh
@@ -254,18 +256,19 @@ duty back to its own business.
 
 Chronological order is generally required for log events to arrive at their final destination. The usual destination of
 the standard out streams is the system Console, where an out-of-order display would be strange and confusing. That means
-log events need to be processed sequentially, which inevitably imposes some limit on the log processing throughput. No
-matter the log processing is synchronous or asynchronous to the main business workflow, if the application's log issuing
-frequency is higher than the throughput of the log processing, then over time, the main workflow should be blocked and
-bound ("back-pressured") by the log processing throughput limit.
+log events need to be processed sequentially, at least for those that are issued from the same application/caller
+thread. This inevitably imposes some limit on the log processing throughput. No matter the log processing is synchronous
+or asynchronous to the main business workflow, if the application's log issuing frequency is higher than the throughput
+of the log processing, then over time, the main workflow should be blocked and bound ("back-pressured") by the log
+processing throughput limit.
 
 Some logging information has to be gathered by the main application thread, synchronously to the business workflow. For
-example, caller thread and code detail information such as method name, line number, or file name are performance-wise
-expensive to retrieve, yet unavailable for a different/asynchronous thread to look up. The elf4j-engine gathers such
-minimally required information by synchronously generating a log event, before handing it off for asynchronous
-processing (formatting log data and output to final destination). Nevertheless, it helps if the client application can
-do without performance-sensitive information in the first place; the default log pattern configuration does not include
-caller code detail and thread information.
+example, caller code detail information such as method name, line number, or file name are performance-wise expensive to
+retrieve, yet unavailable for a different/asynchronous thread to look up. The elf4j-engine gathers such minimally
+required information by synchronously generating a log event, before handing it off for asynchronous processing (
+formatting log data and output to final destination). Nevertheless, it helps if the client application can do without
+performance-sensitive information in the first place; the default log pattern configuration does not include caller code
+detail and thread information.
 
 The ideal situation of asynchronous logging is for the main application to "fire and forget" the log events, and
 continue its main business flow without further blocking, in which case the log processing throughput has little impact
@@ -286,24 +289,21 @@ of buffering and asynchronous logging, buffer overload should be minimized. Sinc
 the buffer capacity a host environment can accommodate, it is important to set up the proper capacity to maximize the
 log processing throughput and minimize buffer overloads.
 
-The elf4j-engine has two buffers.
+The elf4j-engine has two buffers:
 
 1. A front buffer that, on the one end, takes in log events from the main application and, on the other end, hands off
-   the log events to a single log processing thread. The single-threaded event intake ensures chronological order for
-   the events to arrive at the shared/same destination (e.g. the system Console or, if redirected, a log file). Even
-   when multithreading/fan-out is involved later, the chronological order is kept for those events issued by the same
-   caller application thread.
+   the log events to an asynchronous processor. Leveraging
+   the [conseq4j](https://github.com/q3769/conseq4j#style-2-submit-each-task-directly-for-execution-together-with-its-sequence-key)
+   concurrent API, the elf4j-engine processes log events issued by different caller threads in parallel, and those by
+   the same caller threads in sequence. This ensures all logs of the same caller thread arrives at the log destination
+   in chronological order, meanwhile, enabling multithreaded processing for logs of different caller threads.
 2. A back buffer that, on the one end, takes in the data bytes from the log processing thread and, on the other end,
    flushes to the target out stream in batches (i.e. providing the batch effect).
 
-The default buffer capacity is 262,144 log events (as hydrated in-memory objects) for the front, and 256 log events (as
-byte arrays) for the back. If the defaults do not fit the host environment, one way to customize is to first set/fix the
-front buffer capacity to what the host environment can afford/budget for logging (assuming the front buffer has the
-larger/dominant capacity over the back buffer); then, if needed, start to test and adjust the back buffer capacity to
-optimize the overall throughput of the system. It usually does not take a large back buffer to properly batch the data
-bytes flushing into the out stream (under the hard throughput limit of chronological-order log processing). It is also
-possible to set both front and back buffer capacities to zero (0); this would simulate a synchronous logging, whose
-throughput may be a useful reference. To some extent, "performance is a choice" based on the host environment.
+The default capacity is 256 log events for both front (as hydrated in-memory objects) and back (as byte arrays) buffers.
+The default asynchronous log event processing concurrency is the
+JVM [Runtime#availableProcessors](https://docs.oracle.com/javase/8/docs/api/java/lang/Runtime.html#availableProcessors--)
+at the application startup time (or when the log service is refreshed). All defaults can be customized if need be.
 
 Note that more down-line flushes may happen than what the back buffer is configured for, depending on the actual channel
 and destination (e.g. the stdout console stream may flush on every line of text, and stderr may flush on every
