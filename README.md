@@ -302,18 +302,20 @@ The elf4j-engine has two buffers:
 
 Performance parameter defaults (if omitted in configuration file):
 
-* The default front buffer capacity is 256 log events (as hydrated in-memory objects). The application will be
-  back-pressured when the front buffer is full.
-* The default back buffer capacity is 8192 log events (as dehydrated byte arrays). This limits the maximum size of a
-  byte array before it is flushed to the out stream.
+* The default front buffer capacity is "unlimited" log events (as hydrated in-memory objects). This assumes the log
+  processing throughput is in general higher than the log issuing rate of the application. Note that even an "unlimited"
+  buffer can be full at runtime, in which case async tasks can be rejected by the execution thread pool. The rejection
+  handling policy is that the caller thread will block and retry the task until it is accepted by the thread pool. This
+  temporarily imposes back-pressure to the caller application.
+* The default back buffer capacity is 256 log events (as dehydrated byte arrays). This sets a maximum batch size of a
+  byte array before it is flushed to the out stream; smaller-sized batches may be flushed.
 * The default concurrency for asynchronous processing is the number of
   [Runtime#availableProcessors](https://docs.oracle.com/javase/8/docs/api/java/lang/Runtime.html#availableProcessors--)
   of the current JVM at the application startup time (or when the log service is refreshed). This is the thread pool
   capacity for log event processing.
 
-Note that more down-line flushes may happen than what the back buffer is configured for, depending on the actual channel
-and destination (e.g. the stdout console stream may flush on every line of text, and stderr may flush on every
-character).
+Note that multiple down-line flushes may happen during one elf4j-engine flush, depending on the actual channel and
+destination (e.g. the stdout console stream may flush on every line of text, and stderr may flush on every character).
 
 The standard stream destinations are often redirected/replaced by the host environment or user, in which case further
 manoeuvres may help such data channel's performance. For example, if the target repository is a log file on disk, then
