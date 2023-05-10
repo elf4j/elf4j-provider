@@ -31,7 +31,7 @@
 
     <groupId>io.github.elf4j</groupId>
     <artifactId>elf4j-provider</artifactId>
-    <version>7.0.4</version>
+    <version>7.0.5</version>
     <packaging>jar</packaging>
     <name>elf4j-provider</name>
     <description>Native logging service provider implementation of ELF4J (Easy Logging Facade For Java)
@@ -68,7 +68,7 @@
         <dependency>
             <groupId>io.github.elf4j</groupId>
             <artifactId>elf4j-engine</artifactId>
-            <version>8.0.6</version>
+            <version>8.0.7</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
