@@ -65,11 +65,13 @@ line-based patterns - timestamp, level, thread, class, method, file name, line n
 * Supports configuration refresh during runtime via API, with option of passing in replacement properties instead of
   reloading the configuration file. The most frequent use case would be to change the minimum log output level, without
   restarting the application.
-* If it is required that no logs should be lost when the application shuts down, it is the user's responsibility to call
-  the `LogServiceManger.INSTANCE.stopAll()` before the application exits. Upon that call, the log service will
+* To avoid loss of logs when the application shuts down, it is the user's responsibility to
+  call `LogServiceManger.INSTANCE.stopAll()` before the application exits. Upon that call, the log service will
     1. stop accepting new log events
-    2. block and wait for the front buffer to drain
-    3. block and wait for the back buffer to drain
+    2. block and wait for all the accepted log events to finish processing
+
+  Alternatively, the user can register a JVM shutdown hook using the thread returned
+  by `LogServiceManager.INSTANCE.getShutdownHookThread()`.
 
 ## Usage
 
@@ -262,13 +264,12 @@ or asynchronous to the main business workflow, if the application's log issuing 
 of the log processing, then over time, the main workflow should be blocked and bound ("back-pressured") by the log
 processing throughput limit.
 
-Some logging information has to be gathered by the main application thread, synchronously to the business workflow. For
-example, caller code detail information such as method name, line number, or file name are performance-wise expensive to
-retrieve, yet unavailable for a different/asynchronous thread to look up. The elf4j-engine gathers such minimally
-required information by synchronously generating a log event, before handing it off for asynchronous processing (
-formatting log data and output to final destination). Nevertheless, it helps if the client application can do without
-performance-sensitive information in the first place; the default log pattern configuration does not include caller code
-detail and thread information.
+Some logging information has to be collected by the main application thread, synchronously to the business workflow. For
+example, caller detail information such as method name, line number, or file name are performance-wise expensive to
+retrieve, yet unavailable for a different/asynchronous thread to look up. The elf4j-engine uses the main caller thread
+to synchronously collect all required information into a log event, and then hands off the event to an asynchronous
+process for the rest of the work. It helps, however, if the client application can do without performance-sensitive
+information in the first place; the default log pattern configuration does not include such caller details.
 
 The ideal situation of asynchronous logging is for the main application to "fire and forget" the log events, and
 continue its main business flow without further blocking, in which case the log processing throughput has little impact
@@ -296,7 +297,8 @@ The elf4j-engine has two buffers:
    the [conseq4j](https://github.com/q3769/conseq4j#style-2-submit-each-task-directly-for-execution-together-with-its-sequence-key)
    concurrent API, the elf4j-engine processes log events issued by different caller threads in parallel, and those by
    the same caller threads in sequence. This ensures all logs of the same caller thread arrives at the log destination
-   in chronological order, meanwhile, enabling multithreaded processing for logs of different caller threads.
+   in chronological order (same order as they are issued by the thread). However, logs from different caller threads are
+   not guaranteed of any particular order of arrival.
 2. A back buffer that, on the one end, takes in the data bytes from the log processing thread and, on the other end,
    flushes to the target out stream in batches (i.e. providing the batch effect).
 
