@@ -301,7 +301,7 @@ The elf4j-engine has two buffers:
    the same caller threads in sequence. This ensures all logs of the same caller thread arrives at the log destination
    in chronological order (same order as they are issued by the thread). However, logs from different caller threads are
    [not guaranteed](https://github.com/q3769/conseq4j#concurrency-and-sequencing) of any particular order of arrival.
-2. A back buffer that, on the one end, takes in the data bytes that are the result of the log events processing, on the
+2. A back buffer that, on the one end, takes in the data bytes that are the result of the log event processing, on the
    other end, flushes the bytes to the target out stream in batches (i.e. providing the batch effect).
 
 Performance parameter defaults (if omitted in configuration file):
