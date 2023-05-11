@@ -260,11 +260,11 @@ duty back to its own business.
 
 Chronological order is generally required for log events to arrive at their final destination. The usual destination of
 the standard out streams is the system Console, where an out-of-order display would be strange and confusing. That means
-log events need to be processed sequentially, at least for those that are issued from the same application/caller
-thread. This inevitably imposes some limit on the log processing throughput. No matter the log processing is synchronous
-or asynchronous to the main business workflow, if the application's log issuing frequency is higher than the throughput
-of the log processing, then over time, the main workflow should be blocked and bound ("back-pressured") by the log
-processing throughput limit.
+log events need to be processed [sequentially](https://github.com/q3769/conseq4j#concurrency-and-sequencing), at least
+for those that are issued from the same application/caller thread. This inevitably imposes some limit on the log
+processing throughput. No matter the log processing is synchronous or asynchronous to the main business workflow, if the
+application's log issuing frequency is higher than the throughput of the log processing, then over time, the main
+workflow should be blocked and bound ("back-pressured") by the log processing throughput limit.
 
 Some logging information has to be collected by the main application thread, synchronously to the business workflow. For
 example, caller detail information such as method name, line number, or file name are performance-wise expensive to
@@ -300,7 +300,7 @@ The elf4j-engine has two buffers:
    concurrent API, the elf4j-engine processes log events issued by different caller threads in parallel, and those by
    the same caller threads in sequence. This ensures all logs of the same caller thread arrives at the log destination
    in chronological order (same order as they are issued by the thread). However, logs from different caller threads are
-   not guaranteed of any particular order of arrival.
+   [not guaranteed](https://github.com/q3769/conseq4j#concurrency-and-sequencing) of any particular order of arrival.
 2. A back buffer that, on the one end, takes in the data bytes from the log processing thread and, on the other end,
    flushes to the target out stream in batches (i.e. providing the batch effect).
 
