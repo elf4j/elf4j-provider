@@ -260,8 +260,8 @@ duty back to its own business.
 
 Chronological order is generally required for log events to arrive at their final destination. The usual destination of
 the standard out streams is the system Console, where an out-of-order display would be strange and confusing. That means
-log events need to be processed [sequentially](https://github.com/q3769/conseq4j#concurrency-and-sequencing), at least
-for those that are issued from the same application/caller thread. This inevitably imposes some limit on the log
+log events need to be processed [sequentially](https://github.com/q3769/conseq4j#concurrency-and-sequencing) - at least
+for those events that are issued from the same application/caller thread. This inevitably imposes some limit on the log
 processing throughput. No matter the log processing is synchronous or asynchronous to the main business workflow, if the
 application's log issuing frequency is higher than the throughput of the log processing, then over time, the main
 workflow should be blocked and bound ("back-pressured") by the log processing throughput limit.
