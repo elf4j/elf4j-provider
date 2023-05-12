@@ -2,7 +2,9 @@ package elf4j.provider;
 
 import elf4j.Logger;
 import elf4j.engine.service.LogServiceManager;
+import elf4j.engine.service.util.MoreAwaitility;
 
+import java.time.Duration;
 import java.util.function.Supplier;
 
 public class Main {
@@ -49,7 +51,7 @@ public class Main {
                         "optional",
                         (Supplier) () -> "as usual");
 
-        Thread.sleep(200);
+        MoreAwaitility.suspend(Duration.ofMillis(200));
         LogServiceManager.INSTANCE.stopAll();
     }
 }

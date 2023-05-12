@@ -26,18 +26,20 @@
 package elf4j.provider;
 
 import elf4j.Logger;
+import elf4j.engine.service.util.MoreAwaitility;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.util.function.Supplier;
 
 class SampleUsageTest {
     static Logger logger = Logger.instance();
 
     @AfterEach
-    void afterEach() throws InterruptedException {
-        Thread.sleep(500);
+    void afterEach() {
+        MoreAwaitility.suspend(Duration.ofMillis(500), "Making sure out streams show up in Console");
     }
 
     @Nested
