@@ -241,8 +241,8 @@ writer2=standard
 writer2.pattern={json:caller-thread,caller-detail,pretty}
 ### Optional front buffer - log event processor work queue capacity, default to "unlimited" log events (as hydrated in-memory objects)
 #buffer.front=2048
-### Optional back buffer - output stream batch size, default 256 log events (as byte arrays)
-#buffer.back=256
+### Optional back buffer - output stream batch size, default "unlimited" log events (as byte arrays)
+#buffer.back=2048
 ### Optional log event processing concurrency, default is jvm runtime available processors at application start time
 #concurrency=20
 ```
