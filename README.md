@@ -311,8 +311,8 @@ Performance parameter defaults (if omitted in configuration file):
   with "unlimited" buffer can reject tasks at runtime. In case of task rejections, the el4j-engine's handling policy is
   that the caller thread will block and retry the task until it is accepted. This temporarily imposes back-pressure to
   the caller application.
-* The default back buffer capacity is 256 log events (as dehydrated byte arrays). This sets a maximum batch size of a
-  byte array before it is flushed to the out stream; smaller-sized batches may be flushed.
+* The default back buffer capacity is "unlimited" log events (as dehydrated byte arrays). This leaves it to the JVM to
+  manage the batch size to poll each time from the back buffer queue and flush to the out stream.
 * The default concurrency (maximum number of threads in parallel) for asynchronous processing is the number of
   [Runtime#availableProcessors](https://docs.oracle.com/javase/8/docs/api/java/lang/Runtime.html#availableProcessors--)
   of the current JVM at the application startup time (or when the log service is refreshed). This is the thread pool
