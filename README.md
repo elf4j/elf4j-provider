@@ -115,8 +115,8 @@ both the log caller class and the log writer.
   elf4j [API](https://github.com/elf4j/elf4j#logging-service-interface-and-access-api) should be used to
   programmatically obtain `Logger` instances of desired severity levels.
 * The default minimum output level for both log caller classes and writers and is `TRACE`, which is configurable: For
-  caller classes, the minimum output level can be configured on global, packages, or individual classes. For writers,
-  the level can be configured on global level and overridden per each writer.
+  caller classes, the minimum output level can be configured on global, package, or individual class levels. For
+  writers, the level can be configured on global level and overridden per each writer.
 
 ### Writer
 
