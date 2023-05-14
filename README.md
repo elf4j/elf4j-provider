@@ -5,7 +5,7 @@
 The native logging _service provider_ implementation of [ELF4J](https://github.com/elf4j/elf4j) (Easy Logging Facade for
 Java), and an independent drop-in logging solution for any Java application
 
-## User Story
+## User story
 
 As an application developer using the ELF4J logging facade, I want to have the option of using a runtime log _service
 provider_ that natively implements
@@ -15,7 +15,7 @@ the [API and SPI](https://github.com/elf4j/elf4j#log-service-interface-and-acces
 
 Java 8 or better
 
-## Implementation Notes
+## Implementation notes
 
 * Guiding principle: Reasonable default and Pareto's 80/20 rule
 
@@ -44,12 +44,12 @@ Java 8 or better
 
 ## Features
 
-### Async Logging Only
+### Async logging only
 
 Logging output is always asynchronous, considering performance and moreover the 80/20 rule: When was the last time a use
 case truly required that logging had to be synchronous, and always blocking the application's normal work flow?
 
-### Standard Streams Output Only
+### Standard streams output only
 
 Besides the standard streams (stdout/stderr), it may be trivial for the application logging to support other output
 channels. Yet it's arguably more trivial for the hosting system to redirect/forward standard streams as a data source to
@@ -57,12 +57,12 @@ other destinations than the system Console, e.g. log files and/or other central 
 process may be as simple as a Linux shell redirect, or as sophisticated as running collector agents of comprehensive
 monitoring/observability services, but no longer a concern of the application-level logging.
 
-### Log Patterns Including JSON
+### Log patterns including JSON
 
 JSON is a supported output pattern, in hopes of helping external log analysis tools. This is in addition to the usual
 line-based patterns - timestamp, level, thread, class, method, file name, line number, and log message.
 
-### Service Administration
+### Service administration
 
 * Supports configuration refresh during runtime via API, with option of passing in replacement properties instead of
   reloading the configuration file. The most frequent use case would be to change the minimum log output level, without
@@ -91,7 +91,7 @@ line-based patterns - timestamp, level, thread, class, method, file name, line n
 
 ## Configuration
 
-### Properties File
+### Properties file
 
 The default configuration file location is at the root of the application class path, with file
 name `elf4j-test.properties`, or if that is missing, `elf4j.properties`. Alternatively, to override the default
@@ -125,7 +125,7 @@ pattern and minimum output level. The same log entry will be output once per eac
 than one writer is rarely necessary given what a single writer can achieve with the comprehensive support on log
 patterns and minimum output levels per caller classes.
 
-### Output Format Pattern
+### Output format pattern
 
 All individual patterns, including the JSON pattern, can either be the only output of the log entry, or mixed together
 with any other patterns. They take the form of `{pattern:displayOptions}`, where multiple display options are separated
@@ -153,7 +153,7 @@ outside curly brace pairs are output verbatim. The predefined patterns are:
 
 Either stdout (the default if omitted) or stderr, configured globally.
 
-#### Pattern Output Samples
+#### Pattern output samples
 
 Line-based Default
 
@@ -216,7 +216,7 @@ JSON Customized
   }
   ```
 
-#### Sample Configuration File
+#### Sample configuration file
 
 ```properties
 ### Zero configuration mandatory, this file can be empty - default to a line-based writer with simple log pattern
@@ -253,7 +253,7 @@ writer2.pattern={json:caller-thread,caller-detail,pretty}
 #concurrency=20
 ```
 
-### Configuration Refresh
+### Configuration refresh
 
 `LogServiceManager.INSTANCE.refreshAll()` will reload the configuration file and apply the latest file properties during
 runtime. `LogServiceManager.INSTANCE.refreshAll(Properties)` will apply the passed-in properties as the replacement of
