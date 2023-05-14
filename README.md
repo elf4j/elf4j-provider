@@ -113,7 +113,7 @@ configuration sample file below.
   programmatically obtain `Logger` instances of desired severity levels.
 * The default minimum output level for both log caller classes and writers and is `TRACE`, which is configurable: For
   caller classes, the minimum output level can be configured on global, packages, or individual classes. For writers,
-  the level can be configured on global and/or overridden per each writer.
+  the level can be configured on global level and overridden per each writer.
 
 A log output is only rendered when the `Logger` instance severity level is on or above the configured minimum output
 levels of both the caller class and the writer.
