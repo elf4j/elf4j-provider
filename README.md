@@ -115,8 +115,8 @@ configuration sample file below.
   caller classes, the minimum output level can be configured on global, packages, or individual classes. For writers,
   the level can be configured on global level and overridden per each writer.
 
-A log output is only rendered when the `Logger` instance severity level is on or above the configured minimum output
-levels of both the caller class and the writer.
+A log output is rendered only when the `Logger` instance severity level is on or above the configured minimum output
+levels for both the caller class and the writer.
 
 ### Writer
 
