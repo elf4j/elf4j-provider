@@ -121,9 +121,9 @@ both the log caller class and the log writer.
 ### Writer
 
 The elf4j-engine supports multiple standard-stream writers. Each writer can have individual configurations on format
-pattern, minimum output level. The same log entry will be output once per each writer. Practically, however, more than
-one writer is rarely necessary given what a single writer can achieve with the comprehensive support on log patterns and
-minimum output levels per caller classes.
+pattern and minimum output level. The same log entry will be output once per each writer. Practically, however, more
+than one writer is rarely necessary given what a single writer can achieve with the comprehensive support on log
+patterns and minimum output levels per caller classes.
 
 ### Output Format Pattern
 
@@ -149,7 +149,11 @@ outside curly brace pairs are output verbatim. The predefined patterns are:
   caller stack detail (class, method, filename, linenumber), and option `pretty` to indent the JSON text to more
   readable format. Default is no thread/caller detail and the minified single-line format
 
-**Pattern Output Samples**
+### Output stream types
+
+Either stdout (the default if omitted) or stderr, configured globally.
+
+#### Pattern Output Samples
 
 Line-based Default
 
@@ -212,7 +216,7 @@ JSON Customized
   }
   ```
 
-**Sample Configuration File**
+#### Sample Configuration File
 
 ```properties
 ### Zero configuration mandatory, this file can be empty - default to a line-based writer with simple log pattern
