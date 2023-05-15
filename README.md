@@ -245,10 +245,8 @@ writer2=standard
 #writer2.pattern={json}
 ### This would force the JSON to include the thread/caller details, and pretty print
 writer2.pattern={json:caller-thread,caller-detail,pretty}
-### Optional front buffer - log event processor work queue capacity, default to "unlimited" log events (as hydrated in-memory objects)
+### Optional buffer - log event processor work queue capacity, default to "unlimited" log events (as hydrated in-memory objects)
 #buffer.front=2048
-### Optional back buffer - output stream batch size, default "unlimited" log events (as byte arrays)
-#buffer.back=2048
 ### Optional log event processing concurrency, default is jvm runtime available processors at application start time
 #concurrency=20
 ```
@@ -292,40 +290,25 @@ For asynchronous logging to work well, the log processing throughput should, ove
 rate; the work queue hosting the log events should serve as temporary buffer when the log eventing rate is momentarily
 higher than the log processing throughput.
 
-Buffering may also help a conceptually synchronous pipeline by providing the "batch effect"; e.g. flushing data bytes to
-an output stream in larger-sized batches often outperforms that in smaller-sized chunks. To take the desired advantage
-of buffering and asynchronous logging, buffer overload should be minimized. Since in reality there is always a limit on
-the buffer capacity a host environment can accommodate, it is important to set up the proper capacity to maximize the
-log processing throughput and minimize buffer overloads.
+The elf4j-engine has a buffer that, on the one end, takes in log events from the main application and, on the other end,
+hands off the log events to an asynchronous processor. Leveraging
+the [conseq4j](https://github.com/q3769/conseq4j#style-2-submit-each-task-directly-for-execution-together-with-its-sequence-key)
+concurrent API, the elf4j-engine processes log events issued by different caller threads in parallel, and those by the
+same caller threads in sequence. This ensures all logs of the same caller thread arrives at the log destination in
+chronological order (same order as they are issued by the thread). However, logs from different caller threads
+are [not guaranteed](https://github.com/q3769/conseq4j#concurrency-and-sequencing) of any particular order of arrival.
 
-The elf4j-engine has two buffers:
+If omitted in configuration file:
 
-1. A front buffer that, on the one end, takes in log events from the main application and, on the other end, hands off
-   the log events to an asynchronous processor. Leveraging
-   the [conseq4j](https://github.com/q3769/conseq4j#style-2-submit-each-task-directly-for-execution-together-with-its-sequence-key)
-   concurrent API, the elf4j-engine processes log events issued by different caller threads in parallel, and those by
-   the same caller threads in sequence. This ensures all logs of the same caller thread arrives at the log destination
-   in chronological order (same order as they are issued by the thread). However, logs from different caller threads are
-   [not guaranteed](https://github.com/q3769/conseq4j#concurrency-and-sequencing) of any particular order of arrival.
-2. A back buffer that, on the one end, takes in the data bytes that are the result of the log event processing, on the
-   other end, flushes the bytes to the target out stream in batches (i.e. providing the batch effect).
-
-Performance parameter defaults (if omitted in configuration file):
-
-* The default front buffer capacity is "unlimited" log events (as hydrated in-memory objects). This assumes the log
-  processing throughput is in general higher than the log issuing rate of the application. Note that even an executor
-  with "unlimited" buffer can reject tasks at runtime. In case of task rejections, the el4j-engine's handling policy is
-  that the caller thread will block and retry the task until it is accepted. This temporarily imposes back-pressure to
-  the caller application.
-* The default back buffer capacity is "unlimited" log events (as dehydrated byte arrays). This leaves it to the JVM to
-  manage the batch size to poll each time from the back buffer queue and flush to the out stream.
+* The default buffer capacity is "unlimited" log events (as hydrated in-memory objects). This assumes the log processing
+  throughput is in general higher than the log issuing rate of the application. Note that even an executor with
+  "unlimited" buffer can reject tasks at runtime. In case of task rejections, the el4j-engine's handling policy is that
+  the caller thread will block and retry the task until it is accepted. This temporarily imposes back-pressure to the
+  caller application.
 * The default concurrency (maximum number of threads in parallel) for asynchronous processing is the number of
   [Runtime#availableProcessors](https://docs.oracle.com/javase/8/docs/api/java/lang/Runtime.html#availableProcessors--)
   of the current JVM at the application startup time (or when the log service is refreshed). This is the thread pool
   capacity for log event processing.
-
-Note that multiple down-line flushes may happen during one elf4j-engine flush, depending on the actual channel and
-destination (e.g. the stdout console stream may flush on every line of text, and stderr may flush on every character).
 
 The standard stream destinations are often redirected/replaced by the host environment or user, in which case further
 manoeuvres may help such data channel's performance. For example, if the target repository is a log file on disk, then
