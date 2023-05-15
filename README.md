@@ -246,7 +246,7 @@ writer2=standard
 ### This would force the JSON to include the thread/caller details, and pretty print
 writer2.pattern={json:caller-thread,caller-detail,pretty}
 ### Optional buffer - log event processor work queue capacity, default to "unlimited" log events (as hydrated in-memory objects)
-#buffer.front=2048
+#buffer=2048
 ### Optional log event processing concurrency, default is jvm runtime available processors at application start time
 #concurrency=20
 ```
