@@ -149,6 +149,9 @@ outside curly brace pairs are output verbatim. The predefined patterns are:
   caller stack detail (class, method, filename, linenumber), and option `pretty` to indent the JSON text to more
   readable format. Default is no thread/caller detail and the minified single-line format
 
+At the end of each complete log entry output, a system-dependent line feed character is appended automatically; this is
+not configurable.
+
 ### Output stream types
 
 Either stdout (the default if omitted) or stderr, configured globally.
