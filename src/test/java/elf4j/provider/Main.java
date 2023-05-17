@@ -52,6 +52,6 @@ public class Main {
                         (Supplier) () -> "as usual");
 
         MoreAwaitility.suspend(Duration.ofMillis(200));
-        LogServiceManager.INSTANCE.stopAll();
+        LogServiceManager.INSTANCE.stop();
     }
 }
