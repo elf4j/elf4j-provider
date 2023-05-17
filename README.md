@@ -265,9 +265,10 @@ the current properties, and the configuration file will be ignored.
 It's not how fast you fill up the target log file or repository, it's how fast you relieve the application from logging
 duty back to its own business.
 
-Performance benchmark metrics are highly dependent on the nature of the work load and overall setup, but here is a naive
-start: [elf4j-benchmark](https://github.com/elf4j/elf4j-benchmark). Recommend re-configuration based on individual use
-cases.
+Performance benchmark metrics tend to be highly dependent on the nature of the work load and overall setup, but here is
+a naive start (Recommend re-configuration based on individual use cases), comparing with some popular log engines:
+
+* [elf4j-benchmark](https://github.com/elf4j/elf4j-benchmark)
 
 Chronological order is generally required for log events to arrive at their final destination. The usual destination of
 the standard out streams is the system Console, where an out-of-order display would be strange and confusing. That means
