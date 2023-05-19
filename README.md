@@ -68,12 +68,12 @@ line-based patterns - timestamp, level, thread, class, method, file name, line n
   reloading the configuration file. The most frequent use case would be to change the minimum log output level, without
   restarting the application.
 * To avoid loss of logs when the application shuts down, it is the user's responsibility to
-  call `LogServiceManger.INSTANCE.stopAll()` before the application exits. Upon that call, the log service will
+  call `LogServiceManager.stop` before the application exits. Upon that call, the log service will
     1. stop accepting new log events
     2. block and wait for all the accepted log events to finish processing
 
   Alternatively, the user can register a JVM shutdown hook using the thread returned
-  by `LogServiceManager.INSTANCE.getShutdownHookThread()`.
+  by `LogServiceManager.getShutdownHookThread`.
 
 ## Usage
 
@@ -256,9 +256,9 @@ writer2.pattern={json:caller-thread,caller-detail,pretty}
 
 ### Configuration refresh
 
-`LogServiceManager.INSTANCE.refreshAll()` will reload the configuration file and apply the latest file properties during
-runtime. `LogServiceManager.INSTANCE.refreshAll(Properties)` will apply the passed-in properties as the replacement of
-the current properties, and the configuration file will be ignored.
+`LogServiceManager.refresh()` will reload the configuration file and apply the latest file properties during
+runtime. `LogServiceManager.refresh(java.util.Properties)` will apply the passed-in properties as the replacement of the
+current properties, and the configuration file will be ignored.
 
 ## Performance
 
