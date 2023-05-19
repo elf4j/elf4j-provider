@@ -152,10 +152,6 @@ outside curly brace pairs are output verbatim. The predefined patterns are:
 At the end of each complete log entry output, a system-dependent line feed character is appended automatically; this is
 not configurable.
 
-### Output stream types
-
-Either stdout (the default if omitted) or stderr, configured globally.
-
 #### Pattern output samples
 
 Line-based Default
@@ -253,6 +249,10 @@ writer2.pattern={json:caller-thread,caller-detail,pretty}
 ### Optional log event processing concurrency, default is jvm runtime available processors at application start time
 #concurrency=20
 ```
+
+### Output stream types
+
+Either stdout (the default if omitted) or stderr, configured globally.
 
 ### Configuration refresh
 
