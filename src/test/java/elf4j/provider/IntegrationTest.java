@@ -25,9 +25,9 @@
 
 package elf4j.provider;
 
+import coco4j.MoreAwaitilities;
 import elf4j.Logger;
 import elf4j.engine.NativeLogger;
-import elf4j.engine.service.util.MoreAwaitility;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class IntegrationTest {
     @AfterEach
     void afterEach() {
-        MoreAwaitility.suspend(Duration.ofMillis(500));
+        MoreAwaitilities.suspend(Duration.ofMillis(500));
     }
 
     @Nested

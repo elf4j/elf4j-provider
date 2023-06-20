@@ -1,8 +1,8 @@
 package elf4j.provider;
 
+import coco4j.MoreAwaitilities;
 import elf4j.Logger;
 import elf4j.engine.service.LogServiceManager;
-import elf4j.engine.service.util.MoreAwaitility;
 
 import java.time.Duration;
 import java.util.function.Supplier;
@@ -51,7 +51,7 @@ public class Main {
                         "optional",
                         (Supplier) () -> "as usual");
 
-        MoreAwaitility.suspend(Duration.ofMillis(200));
+        MoreAwaitilities.suspend(Duration.ofMillis(200));
         LogServiceManager.INSTANCE.stop();
     }
 }

@@ -25,8 +25,8 @@
 
 package elf4j.provider;
 
+import coco4j.MoreAwaitilities;
 import elf4j.Logger;
-import elf4j.engine.service.util.MoreAwaitility;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -39,7 +39,7 @@ class SampleUsageTest {
 
     @AfterEach
     void afterEach() {
-        MoreAwaitility.suspend(Duration.ofMillis(500), "Making sure out streams show up in Console");
+        MoreAwaitilities.suspend(Duration.ofMillis(500));
     }
 
     @Nested
