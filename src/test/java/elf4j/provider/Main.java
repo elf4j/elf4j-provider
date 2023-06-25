@@ -51,7 +51,7 @@ public class Main {
                         "optional",
                         (Supplier) () -> "as usual");
 
-        MoreAwaitilities.suspend(Duration.ofMillis(200));
+        MoreAwaitilities.sleepInterruptibly(Duration.ofMillis(200));
         LogServiceManager.INSTANCE.stop();
     }
 }
