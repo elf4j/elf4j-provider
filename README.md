@@ -2,14 +2,14 @@
 
 # elf4j-provider
 
-The native logging _service provider_ implementation of [ELF4J](https://github.com/elf4j/elf4j) (Easy Logging Facade for
+The native logging _service provider_ implementation of [elf4j](https://github.com/elf4j/elf4j) (Easy Logging Facade for
 Java), and an independent drop-in logging solution for any Java application
 
 ## User story
 
-As an application developer using the ELF4J logging facade, I want to have the option of using a runtime log _service
+As an application developer using the elf4j logging facade, I want to have the option of using a runtime log _service
 provider_ that natively implements
-the [API and SPI](https://github.com/elf4j/elf4j#log-service-interface-and-access-api) of ELF4J.
+the [API and SPI](https://github.com/elf4j/elf4j#log-service-interface-and-access-api) of elf4j.
 
 ## Prerequisite
 
@@ -77,13 +77,13 @@ line-based patterns - timestamp, level, thread, class, method, file name, line n
 
 ## Usage
 
-* As with any other [ELF4J](https://github.com/elf4j/elf4j) logging provider, client application should code
-  against [service API](https://github.com/elf4j/elf4j#service-interface-and-access-api) of the ELF4J facade, and drop
+* As with any other [elf4j](https://github.com/elf4j/elf4j) logging provider, client application should code
+  against [service API](https://github.com/elf4j/elf4j#service-interface-and-access-api) of the elf4j facade, and drop
   in this provider implementation as a runtime dependency shown in the "Installation" section.
 
-* See ELF4J for [API sample usage](https://github.com/elf4j/elf4j#use-it---for-log-service-api-clients).
+* See elf4j for [API sample usage](https://github.com/elf4j/elf4j#use-it---for-log-service-api-clients).
 
-* In case of multiple ELF4J service providers in classpath, pick this one like so:
+* In case of multiple elf4j service providers in classpath, pick this one like so:
   ```
   java -Delf4j.logger.factory.fqcn="elf4j.engine.NativeLoggerFactory" MyApplication
   ```  
