@@ -52,6 +52,6 @@ public class Main {
                         (Supplier) () -> "as usual");
 
         MoreAwaitilities.sleepInterruptibly(Duration.ofMillis(200));
-        LogServiceManager.INSTANCE.stop();
+        LogServiceManager.INSTANCE.shutdown();
     }
 }
