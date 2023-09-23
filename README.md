@@ -244,8 +244,6 @@ writer2=standard
 #writer2.pattern={json}
 ### This would force the JSON to include the thread/caller details, and pretty print
 writer2.pattern={json:caller-thread,caller-detail,pretty}
-### Optional buffer - log event processor work queue capacity, default to "unlimited" log events (as hydrated in-memory objects)
-#buffer=2048
 ### Optional log event processing concurrency, default is jvm runtime available processors at application start time
 #concurrency=20
 ```
@@ -271,10 +269,10 @@ a naive start (Recommend re-configuration based on individual use cases), compar
 * [elf4j-benchmark](https://github.com/elf4j/elf4j-benchmark)
 
 Chronological order is generally required for log events to arrive at their final destination. The usual destination of
-the standard out streams is the system Console, where an out-of-order display would be strange and confusing. That means
-log events need to be processed [sequentially](https://github.com/q3769/conseq4j#concurrency-and-sequencing) - at least
-for those events that are issued from the same application/caller thread. This inevitably imposes some limit on the log
-processing throughput. No matter the log processing is synchronous or asynchronous to the main business workflow, if the
+the standard out streams is the system Console, where an out-of-order display would be confusing. That means log events
+need to be processed [sequentially](https://github.com/q3769/conseq4j#concurrency-and-sequencing) - at least for those
+events that are issued from the same application/caller thread. This inevitably imposes some limit on the log processing
+throughput. No matter the log processing is synchronous or asynchronous to the main business workflow, if the
 application's log issuing frequency is higher than the throughput of the log processing, then over time, the main
 workflow should be blocked and bound ("back-pressured") by the log processing throughput limit.
 
@@ -287,36 +285,28 @@ information in the first place; the default log pattern configuration does not i
 
 The ideal situation of asynchronous logging is for the main application to "fire and forget" the log events, and
 continue its main business flow without further blocking, in which case the log processing throughput has little impact
-on the main application. That only happens, however, when the work queue hosting the asynchronous log events (a.k.a. the
-asynchronous buffer) is not full between the main application and the asynchronous log process. When the asynchronous
-buffer is full ("overloaded"), the log process becomes pseudo-synchronous, in which case not only will the main
-application be back-pressured while awaiting available buffer capacity, but also the extra cost of facilitating
-asynchronous communications will now add to that of the main workflow. By contrast, a true synchronous logging without
-buffering will delay the main workflow in each transaction, albeit having no additional cost for asynchrony.
+on the main application. That only happens, however, when there are spare threads available from the async thread pool.
+When no spare thread is available, the log process becomes pseudo-synchronous, in which case not only will the main
+application be back-pressured while awaiting processing time, but also the extra cost of facilitating asynchronous
+communications will now add to that of the main workflow. By contrast, a true synchronous logging without buffering will
+delay the main workflow in each transaction, albeit having no additional cost for asynchrony.
 
 For asynchronous logging to work well, the log processing throughput should, over time, exceed the log event generation
 rate; the work queue hosting the log events should serve as temporary buffer when the log eventing rate is momentarily
 higher than the log processing throughput.
 
-The elf4j-engine has a buffer that, on the one end, takes in log events from the main application and, on the other end,
-hands off the log events to an asynchronous processor. Leveraging
+Leveraging
 the [conseq4j](https://github.com/q3769/conseq4j#style-2-submit-each-task-directly-for-execution-together-with-its-sequence-key)
 concurrent API, the elf4j-engine processes log events issued by different caller threads in parallel, and those by the
 same caller threads in sequence. This ensures all logs of the same caller thread arrives at the log destination in
 chronological order (same order as they are issued by the thread). However, logs from different caller threads
 are [not guaranteed](https://github.com/q3769/conseq4j#concurrency-and-sequencing) of any particular order of arrival.
 
-If omitted in configuration file:
-
-* The default buffer capacity is "unlimited" log events (as hydrated in-memory objects). This assumes the log processing
-  throughput is in general higher than the log issuing rate of the application. Note that even an executor with
-  "unlimited" buffer can reject tasks at runtime. In case of task rejections, the el4j-engine's handling policy is that
-  the caller thread will block and retry the task until it is accepted. This temporarily imposes back-pressure to the
-  caller application.
-* The default concurrency (maximum number of threads in parallel) for asynchronous processing is the number of
-  [Runtime#availableProcessors](https://docs.oracle.com/javase/8/docs/api/java/lang/Runtime.html#availableProcessors--)
-  of the current JVM at the application startup time (or when the log service is refreshed). This is the thread pool
-  capacity for log event processing.
+If omitted in configuration file, the default concurrency (maximum number of threads in parallel) for asynchronous
+processing is the number
+of [Runtime#availableProcessors](https://docs.oracle.com/javase/8/docs/api/java/lang/Runtime.html#availableProcessors--)
+of the current JVM at the application startup time (or when the log service is refreshed). This is the thread pool
+capacity for log event processing.
 
 The standard stream destinations are often redirected/replaced by the host environment or user, in which case further
 manoeuvres may help such data channel's performance. For example, if the target repository is a log file on disk, then
