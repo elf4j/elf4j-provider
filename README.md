@@ -285,15 +285,16 @@ information in the first place; the default log pattern configuration does not i
 
 The ideal situation of asynchronous logging is for the main application to "fire and forget" the log events, and
 continue its main business flow without further blocking, in which case the log processing throughput has little impact
-on the main application. That only happens, however, when there are spare threads available from the async thread pool.
-When no spare thread is available, the log process becomes pseudo-synchronous, in which case not only will the main
-application be back-pressured while awaiting processing time, but also the extra cost of facilitating asynchronous
-communications will now add to that of the main workflow. By contrast, a true synchronous logging without buffering will
-delay the main workflow in each transaction, albeit having no additional cost for asynchrony.
+on the main application. That only happens, however, when there are spare threads (and/or task queue capacity) available
+from the async thread pool. When no spare thread is available, the log process becomes pseudo-synchronous, in which case
+not only will the main application be back-pressured while awaiting processing time, but also the extra cost of
+facilitating asynchronous communications will now add to that of the main workflow. By contrast, a true synchronous
+logging without buffering will delay the main workflow in each transaction, albeit having no additional cost for
+asynchrony.
 
 For asynchronous logging to work well, the log processing throughput should, over time, exceed the log event generation
-rate; the work queue hosting the log events should serve as temporary buffer when the log eventing rate is momentarily
-higher than the log processing throughput.
+rate; the work queue hosting the log events should serve only as a temporary buffer when the log eventing rate is
+momentarily higher than the log processing throughput.
 
 Leveraging
 the [conseq4j](https://github.com/q3769/conseq4j#style-2-submit-each-task-directly-for-execution-together-with-its-sequence-key)
