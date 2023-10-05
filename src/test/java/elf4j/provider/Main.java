@@ -1,16 +1,14 @@
 package elf4j.provider;
 
-import coco4j.MoreAwaitilities;
 import elf4j.Logger;
 import elf4j.engine.service.LogServiceManager;
 
-import java.time.Duration;
 import java.util.function.Supplier;
 
 public class Main {
     static Logger logger = Logger.instance();
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         logger.atInfo().log("Hello, world!");
         Exception issue = new Exception("Test ex message");
         logger.atWarn().log(issue, "Testing issue '{}' in {}", issue, Main.class);
@@ -51,7 +49,6 @@ public class Main {
                         "optional",
                         (Supplier) () -> "as usual");
 
-        MoreAwaitilities.sleepInterruptibly(Duration.ofMillis(200));
         LogServiceManager.INSTANCE.shutdown();
     }
 }
