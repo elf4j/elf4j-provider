@@ -114,23 +114,24 @@ both the log caller class and the log writer.
 * The default severity level of a `Logger` instance from `Logger.instance()` is `INFO`, which is not configurable: The
   elf4j [API](https://github.com/elf4j/elf4j#logging-service-interface-and-access-api) should be used to
   programmatically obtain `Logger` instances of desired severity levels.
-* The default minimum output level for both log caller classes and writers and is `TRACE`, which is configurable: For
-  caller classes, the minimum output level can be configured on global, package, or individual class levels. For
-  writers, the level can be configured on global level and overridden per each writer.
+* The default minimum output level for both log caller classes and the writer and is `TRACE`, which is configurable: For
+  caller classes, the minimum output level can be configured on global, package, or individual class levels.
 
 ### Writer
 
-The elf4j-engine supports multiple standard-stream writers. Each writer can have individual configurations on format
-pattern and minimum output level. The same log entry will be output once per each writer. Practically, however, more
-than one writer is rarely necessary given what a single writer can achieve with the comprehensive support on log
-patterns and minimum output levels per caller classes.
+By default, the elf4j-engine supports one single writer instance of the standard-stream type. The codebase is
+extension-ready for multiple, different writer types; and for each custom type, multiple writer instances. However, the
+need for such extensions (e.g. flat-file writers) is rare, considering the abundant host/OS and vendor level support
+options to ship standard-stream application log data to various destinations other than the default system console.
 
 ### Output format pattern
 
 All individual patterns, including the JSON pattern, can either be the only output of the log entry, or mixed together
-with any other patterns. They take the form of `{pattern:displayOptions}`, where multiple display options are separated
-by commas. Patterns inside curly brace pairs are predefined and will be interpreted before output, while patterns
-outside curly brace pairs are output verbatim. The predefined patterns are:
+with any other patterns. They each take the form of `{pattern:displayOptions}`, where multiple display options are
+separated by commas. Patterns inside curly brace pairs are predefined and will be interpreted before output, while
+patterns outside curly brace pairs are written out verbatim.
+
+The predefined patterns are:
 
 * `timestamp`: Date time format configurable via Java
   `DateTimeFormatter` [pattern syntax](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#patterns),
@@ -187,7 +188,7 @@ JSON Default
   ```
 * Output:
   ```
-  {"timestamp":"2023-03-22T21:21:29.7319284-05:00","level":"INFO","callerClass":"elf4j.engine.IntegrationTest$defaultLogger","message":"Hello, world!"}
+  {"message":"Hello, world!","timestamp":"2023-10-04T09:11:10.8063059-05:00","level":"INFO","callerClass":"elf4j.provider.Main"}
   ```
 
 JSON Customized
@@ -199,19 +200,20 @@ JSON Customized
 * Output:
   ```json
   {
-    "timestamp": "2023-03-14T21:21:33.1180212-05:00",
-    "level": "INFO",
-    "callerThread": {
-      "name": "main",
-      "id": 1
-    },
-    "callerDetail": {
-      "className": "elf4j.provider.IntegrationTest$defaultLogger",
-      "methodName": "hey",
-      "lineNumber": 41,
-      "fileName": "IntegrationTest.java"
-    },
-    "message": "Hello, world!"
+  "message": "Exception is always the first argument to a logging method. The optional log message and following arguments work the same way as usual.",
+  "timestamp": "2023-10-04T09:09:46.2091508-05:00",
+  "level": "INFO",
+  "callerThread": {
+    "name": "main",
+    "id": 1
+  },
+  "callerDetail": {
+    "className": "elf4j.provider.Main",
+    "methodName": "main",
+    "lineNumber": 49,
+    "fileName": "Main.java"
+  },
+  "exception": "java.lang.Exception: Exception message\r\n\tat elf4j.provider.Main.main(Main.java:45)\r\n"
   }
   ```
 
@@ -221,30 +223,14 @@ JSON Customized
 ### Zero configuration mandatory, this file can be empty - default to a line-based writer with simple log pattern
 ### global no-op flag, overriding and will turn off all logging if set true
 #noop=true
-### Minimum output level is optional, default to TRACE for all caller classes if omitted
+### Minimum writer output level is optional, default to TRACE for all caller classes if omitted
 level=info
-### These override the output level of all caller classes included the specified package spaces
+### These override the writer output level of all caller classes included the specified package spaces
 level@org.springframework=warn
 level@org.apache=error
 ### Standard out stream type, stdout or stderr, default is stdout
 stream=stderr
-### Global writer output pattern if omitted on individual writer, default to a simple line based
-#pattern={json}
-### Any writer is optional, default to a simple standard streams writer
-### 'standard' is currently the only supported writer type
-writer1=standard
-### This is the default output pattern, can be omitted
-#writer1.pattern={timestamp} {level} {class} - {message}
-### This would customize the format patterns of the specified writer
-#writer1.pattern={timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSXXX} {level:5} [{thread:id}] {class:compressed}#{method}(L{linenumber}@{filename}) - {message}
-### Multiple writers are supported, each with its own configurations
-writer2=standard
-#writer2.level=trace
-### Default json pattern does not include thread and caller details, and uses minified one-line format for the JSON string
-#writer2.pattern={json}
-### This would force the JSON to include the thread/caller details, and pretty print
-writer2.pattern={json:caller-thread,caller-detail,pretty}
-### Optional log event processing concurrency, default is jvm runtime available processors at application start time
+### Max concurrency to process logs from different caller threads, default to available runtime processors
 #concurrency=20
 ```
 
