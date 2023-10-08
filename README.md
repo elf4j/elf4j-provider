@@ -188,7 +188,7 @@ JSON Default
   ```
 * Output:
   ```
-  {"message":"Hello, world!","timestamp":"2023-10-04T09:11:10.8063059-05:00","level":"INFO","callerClass":"elf4j.provider.Main"}
+  {"timestamp":"2023-10-07T22:52:47.962872-05:00","message":"Hello, world!","level":"INFO","callerClass":"elf4j.provider.Main"}
   ```
 
 JSON Customized
@@ -200,20 +200,19 @@ JSON Customized
 * Output:
   ```json
   {
-  "message": "Exception is always the first argument to a logging method. The optional log message and following arguments work the same way as usual.",
-  "timestamp": "2023-10-04T09:09:46.2091508-05:00",
-  "level": "INFO",
-  "callerThread": {
-    "name": "main",
-    "id": 1
-  },
-  "callerDetail": {
-    "className": "elf4j.provider.Main",
-    "methodName": "main",
-    "lineNumber": 49,
-    "fileName": "Main.java"
-  },
-  "exception": "java.lang.Exception: Exception message\r\n\tat elf4j.provider.Main.main(Main.java:45)\r\n"
+    "timestamp": "2023-10-07T22:53:46.2568507-05:00",
+    "message": "Hello, world!",
+    "level": "INFO",
+    "callerThread": {
+      "name": "main",
+      "id": 1
+    },
+    "callerDetail": {
+      "className": "elf4j.provider.Main",
+      "methodName": "main",
+      "lineNumber": 12,
+      "fileName": "Main.java"
+    }
   }
   ```
 
@@ -230,6 +229,10 @@ level@org.springframework=warn
 level@org.apache=error
 ### Standard out stream type, stdout or stderr, default is stdout
 stream=stderr
+### pattern is optional, default is a simple line-based
+pattern={json}
+#pattern={json:caller-thread,caller-detail,pretty}
+#pattern={timestamp:yyyy-MM-dd'T'HH:mm:ss.SSSXXX} {level:5} [{thread:id}] {class:compressed}#{method}(L{linenumber}@{filename}) - {message}
 ### Max concurrency to process logs from different caller threads, default to available runtime processors
 #concurrency=20
 ```
@@ -310,5 +313,5 @@ java MyApplication >logFile
 
 due to the buffering effect of piping and `cat`.
 
-Such external setups fall into the category of increasing channel bandwidth, and are considered outside the scope of
-application-level logging.
+Such external setups fall into the category of increasing data channel bandwidth, and are considered outside the scope
+of application-level logging.
