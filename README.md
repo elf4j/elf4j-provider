@@ -223,9 +223,9 @@ JSON Customized
 ### Zero configuration mandatory, this file can be empty - default to a line-based writer with simple log pattern
 ### global no-op flag, overriding and will turn off all logging if set true
 #noop=true
-### Minimum writer output level is optional, default to TRACE for all caller classes if omitted
+### Global minimum output level for both caller class and writer. Optional, default to TRACE.
 level=info
-### These override the writer output level of all caller classes included the specified package spaces
+### These override the minimum output level of all caller classes included the specified package spaces
 level@org.springframework=warn
 level@org.apache=error
 ### Standard out stream type, stdout or stderr, default is stdout
