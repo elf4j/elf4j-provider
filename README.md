@@ -52,10 +52,10 @@ case truly required that logging had to be synchronous, and always blocking the 
 ### Standard streams output only
 
 Besides the standard streams (stdout/stderr), it may be trivial for the application logging to support other output
-channels. Yet it's arguably more trivial for the hosting system to redirect/forward standard streams as a data source to
-other destinations than the system Console, e.g. log files and/or other central repositories. Such log data aggregation
-process may be as simple as a Linux shell redirect, or as sophisticated as running collector agents of comprehensive
-monitoring/observability services, but no longer a concern of the application-level logging.
+channels. Yet it's arguably more trivial for the hosting system to redirect/forward standard-streams data to other
+destinations than the system Console, e.g. log files and/or other central repositories. Such log data aggregation -
+be it as simple as a Linux shell redirect, or as sophisticated as running collector agents of comprehensive
+monitoring/observability services - is not treated as a concern of the application-level logging.
 
 ### Log patterns including JSON
 
@@ -120,9 +120,10 @@ both the log caller class and the log writer.
 ### Writer
 
 By default, the elf4j-engine supports one single writer instance of the standard-stream type. The codebase is
-extension-ready for multiple, different writer types; and for each custom type, multiple writer instances. However, the
-need for such extensions (e.g. flat-file writers) is rare, considering the abundant host/OS and vendor level support
-options to ship standard-stream application log data to various destinations other than the default system console.
+extension-ready for multiple writer types; and for each custom type, multiple writer instances. However, the need for
+such extensions (e.g. a flat-file writer type with multiple writer instances for different target files) is rare,
+considering the abundant host/OS and vendor options to ship standard-stream data to various destinations other than the
+default system console.
 
 ### Output format pattern
 
