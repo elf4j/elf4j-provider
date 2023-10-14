@@ -52,10 +52,10 @@ case truly required that logging had to be synchronous, and always blocking the 
 ### Standard streams output only
 
 Besides the standard streams (stdout/stderr), it may be trivial for the application logging to support other output
-channels. Yet it's arguably more trivial for the hosting system to redirect/forward standard-streams data to other
-destinations than the system Console, e.g. log files and/or other central repositories. Such log data aggregation -
+channels. Yet it's arguably more trivial for the hosting system to redirect/forward standard-stream data to other
+destinations than the system Console, e.g. log files and/or other central repositories. Such data collecting process -
 be it as simple as a Linux shell redirect, or as sophisticated as running collector agents of comprehensive
-monitoring/observability services - is not treated as a concern of the application-level logging.
+observability services - is not considered as a concern of the application-level logging.
 
 ### Log patterns including JSON
 
