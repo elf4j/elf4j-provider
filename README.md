@@ -31,13 +31,7 @@ Java 8 or better
 ...
 <dependency>
     <groupId>io.github.elf4j</groupId>
-    <artifactId>elf4j</artifactId>
-    <scope>compile</scope>
-</dependency>
-<dependency>
-    <groupId>io.github.elf4j</groupId>
     <artifactId>elf4j-provider</artifactId>
-    <scope>runtime</scope>
 </dependency>
 ...
 ```
