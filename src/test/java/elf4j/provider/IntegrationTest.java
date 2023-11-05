@@ -25,12 +25,12 @@
 
 package elf4j.provider;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import elf4j.Logger;
 import elf4j.engine.NativeLogger;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class IntegrationTest {
 

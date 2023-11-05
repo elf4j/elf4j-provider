@@ -1,8 +1,7 @@
 package elf4j.provider;
 
 import elf4j.Logger;
-import elf4j.engine.service.LogServiceManager;
-
+import elf4j.engine.service.NativeLogServiceManager;
 import java.util.function.Supplier;
 
 public class Main {
@@ -38,17 +37,18 @@ public class Main {
                 Supplier.class.getTypeName(),
                 (Supplier) () -> "expensive to compute");
         info.atWarn()
-                .log("The Supplier downcast is mandatory per lambda syntax because arguments are declared as generic Object rather than functional interface");
+                .log(
+                        "The Supplier downcast is mandatory per lambda syntax because arguments are declared as generic Object rather than functional interface");
 
         Exception exception = new Exception("Exception message");
         logger.atError().log(exception);
         logger.atError().log(exception, "Optional log message");
-        logger.atInfo()
-                .log(exception,
-                        "Exception is always the first argument to a logging method. The {} log message and following arguments work the same way {}.",
-                        "optional",
-                        (Supplier) () -> "as usual");
+        logger.atInfo().log(
+                exception,
+                "Exception is always the first argument to a logging method. The {} log message and following arguments work the same way {}.",
+                "optional",
+                (Supplier) () -> "as usual");
 
-        LogServiceManager.INSTANCE.shutdown();
+        NativeLogServiceManager.INSTANCE.shutdown();
     }
 }
