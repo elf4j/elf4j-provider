@@ -40,7 +40,7 @@ Java 8 or better
 
 ### Async logging only
 
-Logging output is always asynchronous, considering performance and moreover the 80/20 rule: When was the last time a use
+Logging output is always asynchronous. This is for throughout performance and moreover the 80/20 rule: When was the last time a use
 case truly required that logging had to be synchronous, and always blocking the application's normal work flow?
 
 ### Standard streams output only
