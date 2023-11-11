@@ -40,16 +40,15 @@ Java 8 or better
 
 ### Async logging only
 
-Logging output is always asynchronous. This is for throughout performance and moreover the 80/20 rule: When was the last time a use
+elf4j-provider output is always asynchronous. This is for throughout performance and, moreover, the 80/20 rule: When was the last time a use
 case truly required that logging had to be synchronous, and always blocking the application's normal work flow?
 
 ### Standard streams output only
 
 Besides the standard streams (stdout/stderr), it may be trivial for the application logging to support other output
 channels. Yet it's arguably more trivial for the hosting system to redirect/forward standard-stream data to other
-destinations than the system Console, e.g. log files and/or other central repositories. Such data collecting process -
-be it as simple as a Linux shell redirect, or as sophisticated as running collector agents of comprehensive
-observability services - is not considered as a concern of the application-level logging.
+destinations than the system Console, e.g. log files and/or other central repositories. elf4j-provider does not consider such data collecting process as an application-level concern, assuming the hosting system will address such concerns - be it as simple as a Linux shell redirect, or as sophisticated as running collector agents of comprehensive
+observability services.
 
 ### Log patterns including JSON
 
