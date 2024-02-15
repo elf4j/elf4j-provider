@@ -148,7 +148,7 @@ The predefined patterns are:
   readable format. Default is no thread/caller detail and the minified single-line format
 * `context`: Mandatory display option `key` whose value will be retrieved from
   the [`MDC`](https://www.slf4j.org/api/org/slf4j/MDC.html) context and displayed in the
-  log message; cannot be empty, otherwise, error will be raised
+  log message; the `key` cannot be empty, otherwise, an error will be raised
 
 At the end of each complete log entry output, a system-dependent line feed character is appended automatically; this is
 not configurable.
