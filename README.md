@@ -81,7 +81,7 @@ line-based patterns - timestamp, level, thread, class, method, file name, line n
 
 * In case of multiple elf4j service providers in classpath, pick this one like so:
   ```
-  java -Delf4j.logger.factory.fqcn="elf4j.engine.NativeLoggerFactory" MyApplication
+  java -Delf4j.service.provider.fqcn="elf4j.engine.NativeLoggerFactory" MyApplication
   ```  
   More details [here](https://github.com/elf4j/elf4j/blob/main/README.md#only-one-in-effect-logging-provider).
 
