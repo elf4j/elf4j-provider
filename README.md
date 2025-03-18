@@ -13,7 +13,8 @@ the [API and SPI](https://github.com/elf4j/elf4j#log-service-interface-and-acces
 
 ## Prerequisite
 
-Java 8 or better
+* Java 8+ required for versions earlier than 14.0.0 (exclusive)
+* Java 21+ required for versions later than 14.0.0 (inclusive)
 
 ## Implementation notes
 
@@ -188,7 +189,7 @@ JSON Default
   ```
 * Output:
   ```
-  {"timestamp":"2023-10-07T22:52:47.962872-05:00","message":"Hello, world!","level":"INFO","callerClass":"elf4j.provider.Main"}
+  {"timestamp":"2023-10-07T22:52:47.962872-05:00","message":"Hello, world!","level":"INFO","callerClass":"elf4j.provider.DemoTest"}
   ```
 
 JSON Customized
@@ -208,7 +209,7 @@ JSON Customized
       "id": 1
     },
     "callerDetail": {
-      "className": "elf4j.provider.Main",
+      "className": "elf4j.provider.DemoTest",
       "methodName": "main",
       "lineNumber": 12,
       "fileName": "Main.java"

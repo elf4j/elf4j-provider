@@ -31,7 +31,7 @@
 
     <groupId>io.github.elf4j</groupId>
     <artifactId>elf4j-provider</artifactId>
-    <version>13.2.1</version>
+    <version>14.0.0</version>
     <packaging>jar</packaging>
     <name>elf4j-provider</name>
     <description>Native logging service provider implementation of ELF4J (Easy Logging Facade For Java)
@@ -60,7 +60,7 @@
     </developers>
 
     <properties>
-        <maven.compiler.release>8</maven.compiler.release>
+        <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -68,7 +68,7 @@
         <dependency>
             <groupId>io.github.elf4j</groupId>
             <artifactId>elf4j-engine</artifactId>
-            <version>15.2.6</version>
+            <version>16.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -83,13 +83,13 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.12.0</version>
+            <version>5.16.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
-            <version>5.12.0</version>
+            <version>5.16.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -104,7 +104,7 @@
             <dependency>
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>
-                <version>5.11.0</version>
+                <version>5.12.1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -116,7 +116,7 @@
             <plugin>
                 <groupId>com.diffplug.spotless</groupId>
                 <artifactId>spotless-maven-plugin</artifactId>
-                <version>2.43.0</version>
+                <version>2.44.3</version>
                 <executions>
                     <execution>
                         <id>spotless-apply-id</id>
@@ -129,10 +129,9 @@
                 <configuration>
                     <java>
                         <palantirJavaFormat>
-                            <version>2.43.0</version>                     <!-- optional -->
-                            <style>PALANTIR</style>                       <!-- or AOSP/GOOGLE (optional) -->
-                            <formatJavadoc>true
-                            </formatJavadoc>          <!-- defaults to false (optional, requires at least Palantir 2.39.0) -->
+                            <version>2.58.0</version>
+                            <style>PALANTIR</style>
+                            <formatJavadoc>true</formatJavadoc>
                         </palantirJavaFormat>
                         <formatAnnotations/>
                     </java>
@@ -172,6 +171,26 @@
                 <groupId>io.github.q3769</groupId>
                 <artifactId>semver-maven-plugin</artifactId>
                 <version>20240116.0.202402</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <id>enforce-maven-version</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>[3.9,)</version>
+                                </requireMavenVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
