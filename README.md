@@ -189,7 +189,7 @@ JSON Default
   ```
 * Output:
   ```
-  {"timestamp":"2023-10-07T22:52:47.962872-05:00","message":"Hello, world!","level":"INFO","callerClass":"elf4j.provider.DemoTest"}
+  {"timestamp":"2023-10-07T22:52:47.962872-05:00","message":"Hello, world!","level":"INFO","callerClass":"elf4j.provider.Demo"}
   ```
 
 JSON Customized
@@ -209,7 +209,7 @@ JSON Customized
       "id": 1
     },
     "callerDetail": {
-      "className": "elf4j.provider.DemoTest",
+      "className": "elf4j.provider.Demo",
       "methodName": "main",
       "lineNumber": 12,
       "fileName": "Main.java"
