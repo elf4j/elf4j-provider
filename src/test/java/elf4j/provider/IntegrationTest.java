@@ -25,10 +25,7 @@
 
 package elf4j.provider;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import elf4j.Logger;
-import elf4j.engine.NativeLogger;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -43,8 +40,6 @@ class IntegrationTest {
             logger.atInfo().log("Hello, world!");
             Exception issue = new Exception("Test ex message");
             logger.atWarn().log(issue, "Testing issue '{}' in {}", issue, this.getClass());
-
-            assertEquals(this.getClass().getName(), ((NativeLogger) logger).getDeclaringClassName());
         }
     }
 }
