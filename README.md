@@ -138,11 +138,11 @@ The predefined patterns are:
   default to `simple`
 * `level`: Length configurable, default to full length
 * `thread`: Option of `name` or `id`, default to name
-* `class`: Option of `simple`, `full`, or `compressed` (only the first letter for each package segment) for class names,
+* `class` (performance-sensitive): Option of `simple`, `full`, or `compressed` (only the first letter for each package segment) for class names,
   default to `simple`
-* `method`: No configuration options, simple method name
-* `filename`: No configuration options, simple file name
-* `linenumber`: No configuration options, the line number where the log is issued in the file
+* `method` (performance-sensitive): No configuration options, simple method name
+* `filename` (performance-sensitive): No configuration options, simple file name
+* `linenumber` (performance-sensitive): No configuration options, the line number where the log is issued in the file
 * `sysprop`: Option `name` for the JRE System Property
 * `sysenv`: Option `name` for the system environment variable
 * `message`: No configuration options, always prints user message, and exception stack trace if any
@@ -153,8 +153,12 @@ The predefined patterns are:
   the [`MDC`](https://www.slf4j.org/api/org/slf4j/MDC.html) context and displayed in the
   log message; the `key` cannot be empty, otherwise, an error will be raised
 
-At the end of each complete log entry output, a system-dependent line feed character is appended automatically; this is
+_Note_:
+
+* Pattern names are case-insensitive.
+* A system-dependent line feed character (hidden pattern) is appended automatically at the end of each log entry; this is
 not configurable.
+* Performance-sensitive patterns should only be used when necessary or if the application is performance tolerant.
 
 #### Pattern output samples
 
