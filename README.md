@@ -41,7 +41,7 @@ case truly required that logging had to be synchronous, and always blocking the 
 
 ### Standard streams output only
 
-Only standard streams (stdout/stderr) channels are supported as log output destinations. It has been common, yet arguably redundant, that an application logging framework supports other output channels, given how comprehensively the application's hosting system is already equipped to redirect/forward standard-stream data to other destinations such as (rotating) log files or other repositories. The `elf4j-provider`/`elf4j-engine` does not consider such data collecting process as an application-level concern - be it as simple as a Linux shell redirect to files, or as sophisticated as running a collector agent of a comprehensive observability service (e.g. Splunk, ELK, Newrelic, Datadog, etc...).
+Only standard streams (stdout/stderr) channels are supported as log output destinations. It has been common, yet arguably redundant, that an application logging framework supports other output channels - given how specially and comprehensively the application's hosting system is already equipped to redirect/forward standard-stream data to other destinations. The `elf4j-provider`/`elf4j-engine` does not consider such data collecting process as an application-level concern - be it as simple as a Linux shell redirect to (rotating) log files, or as sophisticated as running a collector agent of a comprehensive observability service (e.g. Splunk, ELK, Newrelic, Datadog, etc...).
 
 ### Log patterns including JSON
 
