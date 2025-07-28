@@ -2,14 +2,11 @@
 
 # elf4j-provider
 
-The native logging _service provider_ implementation of [elf4j](https://github.com/elf4j/elf4j) (Easy Logging Facade for
-Java), and an independent drop-in logging solution for any Java application
+The native logging _service provider_ implementation of [elf4j](https://github.com/elf4j/elf4j) (Easy Logging Facade for Java), and an independent drop-in logging solution for any Java application
 
 ## User story
 
-As an application developer using the elf4j logging facade, I want to have the option of using a runtime log _service
-provider_ that natively implements
-the [API and SPI](https://github.com/elf4j/elf4j#log-service-interface-and-access-api) of elf4j.
+As an application developer using the elf4j logging facade, I want to have the option of using a runtime log _service provider_ that natively implements the [API and SPI](https://github.com/elf4j/elf4j#log-service-interface-and-access-api) of elf4j.
 
 ## Prerequisite
 
@@ -20,21 +17,18 @@ the [API and SPI](https://github.com/elf4j/elf4j#log-service-interface-and-acces
 
 * Guiding principle: Reasonable default and Pareto's 80/20 rule
 
-* This is simply a packaging unit of the [elf4j-engine](https://github.com/elf4j/elf4j-engine), using the
-  Java [Service Provider Framework](https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html) mechanism.
-  See [elf4j-engine](https://github.com/elf4j/elf4j-engine) for implementation details.
+* This is simply a packaging unit of the `elf4j-engine`, using the  Java [Service Provider Framework](https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html) mechanism.  For more implementation detail, see the [elf4j-engine](https://github.com/elf4j/elf4j-engine) code repo.
 
 ## Installation
 
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.elf4j/elf4j-provider.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.elf4j%22%20AND%20a:%22elf4j-provider%22)
 
-```html
-...
+```xml
 <dependency>
     <groupId>io.github.elf4j</groupId>
     <artifactId>elf4j-provider</artifactId>
+    <version>${latest.version}</version>
 </dependency>
-...
 ```
 
 ## Features
@@ -47,30 +41,22 @@ case truly required that logging had to be synchronous, and always blocking the 
 
 ### Standard streams output only
 
-Besides the standard streams (stdout/stderr), it may be trivial for the application logging to support other output
-channels. Yet it's arguably more trivial for the hosting system to redirect/forward standard-stream data to other
-destinations than the system Console, e.g. log files and/or other central repositories. elf4j-provider does not consider
-such data collecting process as an application-level concern, assuming the hosting system will address such concerns -
-be it as simple as a Linux shell redirect, or as sophisticated as running collector agents of comprehensive
-observability services.
+Only standard streams (stdout/stderr) channels are supported as log output destinations. It has been common, yet arguably redundant, that an application logging framework supports other output channels, given how comprehensively the application's hosting system is already equipped to redirect/forward standard-stream data to other destinations such as (rotating) log files or other repositories. The `elf4j-provider`/`elf4j-engine` does not consider such data collecting process as an application-level concern - be it as simple as a Linux shell redirect to files, or as sophisticated as running a collector agent of a comprehensive observability service (e.g. Splunk, ELK, Newrelic, Datadog, etc...).
 
 ### Log patterns including JSON
 
 JSON is a supported output pattern, in hopes of helping external log analysis tools. This is in addition to the usual
-line-based patterns - timestamp, level, thread, class, method, file name, line number, and log message.
+line-based patterns - timestamp, level, thread, logger, class, method, file name, line number, and log message.
 
 ### Service administration
 
-* Supports configuration refresh during runtime via API, with option of passing in replacement properties instead of
-  reloading the configuration file. The most frequent use case would be to change the minimum log output level, without
-  restarting the application.
+* Supports configuration refresh during runtime via, with option of passing in replacement properties instead of reloading the configuration file. The most frequent use case would be to change the minimum log output threshold level, without restarting the application.
 * To avoid loss of logs when the application shuts down, it is the user's responsibility to
   call `LogServiceManager.stop` before the application exits. Upon that call, the log service will
     1. stop accepting new log events
     2. block and wait for all the accepted log events to finish processing
 
-  Alternatively, the user can register a JVM shutdown hook using the thread returned
-  by `LogServiceManager.getShutdownHookThread`.
+  Alternatively, the user can register a JVM shutdown hook provided by `LogServiceManager.getShutdownHookThread`.
 
 ## Usage
 
