@@ -68,7 +68,7 @@
         <dependency>
             <groupId>io.github.elf4j</groupId>
             <artifactId>elf4j-engine</artifactId>
-            <version>19.0.3</version>
+            <version>20.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
