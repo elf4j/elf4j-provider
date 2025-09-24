@@ -9,6 +9,7 @@
 name: maven-push-ci
 
 on:
+  workflow_dispatch:  # 👈 enables manual triggering
   push:
     branches: [ "**" ]
 
