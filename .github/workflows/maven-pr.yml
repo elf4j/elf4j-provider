@@ -1,6 +1,7 @@
 name: maven-pr-ci
 
 on:
+  workflow_dispatch:  # 👈 enables manual triggering
   pull_request:
     branches: [ "main", "java*" ]
 
